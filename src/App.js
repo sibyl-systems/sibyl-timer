@@ -11,12 +11,7 @@ const defaultTimers = {
         running: false,
         startedTime: null,
         description: '',
-        entries: [
-            {
-                start: 1551539152647,
-                end: 1551559946345
-            }
-        ]
+        entries: []
     },
     2: {
         running: false,
