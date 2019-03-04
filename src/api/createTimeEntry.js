@@ -1,4 +1,4 @@
-const createTimeEntry = (account, apiKey, {hours, minutes}) => {
+const createTimeEntry = (account, apiKey, {hours, minutes}, description) => {
     const now = new Date();
     return new Promise((resolve, reject) => {
         return fetch(`https://${account.code}.teamwork.com/projects/258458/time_entries.json`, {
@@ -8,7 +8,7 @@ const createTimeEntry = (account, apiKey, {hours, minutes}) => {
             },
             body: JSON.stringify({
                 'time-entry': {
-                    description: 'Test timer - todo pull description from app',
+                    description: description,
                     'person-id': account.userId,
                     date: `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}` , //This is the start date of the timer
                     time: `${now.getHours()}:${now.getMinutes()}`, //This is the start time for the timer

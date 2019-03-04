@@ -118,7 +118,7 @@ function App() {
     }
     const logTimer = key => {
         const seconds = totalHistoricTime(timers[key].entries)
-        createTimeEntry(account, apiKey, secondsToHoursAndMinutes(seconds)).then(res => {
+        createTimeEntry(account, apiKey, secondsToHoursAndMinutes(seconds), timers[key].description).then(res => {
             if (res.STATUS === 'OK') {
                 return resetTimer(key)
             }
@@ -127,7 +127,7 @@ function App() {
 
     return (
         <div className="container">
-            <div style={{ display: 'flex', 'align-items': 'baseline' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline' }}>
                 <h1>TimeKeys </h1>
                 &nbsp;&nbsp;&nbsp;
                 <small>Better TeamWork time tracking</small>
