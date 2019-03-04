@@ -143,7 +143,7 @@ function App() {
                     Submit API Key
                 </button>
             </div>
-            {(!account || apiKey) && (
+            {(!account || !apiKey) && (
                 <h5>
                     Warning, no api key has been provided! <small>(Also no errors if wrong key is entered)</small>
                 </h5>
