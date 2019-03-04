@@ -22,7 +22,9 @@
     },
     "dependencies": {
         "electron-is-dev": "^1.0.1",
+        "node-notifier": "^5.4.0",
         "react": "^16.8.3",
+        "react-contenteditable": "^3.2.6",
         "react-dom": "^16.8.3",
         "react-scripts": "2.1.5"
     },

@@ -2,12 +2,20 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const globalShortcut  = electron.globalShortcut ;
+const Notification  = electron.Notification;
 
 const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');
 
 let mainWindow;
+
+
+const nativeImage = require('electron').nativeImage;
+let image = nativeImage.createFromPath(__dirname + '/electron-icon.png'); 
+ // where public folder on the root dir
+
+image.setTemplateImage(true);
 
 function createWindow() {
 
@@ -19,8 +27,9 @@ function createWindow() {
   if (!globalSummon) { console.log('Registration opening failed.'); }
 
   mainWindow = new BrowserWindow({
-    width: 900, 
-    height: 680, 
+    icon: image,
+    width: 520, 
+    height: 720, 
     // frame: false //could be cool to have custom ui?
   });
   

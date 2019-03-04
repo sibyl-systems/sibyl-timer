@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import createTimeEntry from './api/createTimeEntry'
 import './App.css'
 
-// import { ipcRenderer } from 'electron' //doesn't work, obviously.
+import React, { useState, useEffect } from 'react'
+import createTimeEntry from './api/createTimeEntry'
+import TimeCard from './components/TimeCard'
+
 const electron = window.require('electron')
 const ipcRenderer = electron.ipcRenderer
 
@@ -10,7 +11,7 @@ const defaultTimers = {
     1: {
         running: false,
         startedTime: null,
-        description: '',
+        description: 'Test timer',
         entries: []
     },
     2: {
@@ -24,16 +25,8 @@ const defaultTimers = {
         startedTime: null,
         description: '',
         entries: []
-    },
+    }
 }
-
-/**
- * Start timer
- * Stop timer
- * Name timer
- * Log timer
- * Reset timer
- */
 
 function App() {
     const [apiKey, setApiKey] = useState('')
@@ -46,14 +39,11 @@ function App() {
             ipcRenderer.removeListener('toggle-timer', toggleTimer)
         }
     }, [timers])
-    
+
     const toggleTimer = (event, key) => {
-        console.log(timers[key].running);
-        if(timers[key].running) {
-            console.log('stopping timer');
+        if (timers[key].running) {
             stopTimer(key)
         } else {
-            console.log('starting timer');
             startTimer(key)
         }
     }
@@ -69,11 +59,15 @@ function App() {
             .then(res => {
                 setAccount(res.account)
             })
-            .catch(err => console.log(err))
     }
 
     const startTimer = key => {
         //todo: stop all other timers.
+        for (let timer in timers) {
+            if (timer !== key && timers[timer].running) {
+                stopTimer(timer)
+            }
+        }
         const currentTime = Date.now()
         settimers(timers => ({
             ...timers,
@@ -87,6 +81,15 @@ function App() {
                         start: currentTime
                     }
                 ]
+            }
+        }))
+    }
+    const editTimerDescription = (key, description) => {
+        settimers(timers => ({
+            ...timers,
+            [key]: {
+                ...timers[key],
+                description
             }
         }))
     }
@@ -114,41 +117,46 @@ function App() {
         })
     }
     const logTimer = key => {
-        const seconds = totalElapsedTime(timers[key].entries)
+        const seconds = totalHistoricTime(timers[key].entries)
         createTimeEntry(account, apiKey, secondsToHoursAndMinutes(seconds)).then(res => {
-            if(res.STATUS === 'OK') {
-                console.log('Everything is going to be alright!');
-                console.log(key);
+            if (res.STATUS === 'OK') {
                 return resetTimer(key)
             }
-            console.log('oh no. Why aren\'t there any errors?');
         })
     }
 
     return (
         <div className="container">
-            {/* Ooops 2do: fix */}
-            &nbsp; 
-            <div className="row">
-                <div className="column column-60">
-                    <input value={apiKey} onChange={e => setApiKey(e.target.value)} type="text" />
-                </div>
-                <div className="column">
-                    <button className="button" onClick={getAccount}>Get account</button>
-                </div>
+            <div style={{ display: 'flex', 'align-items': 'baseline' }}>
+                <h1>TimeKeys </h1>
+                &nbsp;&nbsp;&nbsp;
+                <small>Better TeamWork time tracking</small>
             </div>
-            { (!account && apiKey) && <h5>Warning, no api key!</h5> }
+            <div className="temp-api-input">
+                <input
+                    placeholder="Please enter your API key"
+                    value={apiKey}
+                    onChange={e => setApiKey(e.target.value)}
+                    type="text"
+                />
+                <button className="button" onClick={getAccount}>
+                    Submit API Key
+                </button>
+            </div>
+            {(!account || apiKey) && (
+                <h5>
+                    Warning, no api key has been provided! <small>(Also no errors if wrong key is entered)</small>
+                </h5>
+            )}
             {Object.keys(timers).map((key, index) => {
                 return (
-                    <Timer
+                    <TimeCard
                         data={timers[key]}
-                        timerKey={key}
-                        startTimer={startTimer}
-                        stopTimer={stopTimer}
-                        resetTimer={resetTimer}
-                        logTimer={logTimer}
-                        key={key}
+                        running={timers[key].running}
+                        timerName={key}
+                        functions={{ startTimer, stopTimer, resetTimer, logTimer, editTimerDescription }}
                         account={account}
+                        key={key}
                     />
                 )
             })}
@@ -158,27 +166,7 @@ function App() {
 
 export default App
 
-function Timer({ data, timerKey, startTimer, stopTimer, resetTimer, logTimer, account }) {
-    
-    return (
-        <>
-            <h6>
-                Timer {timerKey}: <small>{secondsToHoursAndMinutes(totalElapsedTime(data.entries)).hours}:{secondsToHoursAndMinutes(totalElapsedTime(data.entries)).minutes}</small>
-            </h6>
-            <div>
-                {!data.running && <button className="button" onClick={() => startTimer(timerKey)}>Start</button>}
-                
-                {data.running && <button className="button" onClick={() => stopTimer(timerKey)}>Stop</button>}
-                
-                {totalElapsedTime(data.entries) > 0 && <button className="button-outline" disabled={!account} onClick={() => logTimer(timerKey)}>Log Time</button>}
-                
-                {totalElapsedTime(data.entries) > 0 && <button className="button-outline" onClick={() => resetTimer(timerKey)}>Reset</button>}
-            </div>
-        </>
-    )
-}
-
-const totalElapsedTime = (entries) => {
+const totalHistoricTime = entries => {
     return entries.reduce((acc, curr) => {
         if (curr.end) {
             acc = acc + (curr.end / 1000 - curr.start / 1000)
