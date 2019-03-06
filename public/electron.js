@@ -35,7 +35,7 @@ function createWindow() {
   
   mainWindow.webContents.once('dom-ready', () => {
     for (let index = 1; index <= 3; index++) {
-      let toggleTimer = globalShortcut.register(`Alt+f${index}`, () => {
+      let toggleTimer = globalShortcut.register(`Alt+${index}`, () => {
         mainWindow.webContents.send('toggle-timer', index)
       });
       if (!toggleTimer) { console.log('Registration toggle-timer failed.'); }

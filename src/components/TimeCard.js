@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react'
 import ContentEditable from 'react-contenteditable'
+import TimeLogger from './TimeLogger';
 
-function TimeCard({ data, timerName, account, functions, running }) {
+function TimeCard({ data, timerName, account, functions, running, apiKey }) {
     const { resetTimer, logTimer, editTimerDescription } = functions
     const secondsElapsed = totalTime(data.entries)
     const timeExists = secondsElapsed > 0
@@ -24,6 +25,7 @@ function TimeCard({ data, timerName, account, functions, running }) {
 
             return () => {
                 clearInterval(timerInterval)
+                setadditionalSeconds(0)
             }
         }
     }, [running])
@@ -100,6 +102,9 @@ function TimeCard({ data, timerName, account, functions, running }) {
                     {secondsToHMS(existingTime).seconds}
                 </div>
             </div>
+            {data.logging && 
+                <TimeLogger logTimer={logTimer} account={account} apiKey={apiKey} />
+            }
         </div>
     )
 }

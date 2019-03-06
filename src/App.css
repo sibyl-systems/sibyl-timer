@@ -106,7 +106,7 @@ h1 {
 }
 
 .time-button {
-    width: 30px;
+    min-width: 30px;
     height: 30px;
     fill: rgba(0, 0, 0, 0.75);
     border: 1px solid rgba(0, 0, 0, 0.75);

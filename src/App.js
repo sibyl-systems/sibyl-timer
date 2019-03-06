@@ -10,18 +10,21 @@ const ipcRenderer = electron.ipcRenderer
 const defaultTimers = {
     1: {
         running: false,
+        logging: true,
         startedTime: null,
         description: 'Test timer',
         entries: []
     },
     2: {
         running: false,
+        logging: false,
         startedTime: null,
         description: '',
         entries: []
     },
     3: {
         running: false,
+        logging: false,
         startedTime: null,
         description: '',
         entries: []
@@ -30,7 +33,7 @@ const defaultTimers = {
 
 function App() {
     const [apiKey, setApiKey] = useState('')
-    const [account, setAccount] = useState('')
+    const [account, setAccount] = useState({code: 'climbteam'})
     const [timers, settimers] = useState(defaultTimers)
 
     useEffect(() => {
@@ -151,6 +154,7 @@ function App() {
             {Object.keys(timers).map((key, index) => {
                 return (
                     <TimeCard
+                        apiKey={apiKey}
                         data={timers[key]}
                         running={timers[key].running}
                         timerName={key}

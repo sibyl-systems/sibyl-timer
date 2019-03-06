@@ -1,68 +1,83 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Thanks create react app!
+
 ## Available Scripts
 
-In the project directory, you can run:
+See all available scripts in `package.json`
 
-### `npm start`
+## Known bugs/issues
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- ~~Timers when using hotkeys sometimes double time.~~
+- ~~Timers when using hotkeys occasionally remove time.~~
+- Project lists & task lists are retrived every second when timer is running
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## MVP
 
-### `npm test`
+#### Timers
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Start
+- Stop
+- Log
+- Name / Description
 
-### `npm run build`
+#### Global keys
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Open application
+- Start timer
+- Stop timer
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+#### Logging
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Log to project
+- Log to task
+    - Task select from all
+    - Task select from project
 
-### `npm run eject`
+## Short-term Roadmap
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Save api key
+- Save timers
+- Configure hotkeys
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Better design
+    - Seperate screen when timer is running
+    - Animations
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Graph of start + stop timers with idle time included.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Roadmap (ideas for the future)
 
-## Learn More
+- Auto pause from inactivity
+- Regular reminders to stop timer after working hours?
+- Option to remove time from a timer left running
+- No timer running reminder
+- 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Context
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Available contexts:
 
-### Code Splitting
+- CurrentUser
+    - () => get account
+    - () => setapikey
+    - apikey
+    - account (json response)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- Timers
+    - list (array of current timers)
+    - () => start
+    - () => stop
+    - () => reset
+    - () => log
 
-### Analyzing the Bundle Size
+- Projects
+    - () => get
+    -list
+- Tasks
+    - () => get
+    -list
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- LoggedTime
+    - list
+    - () => add
