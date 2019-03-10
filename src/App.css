@@ -111,11 +111,13 @@ h1 {
     fill: rgba(0, 0, 0, 0.75);
     border: 1px solid rgba(0, 0, 0, 0.75);
     padding: 0;
-    margin-right: 12px;
     display: flex;
     box-sizing: content-box;
     box-shadow: none;
     background-color: #fff;
+}
+.time-button:not(:last-child) {
+    margin-right: 12px;
 }
 
 .time-button:disabled {
@@ -146,4 +148,5 @@ h1 {
     align-items: center;
     margin-left: auto;
     font-size: 18px;
+    margin-right: 12px;
 }
