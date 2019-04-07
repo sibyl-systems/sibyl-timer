@@ -1,7 +1,17 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' 
+
 import rootReducer from './reducers'
+
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export default function configureStore(preloadedState) {
   const middlewares = [thunkMiddleware]
@@ -10,12 +20,13 @@ export default function configureStore(preloadedState) {
   const enhancers = [middlewareEnhancer]
   const composedEnhancers = compose(...enhancers)
 
-  const store = createStore(rootReducer, preloadedState, composedEnhancers)
+  const store = createStore(persistedReducer, preloadedState, composedEnhancers)
 
+  const persistor = persistStore(store)
 
-if (process.env.NODE_ENV !== 'production' && module.hot) {
+  if (process.env.NODE_ENV !== 'production' && module.hot) {
     module.hot.accept('./reducers', () => store.replaceReducer(rootReducer))
   }
 
-  return store
+  return {store, persistor}
 }
