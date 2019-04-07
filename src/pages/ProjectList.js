@@ -1,29 +1,30 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 
-const ProjectList = () => {
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+
+import ProjectColumn from '../components/ProjectColumn'
+
+import {DragDropContext} from 'react-beautiful-dnd'
+
+const ProjectList = ({projectOrder, projects, timers}) => {
+    const onDragEnd = () => {
+
+    }
     return (
-        <div>
-            <button
-                onClick={() => {
-                    history.push('/dashboard')
-                }}
-            >
-                Go to dashboard
-            </button>
-            This is the ProjectList page
-            <input placeholder="Please enter your API key" value={apikey} onChange={(e) => handleApikey(e)} type="text" />
-            <button className="button" onClick={() => submitApiKey(apikey)}>
-                Submit API Key
-            </button>
-        </div>
+        <DragDropContext onDragEnd={onDragEnd}>
+            {projectOrder.map(projectId => {
+                const project = projects[projectId]
+                const currentTimers = project.timerIds.map(timerId => timers[timerId])
+                return <ProjectColumn key={project.id} project={project} timers={currentTimers} />
+            })}
+        </DragDropContext>
     )
 }
 
-
-
-const mapStateToProps = ({ user, projectOrder, project, timer }) => {
-    return { user, projectOrder, project, timer }
+const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
+    return { user, projectOrder, projects, timers }
 }
 
 const mapDispatchToProps = {}

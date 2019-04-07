@@ -7,8 +7,8 @@ import timerReducer from './timerReducer'
 const rootReducer = combineReducers({ 
     user: userReducer,
     projectOrder: projectOrderReducer,
-    project: projectReducer,
-    timer: timerReducer,
+    projects: projectReducer,
+    timers: timerReducer,
 })
 
 export default rootReducer
