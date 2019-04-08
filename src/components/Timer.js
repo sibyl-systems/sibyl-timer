@@ -6,6 +6,8 @@ import {Draggable} from 'react-beautiful-dnd'
 const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
+    background-color: white;
+    padding: 8px;
 `
 
 const ProjectColumn = props => {
