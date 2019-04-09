@@ -12,3 +12,8 @@ export const reorderColumn = payload => ({
     type: 'REORDER_PROJECT',
     payload: payload
 })
+
+export const addProject = payload => ({
+    type: 'ADD_PROJECT',
+    payload: payload
+})

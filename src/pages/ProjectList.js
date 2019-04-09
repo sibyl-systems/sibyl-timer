@@ -8,9 +8,12 @@ import ProjectColumn from '../components/ProjectColumn'
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-import { reorderColumn } from '../store/actions.js'
+import { reorderColumn, addProject } from '../store/actions.js'
+
+import AddNewProjectColumn from '../components/AddNewProjectColumn'
 
 import styled from 'styled-components'
+
 
 const Container = styled.div`
     margin: 8px;
@@ -26,7 +29,7 @@ const InnerProjectList = React.memo(props => {
     return <ProjectColumn project={project} timers={timers} index={index} />
 })
 
-const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColumn }) => {
+const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColumn, addProject }) => {
     const onDragEnd = result => {
         if (result.type === 'timer') {
             const { destination, source, draggableId } = result
@@ -51,6 +54,7 @@ const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColu
                             )
                         })}
                         {provided.placeholder}
+                        <AddNewProjectColumn addProject={addProject} projects={projects} />
                     </Container>
                 )}
             </Droppable>
@@ -62,7 +66,7 @@ const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
     return { user, projectOrder, projects, timers }
 }
 
-const mapDispatchToProps = { reorderColumn }
+const mapDispatchToProps = { reorderColumn, addProject }
 
 export default compose(
     withRouter,

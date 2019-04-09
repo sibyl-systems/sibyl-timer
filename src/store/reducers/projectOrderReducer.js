@@ -5,10 +5,10 @@ const defaultState = [
 export default function userReducer(state = defaultState, action) {
     switch (action.type) {
         case 'ADD_PROJECT':
-            return {
+            return [
                 ...state,
-                apikey: action.payload
-            }
+                action.payload.id
+            ]
         case 'REORDER_PROJECT':
             const {source, destination, draggableId} = action.payload
             const newProjectOrder = [...state]

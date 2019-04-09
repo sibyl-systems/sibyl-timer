@@ -36,7 +36,7 @@ const ProjectColumn = props => {
         <Draggable draggableId={props.project.id} index={props.index}>
             {provided => (
                 <Container {...provided.draggableProps} ref={provided.innerRef}>
-                    <Title {...provided.dragHandleProps}>{props.project.title}</Title>
+                    <Title {...provided.dragHandleProps}>{props.project.name}</Title>
                     <Droppable droppableId={props.project.id} type="timer">
                         {(provided, snapshot) => (
                             <TimerList

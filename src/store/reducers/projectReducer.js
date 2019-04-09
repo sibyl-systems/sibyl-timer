@@ -1,12 +1,12 @@
 const defaultState = {
     'project-1': {
         id: 'project-1',
-        title: 'Project name',
+        name: 'Project name',
         timerIds: ['timer-1', 'timer-2']
     },
     'project-2': {
         id: 'project-2',
-        title: 'Project name',
+        name: 'Project name',
         timerIds: []
     }
 }
@@ -84,8 +84,8 @@ export default function userReducer(state = defaultState, action) {
         case 'ADD_PROJECT':
             return {
                 ...state,
-                [action.id]: {
-                    ...action,
+                [action.payload.id]: {
+                    ...action.payload,
                     timerIds: []
                 }
             }
