@@ -11,7 +11,7 @@ import ProjectList from './pages/ProjectList'
 
 import { connect } from 'react-redux'
 
-import { submitApiKey } from './store/actions'
+import { submitApiKey, reorderTimer } from './store/actions'
 
 const App = (props) => {
 
@@ -41,7 +41,7 @@ const mapStateToProps = state => {
 }
 
 
-const mapDispatchToProps = { submitApiKey }
+const mapDispatchToProps = { submitApiKey, reorderTimer }
 
 export default connect(
     mapStateToProps,

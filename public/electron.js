@@ -8,7 +8,12 @@ const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');
 
+const os = require('os')
+
+
 let mainWindow;
+
+
 
 
 const nativeImage = require('electron').nativeImage;
@@ -40,6 +45,9 @@ function createWindow() {
       });
       if (!toggleTimer) { console.log('Registration toggle-timer failed.'); }
     }
+    
+
+
   })
 
 
@@ -51,7 +59,12 @@ function createWindow() {
   
 }
 
-app.on('ready', createWindow);
+app.on('ready', async () => {
+  await BrowserWindow.addDevToolsExtension(
+    path.join(os.homedir(), 'AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0')
+  )
+  createWindow()
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
