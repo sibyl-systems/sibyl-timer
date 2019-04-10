@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { withRouter } from 'react-router'
 
 import { connect } from 'react-redux'
@@ -8,7 +8,7 @@ import ProjectColumn from '../components/ProjectColumn'
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-import { reorderColumn, addProject } from '../store/actions.js'
+import { reorderColumn, addProject, addTimer } from '../store/actions.js'
 
 import AddNewProjectColumn from '../components/AddNewProjectColumn'
 
@@ -24,13 +24,22 @@ const Container = styled.div`
 `
 
 const InnerProjectList = React.memo(props => {
-    const { project, timerMap, index } = props
+    const { project, timerMap, index, addTimer, isDropDisabled } = props
     const timers = project.timerIds.map(timerId => timerMap[timerId])
-    return <ProjectColumn project={project} timers={timers} index={index} />
+    return <ProjectColumn isDropDisabled={isDropDisabled} key={project.id} project={project} timers={timers} index={index} addTimer={addTimer} />
 })
 
-const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColumn, addProject }) => {
+const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColumn, addProject, addTimer }) => {
+    const [dragStartIndex, setDragStartIndex] = useState(null)
+    const [dragStartIsAssigned, setDragStartIsAssigned] = useState(null)
+    const onDragStart = start => {
+        const index = projectOrder.indexOf(start.source.droppableId)
+        setDragStartIndex(index)
+        setDragStartIsAssigned(timers[start.draggableId].task['project-id'] ? true : false)
+    }
     const onDragEnd = result => {
+        setDragStartIndex(null)
+        setDragStartIsAssigned(null)
         if (result.type === 'timer') {
             const { destination, source, draggableId } = result
             if (!destination) return
@@ -43,14 +52,15 @@ const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColu
         return reorderColumn(result)
     }
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
             <Droppable droppableId="all-projects" direction="horizontal" type="project">
                 {provided => (
                     <Container {...provided.droppableProps} ref={provided.innerRef}>
                         {projectOrder.map((projectId, index) => {
                             const project = projects[projectId]
+                            const isDropDisabled = dragStartIsAssigned && index !== dragStartIndex ? true : false
                             return (
-                                <InnerProjectList key={project.id} project={project} timerMap={timers} index={index} />
+                                <InnerProjectList isDropDisabled={isDropDisabled} key={project.id} project={project} timerMap={timers} index={index} addTimer={addTimer} />
                             )
                         })}
                         {provided.placeholder}
@@ -66,7 +76,7 @@ const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
     return { user, projectOrder, projects, timers }
 }
 
-const mapDispatchToProps = { reorderColumn, addProject }
+const mapDispatchToProps = { reorderColumn, addProject, addTimer }
 
 export default compose(
     withRouter,

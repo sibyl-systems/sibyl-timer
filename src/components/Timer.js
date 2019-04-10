@@ -11,14 +11,16 @@ const Container = styled.div`
 `
 
 const ProjectColumn = props => {
+    console.log(props.timer.task['project-id']);
     return (
-        <Draggable draggableId={props.timer.id} index={props.index}>
+        <Draggable draggableId={props.timer.id} index={props.index} type="timer">
             {(provided, snapshot) => (
                 <Container {...provided.draggableProps} ref={provided.innerRef} 
                     isDragging={snapshot.isDragging}
                 >
-                    {props.timer.title}
-                    <span {...provided.dragHandleProps}>Drag me</span>
+                    {props.timer.task.content}
+                    {props.timer.description}
+                    <div {...provided.dragHandleProps}>Drag me</div>
                 </Container>
             )}
         </Draggable>

@@ -6,12 +6,14 @@ import styled from 'styled-components'
 
 import Timer from './Timer'
 
+import AddNewTimerToProject from './AddNewTimerToProject'
 
 
 const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     min-width: 300px;
+    background: white;
 `
 const Title = styled.h3`
     padding: 8px;
@@ -32,12 +34,13 @@ const InnerTimerList = React.memo((props) => {
 })
 
 const ProjectColumn = props => {
+    console.log(props.project.id);
     return (
         <Draggable draggableId={props.project.id} index={props.index}>
             {provided => (
                 <Container {...provided.draggableProps} ref={provided.innerRef}>
                     <Title {...provided.dragHandleProps}>{props.project.name}</Title>
-                    <Droppable droppableId={props.project.id} type="timer">
+                    <Droppable droppableId={props.project.id} type="timer" isDropDisabled={props.isDropDisabled}>
                         {(provided, snapshot) => (
                             <TimerList
                                 {...provided.droppableProps}
@@ -46,6 +49,7 @@ const ProjectColumn = props => {
                             >
                                 <InnerTimerList timers={props.timers} />
                                 {provided.placeholder}
+                                <AddNewTimerToProject addTimer={props.addTimer} timers={props.timers} project={props.project} />
                             </TimerList>
                         )}
                     </Droppable>

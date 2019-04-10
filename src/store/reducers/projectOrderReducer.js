@@ -1,6 +1,4 @@
-const defaultState = [
-    'project-1', 'project-2'
-]
+const defaultState = []
 
 export default function userReducer(state = defaultState, action) {
     switch (action.type) {

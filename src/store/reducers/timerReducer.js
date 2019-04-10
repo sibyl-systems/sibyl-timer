@@ -1,4 +1,4 @@
-const defaultState = {
+/*
     'timer-1': {
         id: 'timer-1',
         title: 'Task title',
@@ -8,35 +8,32 @@ const defaultState = {
         startedTime: null,
         entries: []
     },
-    'timer-2': {
-        id: 'timer-2',
-        title: 'Task title 2',
-        description: 'Task description 2',
-        running: false,
-        logging: false,
-        startedTime: null,
-        entries: []
-    },
-}
+*/
+
+const defaultState = {}
 
 const defaultTimer = {
     id: null,
-    title: null,
     description: null,
     running: false,
     logging: false,
     startedTime: null,
-    entries: []
+    entries: [],
+    task: {}
 }
 
-export default function userReducer(state = defaultState, action) {
+export default function timerReducer(state = defaultState, action) {
     switch (action.type) {
         case 'ADD_TIMER':
+            console.log('ADD TIMER IN TIMERREDUCER');
             return {
                 ...state,
-                [action.timer.id]: {
+                [action.payload.id]: {
                     ...defaultTimer,
-                    action
+                    id: action.payload.id,
+                    task: {
+                        ...action.payload.task
+                    }
                 }
             }
         default:

@@ -83,9 +83,6 @@ function TimeCard({ data, timerName, account, functions, running, apiKey }) {
                     />
                 )}
             </div>
-            {/* {data.logging && 
-                <TimeLogger logTimer={logTimer} account={account} apiKey={apiKey} />
-            } */}
         </div>
     )
 }

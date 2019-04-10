@@ -1,15 +1,12 @@
-const defaultState = {
+/*
     'project-1': {
         id: 'project-1',
         name: 'Project name',
-        timerIds: ['timer-1', 'timer-2']
-    },
-    'project-2': {
-        id: 'project-2',
-        name: 'Project name',
         timerIds: []
     }
-}
+*/
+
+const defaultState = {}
 
 const reorderTimerInSameColumn = (state, start, source, destination, draggableId) => {
     const newTimerIds = [...start.timerIds]
@@ -74,11 +71,12 @@ const reorderTimer = (result, state) => {
 export default function userReducer(state = defaultState, action) {
     switch (action.type) {
         case 'ADD_TIMER':
+        console.log('ADD TIMER IN projectRREDUCER');
             return {
                 ...state,
-                [action.project_id]: {
-                    ...state[action.project_id],
-                    timerIds: state[action.timer.id].timerIds.concat(action.timer.id)
+                [action.payload.projectId]: {
+                    ...state[action.payload.projectId],
+                    timerIds: state[action.payload.projectId].timerIds.concat(action.payload.id)
                 }
             }
         case 'ADD_PROJECT':

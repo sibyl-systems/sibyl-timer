@@ -5,8 +5,8 @@ import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import RouteIf from './helpers/RouteIf'
 
-import Setup from './pages/Setup'
-import Dashboard from './pages/Dashboard'
+// import Setup from './pages/Setup'
+// import Dashboard from './pages/Dashboard'
 import ProjectList from './pages/ProjectList'
 
 import { connect } from 'react-redux'
