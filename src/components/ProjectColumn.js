@@ -8,7 +8,6 @@ import Timer from './Timer'
 
 import AddNewTimerToProject from './AddNewTimerToProject'
 
-
 const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
@@ -27,14 +26,14 @@ const TimerList = styled.div`
     min-height: 200px;
 `
 
-const InnerTimerList = React.memo((props) => {
+const InnerTimerList = React.memo(props => {
     return props.timers.map((timer, index) => (
-        <Timer key={timer.id} timer={timer} index={index} />
+        <Timer key={`inner-${timer.id}`} timer={timer} index={index} startTimer={props.startTimer} stopTimer={props.stopTimer} />
     ))
 })
 
 const ProjectColumn = props => {
-    console.log(props.project.id);
+    console.log(props.project.id)
     return (
         <Draggable draggableId={props.project.id} index={props.index}>
             {provided => (
@@ -47,9 +46,17 @@ const ProjectColumn = props => {
                                 ref={provided.innerRef}
                                 isDraggingOver={snapshot.isDraggingOver}
                             >
-                                <InnerTimerList timers={props.timers} />
+                                <InnerTimerList
+                                    timers={props.timers}
+                                    startTimer={props.startTimer}
+                                    stopTimer={props.stopTimer}
+                                />
                                 {provided.placeholder}
-                                <AddNewTimerToProject addTimer={props.addTimer} timers={props.timers} project={props.project} />
+                                <AddNewTimerToProject
+                                    addTimer={props.addTimer}
+                                    timers={props.timers}
+                                    project={props.project}
+                                />
                             </TimerList>
                         )}
                     </Droppable>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router'
 
 import { connect } from 'react-redux'
@@ -8,12 +8,11 @@ import ProjectColumn from '../components/ProjectColumn'
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-import { reorderColumn, addProject, addTimer } from '../store/actions.js'
+import { reorderColumn, addProject, addTimer, startTimer, stopTimer } from '../store/actions.js'
 
 import AddNewProjectColumn from '../components/AddNewProjectColumn'
 
 import styled from 'styled-components'
-
 
 const Container = styled.div`
     margin: 8px;
@@ -26,10 +25,31 @@ const Container = styled.div`
 const InnerProjectList = React.memo(props => {
     const { project, timerMap, index, addTimer, isDropDisabled } = props
     const timers = project.timerIds.map(timerId => timerMap[timerId])
-    return <ProjectColumn isDropDisabled={isDropDisabled} key={project.id} project={project} timers={timers} index={index} addTimer={addTimer} />
+    return (
+        <ProjectColumn
+            startTimer={props.startTimer}
+            stopTimer={props.stopTimer}
+            isDropDisabled={isDropDisabled}
+            key={project.id}
+            project={project}
+            timers={timers}
+            index={index}
+            addTimer={addTimer}
+        />
+    )
 })
 
-const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColumn, addProject, addTimer }) => {
+const ProjectList = ({
+    projectOrder,
+    projects,
+    timers,
+    reorderTimer,
+    reorderColumn,
+    addProject,
+    addTimer,
+    startTimer,
+    stopTimer
+}) => {
     const [dragStartIndex, setDragStartIndex] = useState(null)
     const [dragStartIsAssigned, setDragStartIsAssigned] = useState(null)
     const onDragStart = start => {
@@ -60,7 +80,16 @@ const ProjectList = ({ projectOrder, projects, timers, reorderTimer, reorderColu
                             const project = projects[projectId]
                             const isDropDisabled = dragStartIsAssigned && index !== dragStartIndex ? true : false
                             return (
-                                <InnerProjectList isDropDisabled={isDropDisabled} key={project.id} project={project} timerMap={timers} index={index} addTimer={addTimer} />
+                                <InnerProjectList
+                                    isDropDisabled={isDropDisabled}
+                                    key={project.id}
+                                    project={project}
+                                    timerMap={timers}
+                                    index={index}
+                                    addTimer={addTimer}
+                                    startTimer={startTimer}
+                                    stopTimer={stopTimer}
+                                />
                             )
                         })}
                         {provided.placeholder}
@@ -76,7 +105,7 @@ const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
     return { user, projectOrder, projects, timers }
 }
 
-const mapDispatchToProps = { reorderColumn, addProject, addTimer }
+const mapDispatchToProps = { reorderColumn, addProject, addTimer, startTimer, stopTimer }
 
 export default compose(
     withRouter,

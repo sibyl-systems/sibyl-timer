@@ -1,26 +1,27 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Draggable} from 'react-beautiful-dnd'
+import { Draggable } from 'react-beautiful-dnd'
 
+import TimeCard from './TimeCard'
 
 const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
-    background-color: ${prop => prop.isDragging ? 'lightgreen' : 'white'};
+    background-color: ${prop => (prop.isDragging ? 'lightgreen' : 'white')};
     padding: 8px;
 `
 
 const ProjectColumn = props => {
-    console.log(props.timer.task['project-id']);
     return (
-        <Draggable draggableId={props.timer.id} index={props.index} type="timer">
+        <Draggable draggableId={props.timer.id} index={props.index} type="timer" isDragDisabled={props.timer.running}>
             {(provided, snapshot) => (
-                <Container {...provided.draggableProps} ref={provided.innerRef} 
-                    isDragging={snapshot.isDragging}
-                >
-                    {props.timer.task.content}
-                    {props.timer.description}
-                    <div {...provided.dragHandleProps}>Drag me</div>
+                <Container {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
+                    <TimeCard
+                        startTimer={props.startTimer}
+                        stopTimer={props.stopTimer}
+                        timer={props.timer}
+                        provided={provided}
+                    />
                 </Container>
             )}
         </Draggable>

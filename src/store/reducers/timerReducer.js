@@ -4,9 +4,7 @@
         title: 'Task title',
         description: 'Task description',
         running: false,
-        logging: false,
         startedTime: null,
-        entries: []
     },
 */
 
@@ -16,16 +14,14 @@ const defaultTimer = {
     id: null,
     description: null,
     running: false,
-    logging: false,
     startedTime: null,
-    entries: [],
+    elapsedTime: 0,
     task: {}
 }
 
 export default function timerReducer(state = defaultState, action) {
     switch (action.type) {
         case 'ADD_TIMER':
-            console.log('ADD TIMER IN TIMERREDUCER');
             return {
                 ...state,
                 [action.payload.id]: {
@@ -34,6 +30,25 @@ export default function timerReducer(state = defaultState, action) {
                     task: {
                         ...action.payload.task
                     }
+                }
+            }
+        case 'START_TIMER':
+            return {
+                ...state,
+                [action.payload.id]: {
+                    ...state[action.payload.id],
+                    running: true,
+                    startedTime: state[action.payload.id].startedTime | action.payload.startedTime,
+                }
+            }
+        case 'STOP_TIMER':
+        console.log('stop');
+            return {
+                ...state,
+                [action.payload.id]: {
+                    ...state[action.payload.id],
+                    running: false,
+                    elapsedTime: action.payload.elapsedTime
                 }
             }
         default:
