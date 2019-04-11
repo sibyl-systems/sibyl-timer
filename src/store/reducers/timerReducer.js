@@ -33,21 +33,34 @@ export default function timerReducer(state = defaultState, action) {
                 }
             }
         case 'START_TIMER':
+            return Object.keys(state).reduce((acc, curr) => {
+                if (curr === action.payload.id) {
+                    acc[curr] = {
+                        ...state[curr],
+                        running: true,
+                        startedTime: state[action.payload.id].startedTime | action.payload.startedTime,
+                    }
+                } else {
+                    acc[curr] = {
+                        ...state[curr],
+                        running: false,
+                    }
+                }
+                return acc
+            }, {})
+        case 'STOP_TIMER':
             return {
                 ...state,
                 [action.payload.id]: {
                     ...state[action.payload.id],
-                    running: true,
-                    startedTime: state[action.payload.id].startedTime | action.payload.startedTime,
+                    running: false
                 }
             }
-        case 'STOP_TIMER':
-        console.log('stop');
+        case 'COMMIT_TIMER':
             return {
                 ...state,
                 [action.payload.id]: {
                     ...state[action.payload.id],
-                    running: false,
                     elapsedTime: action.payload.elapsedTime
                 }
             }
