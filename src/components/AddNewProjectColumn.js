@@ -1,8 +1,3 @@
-/**
- * # todo:
- * - Persist recent projects
- */
-
 import React, { useState } from 'react'
 import Modal from 'react-modal'
 import Select from 'react-select'
@@ -14,7 +9,6 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [loadingProjects, setLoadingProjects] = useState(false)
     const [options, setOptions] = useState([])
-    // // const [recentProjects, setRecentProjects] = useState([{ name: 'test' }])
     const [selectedProject, setSelectedProject] = useState([])
     const handleLoadProjects = async () => {
         setLoadingProjects(true)
@@ -40,19 +34,6 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
         addProject(selectedProject)
         handleCloseModal()
     }
-    // const addRecentProject = selectedProject => {
-    //     setRecentProjects(recentProjects => {
-    //         if (recentProjects.includes(selectedProject)) {
-    //             return recentProjects
-    //         }
-    //         const newProjects = [selectedProject, ...recentProjects]
-    //         newProjects.splice(4, 1)
-    //         console.log(selectedProject)
-    //         // console.log(recentProjects)
-    //         console.log(newProjects)
-    //         return newProjects
-    //     })
-    // }
     return (
         <>
             <button onClick={handleOpenModal}>Add new project</button>
@@ -64,14 +45,6 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
                     options={options}
                     onChange={handleSelectProject}
                 />
-                {/* {recentProjects.map(project => (
-                    <div key={project.id}>
-                        <label htmlFor={project.id}>
-                            <input type="radio" onChange={() => handleSelectProject(project)} />
-                            {project.name}
-                        </label>
-                    </div>
-                ))} */}
                 <button onClick={handleAddProject}>Add Selected Project</button>
                 <button onClick={handleCloseModal}>Close Modal</button>
             </Modal>
