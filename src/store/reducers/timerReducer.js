@@ -57,6 +57,7 @@ export default function timerReducer(state = defaultState, action) {
                 }
             }
         case 'COMMIT_TIMER':
+        console.log('commited: ', action.payload.elapsedTime);
             return {
                 ...state,
                 [action.payload.id]: {
