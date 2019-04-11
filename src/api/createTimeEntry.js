@@ -11,7 +11,11 @@ const createTimeEntry = (timer) => {
     const now = new Date();
 
     return new Promise((resolve, reject) => {
-        return fetch(`https://${state.user.code}.teamwork.com/projects/${projectId}/time_entries.json`, {
+        let url = `https://${state.user.code}.teamwork.com/tasks/${timer.task.id}/time_entries.json`
+        if(!timer.task.id) {
+            url = `https://${state.user.code}.teamwork.com/projects/${projectId}/time_entries.json`
+        }
+        return fetch(url, {
             method: 'POST',
             headers: {
                 Authorization: `Basic ${btoa(state.user.apikey + ':X')}`
