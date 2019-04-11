@@ -1,20 +1,31 @@
-const createTimeEntry = (account, apiKey, {hours, minutes}, description) => {
+import { store } from '../store/configureStore'
+
+const createTimeEntry = (timer) => {
+    const state = store.getState()
+    const projectId = Object.keys(state.projects).find(key => state.projects[key].timerIds.includes(timer.id));
+    //find the project id
+    //convert seconds to hours and minutes
+    const {hours, minutes} = secondsToHoursAndMinutes(timer.elapsedTime)
+    const isBillable = timer.settings.isBillable
+
     const now = new Date();
+
     return new Promise((resolve, reject) => {
-        return fetch(`https://${account.code}.teamwork.com/projects/258458/time_entries.json`, {
+        return fetch(`https://${state.user.code}.teamwork.com/projects/${projectId}/time_entries.json`, {
             method: 'POST',
             headers: {
-                Authorization: `Basic ${btoa(apiKey + ':X')}`
+                Authorization: `Basic ${btoa(state.user.apikey + ':X')}`
             },
             body: JSON.stringify({
                 'time-entry': {
-                    description: description,
-                    'person-id': account.userId,
-                    date: `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}` , //This is the start date of the timer
-                    time: `${now.getHours()}:${now.getMinutes()}`, //This is the start time for the timer
+                    description: timer.description,
+                    'person-id': state.user.account.userId,
+                    date: `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}` , //This should be the start date of the timer, but it's the current time.
+                    time: `${now.getHours()}:${now.getMinutes()}`, //This should be the start time for the timer, but it's the current time.
                     hours: hours, //hours logged
                     minutes: minutes, //minutes logged
-                    isbillable: '1'
+                    isbillable: isBillable.toString(),
+                    // tags // todo: coming soon!
                 }
             })
         })
@@ -25,3 +36,13 @@ const createTimeEntry = (account, apiKey, {hours, minutes}, description) => {
 }
 
 export default createTimeEntry
+
+
+
+function secondsToHoursAndMinutes(seconds) {
+    const pad = n => (n < 10 ? '0' : '') + n
+    return {
+        hours: pad((seconds / 3600) | 0),
+        minutes: pad(((seconds % 3600) / 60) | 1)
+    }
+}

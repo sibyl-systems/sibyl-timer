@@ -2,7 +2,6 @@ import { store } from '../store/configureStore'
 
 const getAllProjects = () => {
     const state = store.getState()
-    console.log(state);
 
     return fetch(`https://${state.user.code}.teamwork.com/projects.json`, {
         method: 'GET',

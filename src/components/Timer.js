@@ -17,9 +17,6 @@ const ProjectColumn = props => {
             {(provided, snapshot) => (
                 <Container {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
                     <TimeCard
-                        startTimer={props.startTimer}
-                        stopTimer={props.stopTimer}
-                        commitTimer={props.commitTimer}
                         timer={props.timer}
                         provided={provided}
                     />

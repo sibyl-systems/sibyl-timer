@@ -3,11 +3,31 @@
 import React, { useState } from 'react'
 import useInterval from '../hooks/useInterval'
 import SquareButton from '../components/SquareButton'
+import createTimeEntry from '../api/createTimeEntry'
 
 import { connect } from 'react-redux'
-import { startTimer, stopTimer, commitTimer, updateTimerDescription } from '../store/actions.js'
+import { startTimer, stopTimer, commitTimer, updateTimerDescription, updateTimerSettings, removeTimer } from '../store/actions.js'
 
-function TimeCard({ timer, provided, startTimer, stopTimer, commitTimer, updateTimerDescription }) {
+import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
+
+const WrappedMenuItem = ({ clickHandler, className, children }) => {
+    return (
+        <div className={className} onClick={clickHandler}>
+            <MenuItem>{children}</MenuItem>
+        </div>
+    )
+}
+
+function TimeCard({
+    timer,
+    provided,
+    startTimer,
+    stopTimer,
+    commitTimer,
+    updateTimerDescription,
+    updateTimerSettings,
+    removeTimer
+}) {
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
 
@@ -45,62 +65,121 @@ function TimeCard({ timer, provided, startTimer, stopTimer, commitTimer, updateT
             id: timer.id
         })
     }
-    const handleOpenModal = () => {}
-    const handleUpdateTimerDescription = (e) => {
-        updateTimerDescription({
+
+    const handleResetTimer = () => {
+        setClock(0)
+        commitTimer({
             id: timer.id,
-            description: e.target.value,
+            elapsedTime: 0
+        })
+        stopTimer({
+            id: timer.id
+        })
+    }
+
+    const handleUpdateTimerDescription = e => {
+        if (e.target.value !== timer.description) {
+            updateTimerDescription({
+                id: timer.id,
+                description: e.target.value
+            })
+        }
+    }
+    const handleToggleTimerSettings = settingName => {
+        console.log('update timer settings')
+        updateTimerSettings({
+            id: timer.id,
+            settings: {
+                [settingName]: timer.settings[settingName] ? false : true
+            }
+        })
+    }
+
+    const handleLogTimer = () => {
+        //This is kind of long winded, but it's to ensure then local time is logged
+        //into redux to get the right time.
+        Promise.resolve(stopTimer({ id: timer.id })).then(() => {
+            Promise.resolve(commitTimer({ id: timer.id, elapsedTime: clock })).then(() => {
+                console.log('do logging here')
+                createTimeEntry(timer).then(res => {
+                    console.log(res)
+                    if(!timer.settings.keepTimer) {
+                        removeTimer(timer.id)
+                    } else {
+                        handleResetTimer()
+                    }
+                })
+            })
         })
     }
 
     return (
-        <div className={`time-card ${timer.running && 'time-card--active'}`} {...provided.dragHandleProps}>
-            <h3 style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</h3>
-            <input
-                type="text"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-                onBlur={handleUpdateTimerDescription}
-                style={{ marginBottom: '8px' }}
-            />
-            <div className="time-actions">
-                {timer.running ? (
-                    <SquareButton
-                        icon="pause"
-                        className="time-button time-button--stop"
-                        title="Stop timer"
-                        clickHandler={handleStopTimer}
+        <>
+            <ContextMenuTrigger id={timer.id}>
+                <div className={`time-card ${timer.running && 'time-card--active'}`} {...provided.dragHandleProps}>
+                    <h3 style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</h3>
+                    <input
+                        type="text"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        onBlur={handleUpdateTimerDescription}
+                        style={{ marginBottom: '8px' }}
                     />
-                ) : (
-                    <SquareButton
-                        icon="play"
-                        className="time-button"
-                        title="Start timer"
-                        clickHandler={handleStartTimer}
-                    />
-                )}
-                <div className="time-total">
-                    {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}:{secondsToHMS(clock).seconds}
+                    <div className="time-actions">
+                        {timer.running ? (
+                            <SquareButton
+                                icon="pause"
+                                className="time-button time-button--stop"
+                                title="Stop timer"
+                                clickHandler={handleStopTimer}
+                            />
+                        ) : (
+                            <SquareButton
+                                icon="play"
+                                className="time-button"
+                                title="Start timer"
+                                clickHandler={handleStartTimer}
+                            />
+                        )}
+                        <div className="time-total">
+                            {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}:{secondsToHMS(clock).seconds}
+                        </div>
+                    </div>
                 </div>
-                <SquareButton
-                    icon="cog"
-                    disabled={!timer.elapsedTime}
-                    className="time-button"
-                    title="Share with TeamWork (Log time)"
-                    style={{ marginLeft: 'auto' }}
-                    onClick={handleOpenModal}
-                    // clickHandler={() => logTimer(timerName)}
-                />
-            </div>
-        </div>
+            </ContextMenuTrigger>
+            <ContextMenu id={timer.id}>
+                {timer.running ? (
+                    <MenuItem onClick={handleStopTimer}>Stop</MenuItem>
+                ) : (
+                    <MenuItem onClick={handleStartTimer}>Start</MenuItem>
+                )}
+                <MenuItem onClick={handleLogTimer}>Log Timer</MenuItem>
+                <MenuItem onClick={handleResetTimer}>Reset Timer</MenuItem>
+                <MenuItem divider />
+                <WrappedMenuItem
+                    className={`react-contextmenu-toggle ${timer.settings.isBillable && 'is-selected'}`}
+                    clickHandler={() => handleToggleTimerSettings('isBillable')}
+                >
+                    {timer.settings.isBillable ? <span>[&#10004;]</span> : <span>[&#10006;]</span>}
+                    &nbsp;Is billable?
+                </WrappedMenuItem>
+                <WrappedMenuItem
+                    className={`react-contextmenu-toggle ${timer.settings.keepTimer && 'is-selected'}`}
+                    clickHandler={() => handleToggleTimerSettings('keepTimer')}
+                >
+                    {timer.settings.keepTimer ? <span>[&#10004;]</span> : <span>[&#10006;]</span>}
+                    &nbsp;Keep timer?
+                </WrappedMenuItem>
+            </ContextMenu>
+        </>
     )
 }
 
-const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
-    return { user, projectOrder, projects, timers }
+const mapStateToProps = ({ timers }) => {
+    return { timers }
 }
 
-const mapDispatchToProps = { startTimer, stopTimer, commitTimer, updateTimerDescription }
+const mapDispatchToProps = { startTimer, stopTimer, commitTimer, updateTimerDescription, updateTimerSettings, removeTimer }
 
 export default connect(
     mapStateToProps,

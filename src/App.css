@@ -150,3 +150,34 @@ h1 {
     font-size: 18px;
     margin-right: 12px;
 }
+
+
+.react-contextmenu {
+    border: 1px solid rgba(0,0,0,0.8);
+}
+
+.react-contextmenu--visible {
+    background: white;
+}
+
+.react-contextmenu-item {
+    padding: 8px;
+    cursor: default;
+}
+.react-contextmenu-item:hover {
+    background: rgb(8, 190, 203);
+    color: white;
+}
+
+.react-contextmenu-item--divider:hover {
+    background: white;
+}
+
+.react-contextmenu-toggle {
+
+}
+
+.react-contextmenu-toggle.is-selected {
+    background-color: rgb(8, 203, 148);
+    color: white;
+}

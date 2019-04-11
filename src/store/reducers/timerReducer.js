@@ -16,6 +16,10 @@ const defaultTimer = {
     running: false,
     startedTime: null,
     elapsedTime: 0,
+    settings: {
+        isBillable: false,
+        keepTimer: false,
+    },
     task: {}
 }
 
@@ -57,7 +61,6 @@ export default function timerReducer(state = defaultState, action) {
                 }
             }
         case 'COMMIT_TIMER':
-        console.log('commited: ', action.payload.elapsedTime);
             return {
                 ...state,
                 [action.payload.id]: {
@@ -66,7 +69,6 @@ export default function timerReducer(state = defaultState, action) {
                 }
             }
         case 'UPDATE_TIMER_DESCRIPTION':
-        console.log(action.payload);
             return {
                 ...state,
                 [action.payload.id]: {
@@ -74,6 +76,20 @@ export default function timerReducer(state = defaultState, action) {
                     description: action.payload.description
                 }
             }
+        case 'UPDATE_TIMER_SETTINGS':
+            return {
+                ...state,
+                [action.payload.id]: {
+                    ...state[action.payload.id],
+                    settings: {
+                        ...state[action.payload.id].settings,
+                        ...action.payload.settings
+                    }
+                }
+            }
+        case 'REMOVE_TIMER':
+            let {[action.payload]: omit, ...rest} = state
+            return rest
         default:
             return state
     }

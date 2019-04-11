@@ -7,10 +7,9 @@ const uuidv4 = require('uuid/v4')
 //     payload: payload
 // })
 
-export const submitApiKey = (payload) => async (dispatch) => {
+export const submitApiKey = payload => async dispatch => {
     try {
         const result = await getUser(payload)
-        console.log(result);
 
         dispatch({
             type: 'SUBMIT_APIKEY',
@@ -20,7 +19,7 @@ export const submitApiKey = (payload) => async (dispatch) => {
             }
         })
     } catch (error) {
-        console.warn(error);
+        console.warn(error)
     }
 }
 
@@ -40,10 +39,7 @@ export const addProject = payload => ({
 })
 
 export const addTimer = payload => dispatch => {
-    console.log('add timer')
     const id = uuidv4()
-    console.log(id)
-    console.log({ ...payload, id })
     dispatch({
         type: 'ADD_TIMER',
         payload: { ...payload, id }
@@ -60,22 +56,43 @@ export const updateTimerDescription = payload => ({
     payload: payload
 })
 
+export const updateTimerSettings = payload => ({
+    type: 'UPDATE_TIMER_SETTINGS',
+    payload: payload
+})
+
 export const stopTimer = payload => dispatch => {
-    console.log('stop timer')
     dispatch({
         type: 'STOP_TIMER',
         payload: payload
     })
 }
 export const commitTimer = payload => dispatch => {
-    console.log('commit timer')
-    console.log(payload)
     dispatch({
         type: 'COMMIT_TIMER',
         payload: payload
     })
 }
+
+export const removeTimer = payload => ({
+    type: 'REMOVE_TIMER',
+    payload: payload
+})
 // export const stopTimer = payload => ({
 //     type: 'STOP_TIMER',
 //     payload: payload
 // })
+
+// export const logTimer = timerId => (dispatch, getState) => {
+//     const state = getState()
+//     const timer = state.timers[timerId]
+//     createTimeEntry(timer).then(res => {
+//         if (res.STATUS === 'OK') {
+//             return resetTimer(key)
+//         }
+//     })
+//     dispatch({
+//         type: 'COMMIT_TIMER',
+//         payload: payload
+//     })
+// }

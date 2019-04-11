@@ -71,7 +71,6 @@ const reorderTimer = (result, state) => {
 export default function userReducer(state = defaultState, action) {
     switch (action.type) {
         case 'ADD_TIMER':
-        console.log('ADD TIMER IN projectRREDUCER');
             return {
                 ...state,
                 [action.payload.projectId]: {
@@ -91,6 +90,17 @@ export default function userReducer(state = defaultState, action) {
             return {
                 ...state,
                 ...reorderTimer(action.payload, state)
+            }
+        case 'REMOVE_TIMER':
+            const projectId = Object.keys(state).find(key => state[key].timerIds.includes(action.payload));
+            return {
+                ...state,
+                [projectId]: {
+                    ...state[projectId],
+                    timerIds: [
+                        ...state[projectId].timerIds.filter(item => item !== action.payload),
+                    ]
+                }
             }
         default:
             return state

@@ -13,7 +13,7 @@ const Container = styled.div`
     border: 1px solid lightgrey;
     width: 380px;
     background: white;
-    min-height:
+    min-height: ;
 `
 const Title = styled.h3`
     padding: 8px;
@@ -28,9 +28,23 @@ const TimerList = styled.div`
 `
 
 const InnerTimerList = React.memo(props => {
-    return props.timers.map((timer, index) => (
-        <Timer key={`inner-${timer.id}`} timer={timer} index={index} startTimer={props.startTimer} stopTimer={props.stopTimer} commitTimer={props.commitTimer} />
-    ))
+    console.log(props.timers)
+    return props.timers.map((timer, index) => {
+        console.log(timer)
+        if(timer) {
+            return (
+                <Timer
+                    key={`inner-${timer.id}`}
+                    timer={timer}
+                    index={index}
+                    startTimer={props.startTimer}
+                    stopTimer={props.stopTimer}
+                    commitTimer={props.commitTimer}
+                />
+            )
+        }
+        return <>What?</>
+    })
 })
 
 const ProjectColumn = props => {
