@@ -6,30 +6,31 @@ import ContentEditable from 'react-contenteditable'
 import useInterval from '../hooks/useInterval'
 import SquareButton from '../components/SquareButton'
 
-function TimeCard({timer, provided, startTimer, stopTimer}) {
-    const [clock, setClock] = useState(0)
+function TimeCard({timer, provided, startTimer, stopTimer, commitTimer}) {
+    const [clock, setClock] = useState(clock | 0)
 
     useInterval(() => {
         setClock(countingSeconds => countingSeconds + 1)
-        //send this time to redux here?
-    }, [timer.running ? 1000 : null, () => setClock(0)] /* OR: We might be able to send the time here and rework the stop timer logic? Side effect city though */)
+    }, [timer.running ? 1000 : null, () => {
+        return setClock(countingSeconds => {
+            commitTimer({
+                id: timer.id,
+                elapsedTime: countingSeconds + timer.elapsedTime
+            })
+            return 0
+        })
+    }])
 
     const handleStartTimer = (id) => {
-        // To be able to update all other timers to stop when this one starts
-        // we need the running timer to be updated every second to redux,
-        // that way, when we stop it, no time is lost...
         startTimer({
             id: timer.id,
-            elapsedTime: clock + timer.elapsedTime,
-            startedTime: 0 //2do
+            startedTime: Date.now()
         })
     }
     const handleStopTimer = timerName => {
         stopTimer({
-            id: timer.id,
-            elapsedTime: clock + timer.elapsedTime
+            id: timer.id
         })
-        setClock(0)
     }
 
 

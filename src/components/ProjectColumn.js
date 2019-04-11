@@ -29,12 +29,11 @@ const TimerList = styled.div`
 
 const InnerTimerList = React.memo(props => {
     return props.timers.map((timer, index) => (
-        <Timer key={`inner-${timer.id}`} timer={timer} index={index} startTimer={props.startTimer} stopTimer={props.stopTimer} />
+        <Timer key={`inner-${timer.id}`} timer={timer} index={index} startTimer={props.startTimer} stopTimer={props.stopTimer} commitTimer={props.commitTimer} />
     ))
 })
 
 const ProjectColumn = props => {
-    console.log(props.project.id)
     return (
         <Draggable draggableId={props.project.id} index={props.index}>
             {provided => (
@@ -51,6 +50,7 @@ const ProjectColumn = props => {
                                     timers={props.timers}
                                     startTimer={props.startTimer}
                                     stopTimer={props.stopTimer}
+                                    commitTimer={props.commitTimer}
                                 />
                                 {provided.placeholder}
                                 <AddNewTimerToProject

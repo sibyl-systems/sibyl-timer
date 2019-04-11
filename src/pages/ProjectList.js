@@ -8,7 +8,7 @@ import ProjectColumn from '../components/ProjectColumn'
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-import { reorderColumn, addProject, addTimer, startTimer, stopTimer, reorderTimer } from '../store/actions.js'
+import { reorderColumn, addProject, addTimer, startTimer, stopTimer, reorderTimer, commitTimer } from '../store/actions.js'
 
 import AddNewProjectColumn from '../components/AddNewProjectColumn'
 
@@ -29,6 +29,7 @@ const InnerProjectList = React.memo(props => {
         <ProjectColumn
             startTimer={props.startTimer}
             stopTimer={props.stopTimer}
+            commitTimer={props.commitTimer}
             isDropDisabled={isDropDisabled}
             key={project.id}
             project={project}
@@ -48,7 +49,8 @@ const ProjectList = ({
     addProject,
     addTimer,
     startTimer,
-    stopTimer
+    stopTimer,
+    commitTimer
 }) => {
     const [dragStartIndex, setDragStartIndex] = useState(null)
     const [dragStartIsAssigned, setDragStartIsAssigned] = useState(null)
@@ -91,6 +93,7 @@ const ProjectList = ({
                                     addTimer={addTimer}
                                     startTimer={startTimer}
                                     stopTimer={stopTimer}
+                                    commitTimer={commitTimer}
                                 />
                             )
                         })}
@@ -107,7 +110,7 @@ const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
     return { user, projectOrder, projects, timers }
 }
 
-const mapDispatchToProps = { reorderColumn, addProject, addTimer, startTimer, stopTimer, reorderTimer }
+const mapDispatchToProps = { reorderColumn, addProject, addTimer, startTimer, stopTimer, reorderTimer, commitTimer }
 
 export default compose(
     withRouter,

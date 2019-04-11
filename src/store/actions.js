@@ -62,6 +62,14 @@ export const stopTimer = payload => dispatch => {
         payload: payload
     })
 }
+export const commitTimer = payload => dispatch => {
+    console.log('commit timer')
+    console.log(payload)
+    dispatch({
+        type: 'COMMIT_TIMER',
+        payload: payload
+    })
+}
 // export const stopTimer = payload => ({
 //     type: 'STOP_TIMER',
 //     payload: payload
