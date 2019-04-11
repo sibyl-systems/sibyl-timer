@@ -7,27 +7,35 @@ import useInterval from '../hooks/useInterval'
 import SquareButton from '../components/SquareButton'
 
 function TimeCard({timer, provided, startTimer, stopTimer, commitTimer}) {
-    const [clock, setClock] = useState(clock | 0)
+    const [clock, setClock] = useState(timer.elapsedTime)
 
     useInterval(() => {
-        setClock(countingSeconds => countingSeconds + 1)
+        const newClock = clock + 1
+        //Commit time every 10 minutes
+        if((newClock) % 600 === 0) {
+            commitTimer({
+                id: timer.id,
+                elapsedTime: newClock
+            })
+        }
+        setClock(newClock)
     }, [timer.running ? 1000 : null, () => {
         return setClock(countingSeconds => {
             commitTimer({
                 id: timer.id,
-                elapsedTime: countingSeconds + timer.elapsedTime
+                elapsedTime: countingSeconds
             })
-            return 0
+            return countingSeconds
         })
     }])
 
-    const handleStartTimer = (id) => {
+    const handleStartTimer = () => {
         startTimer({
             id: timer.id,
             startedTime: Date.now()
         })
     }
-    const handleStopTimer = timerName => {
+    const handleStopTimer = () => {
         stopTimer({
             id: timer.id
         })
@@ -39,51 +47,48 @@ function TimeCard({timer, provided, startTimer, stopTimer, commitTimer}) {
             <h3>
                 {timer.task.content}
             </h3>
-            {/* <ContentEditable
-                className="time-description"
-                html={timer.description} // innerHTML of the editable div
-                disabled={false} // use true to disable edition
-                // onChange={editDescription} // handle innerHTML change
-            /> */}
-
             <div className="time-actions">
+            {timer.running && (
                 <SquareButton
-                    icon="trash"
-                    disabled={!timer.elapsedTime}
-                    className="time-button"
-                    title="Delete saved time"
-                    // clickHandler={() => resetTimer(timerName)}
+                    icon="pause"
+                    className="time-button time-button--stop"
+                    title="Stop timer"
+                    clickHandler={handleStopTimer}
                 />
+            )}
+            {!timer.running && (
+                <SquareButton
+                    icon="play"
+                    className="time-button"
+                    title="Start timer"
+                    clickHandler={handleStartTimer}
+                />
+            )}
+            <div className="time-total">
+                {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}:
+                {secondsToHMS(clock).seconds}
+            </div>
 
                 <SquareButton
                     icon="cog"
                     disabled={!timer.elapsedTime}
                     className="time-button"
                     title="Share with TeamWork (Log time)"
+                    style={{ marginLeft: 'auto' }}
                     // clickHandler={() => logTimer(timerName)}
                 />
+            </div>
+            <div className="time-actions">
 
-                <div className="time-total">
-                    {secondsToHMS(timer.elapsedTime + clock).hours}:{secondsToHMS(timer.elapsedTime + clock).minutes}:
-                    {secondsToHMS(timer.elapsedTime + clock).seconds}
-                </div>
+                {/* <SquareButton
+                    icon="trash"
+                    disabled={!timer.elapsedTime}
+                    className="time-button"
+                    title="Delete saved time"
+                    // clickHandler={() => resetTimer(timerName)}
+                /> */}
 
-                {timer.running && (
-                    <SquareButton
-                        icon="pause"
-                        className="time-button time-button--stop"
-                        title="Stop timer"
-                        clickHandler={() => handleStopTimer(timer.id)}
-                    />
-                )}
-                {!timer.running && (
-                    <SquareButton
-                        icon="play"
-                        className="time-button"
-                        title="Start timer"
-                        clickHandler={() => handleStartTimer(timer.id)}
-                    />
-                )}
+                
             </div>
         </div>
     )
