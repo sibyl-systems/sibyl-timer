@@ -1,10 +1,28 @@
 // import { uuidv4 } from 'uuid/v4'
+import getUser from '../api/getUser'
 const uuidv4 = require('uuid/v4')
 
-export const submitApiKey = payload => ({
-    type: 'submit-apikey',
-    payload: payload
-})
+// export const submitApiKey = payload => ({
+//     type: 'submit-apikey',
+//     payload: payload
+// })
+
+export const submitApiKey = (payload) => async (dispatch) => {
+    try {
+        const result = await getUser(payload)
+        console.log(result);
+
+        dispatch({
+            type: 'SUBMIT_APIKEY',
+            payload: {
+                apikey: payload,
+                account: result.account
+            }
+        })
+    } catch (error) {
+        console.warn(error);
+    }
+}
 
 export const reorderTimer = payload => ({
     type: 'REORDER_TIMERS',

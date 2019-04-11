@@ -11,8 +11,9 @@ import AddNewTimerToProject from './AddNewTimerToProject'
 const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
-    min-width: 300px;
+    width: 380px;
     background: white;
+    min-height:
 `
 const Title = styled.h3`
     padding: 8px;
@@ -23,7 +24,7 @@ const TimerList = styled.div`
     padding: 8px;
     transition: 0.2s ease-in-out;
     background: ${props => (props.isDraggingOver ? 'offwhite' : 'white')};
-    min-height: 200px;
+    min-height: 600px;
 `
 
 const InnerTimerList = React.memo(props => {

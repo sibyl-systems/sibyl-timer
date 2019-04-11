@@ -5,7 +5,7 @@ import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import RouteIf from './helpers/RouteIf'
 
-// import Setup from './pages/Setup'
+import Setup from './pages/Setup'
 // import Dashboard from './pages/Dashboard'
 import ProjectList from './pages/ProjectList'
 
@@ -18,17 +18,20 @@ const App = (props) => {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/" 
+                {/* <Route exact path="/" 
                     render={() => (
                         <ProjectList {...props} />
                     )} 
-                />
-                {/* <Route exact path="/" 
+                /> */}
+                <Route exact path="/" 
                     render={() => (
                         <Setup {...props} />
                     )} 
                 />
-                <RouteIf condition={props.user.apikey} redirect="/" path="/dashboard" exact component={Dashboard} /> */}
+                <RouteIf condition={props.user.apikey} redirect="/" path="/dashboard" exact component={ProjectList} />
+                {/* <RouteIf condition={props.user.apikey} redirect="/" path="/dashboard" exact render={() => (
+                    <ProjectList {...props} />
+                )}  /> */}
             </Switch>
         </BrowserRouter>
     )
