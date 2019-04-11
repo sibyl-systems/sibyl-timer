@@ -55,6 +55,11 @@ export const startTimer = payload => ({
     payload: payload
 })
 
+export const updateTimerDescription = payload => ({
+    type: 'UPDATE_TIMER_DESCRIPTION',
+    payload: payload
+})
+
 export const stopTimer = payload => dispatch => {
     console.log('stop timer')
     dispatch({

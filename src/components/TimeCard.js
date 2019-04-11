@@ -1,18 +1,20 @@
 //todo: extract logic from here, and SIMPLIFY!!!
 
 import React, { useState } from 'react'
-import ContentEditable from 'react-contenteditable'
-// import TimeLogger from './TimeLogger'
 import useInterval from '../hooks/useInterval'
 import SquareButton from '../components/SquareButton'
 
-function TimeCard({ timer, provided, startTimer, stopTimer, commitTimer }) {
+import { connect } from 'react-redux'
+import { startTimer, stopTimer, commitTimer, updateTimerDescription } from '../store/actions.js'
+
+function TimeCard({ timer, provided, startTimer, stopTimer, commitTimer, updateTimerDescription }) {
     const [clock, setClock] = useState(timer.elapsedTime)
+    const [description, setDescription] = useState(timer.description)
 
     useInterval(() => {
         const newClock = clock + 1
-        //Commit time every 10 minutes
-        if (newClock % 600 === 0) {
+        //Commit time every 5 minutes
+        if (newClock % 300 === 0) {
             commitTimer({
                 id: timer.id,
                 elapsedTime: newClock
@@ -43,10 +45,24 @@ function TimeCard({ timer, provided, startTimer, stopTimer, commitTimer }) {
             id: timer.id
         })
     }
+    const handleOpenModal = () => {}
+    const handleUpdateTimerDescription = (e) => {
+        updateTimerDescription({
+            id: timer.id,
+            description: e.target.value,
+        })
+    }
 
     return (
         <div className={`time-card ${timer.running && 'time-card--active'}`} {...provided.dragHandleProps}>
-            <h3>{timer.task.content}</h3>
+            <h3 style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</h3>
+            <input
+                type="text"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                onBlur={handleUpdateTimerDescription}
+                style={{ marginBottom: '8px' }}
+            />
             <div className="time-actions">
                 {timer.running ? (
                     <SquareButton
@@ -72,6 +88,7 @@ function TimeCard({ timer, provided, startTimer, stopTimer, commitTimer }) {
                     className="time-button"
                     title="Share with TeamWork (Log time)"
                     style={{ marginLeft: 'auto' }}
+                    onClick={handleOpenModal}
                     // clickHandler={() => logTimer(timerName)}
                 />
             </div>
@@ -79,7 +96,16 @@ function TimeCard({ timer, provided, startTimer, stopTimer, commitTimer }) {
     )
 }
 
-export default TimeCard
+const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
+    return { user, projectOrder, projects, timers }
+}
+
+const mapDispatchToProps = { startTimer, stopTimer, commitTimer, updateTimerDescription }
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TimeCard)
 
 function secondsToHMS(seconds) {
     const pad = n => (n < 10 ? '0' : '') + n

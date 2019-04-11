@@ -30,7 +30,6 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
         setModalOpen(false)
     }
     const handleAddProject = () => {
-        // addRecentProject(selectedProject)
         addProject(selectedProject)
         handleCloseModal()
     }

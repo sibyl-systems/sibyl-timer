@@ -12,7 +12,7 @@ const defaultState = {}
 
 const defaultTimer = {
     id: null,
-    description: null,
+    description: '',
     running: false,
     startedTime: null,
     elapsedTime: 0,
@@ -63,6 +63,15 @@ export default function timerReducer(state = defaultState, action) {
                 [action.payload.id]: {
                     ...state[action.payload.id],
                     elapsedTime: action.payload.elapsedTime
+                }
+            }
+        case 'UPDATE_TIMER_DESCRIPTION':
+        console.log(action.payload);
+            return {
+                ...state,
+                [action.payload.id]: {
+                    ...state[action.payload.id],
+                    description: action.payload.description
                 }
             }
         default:
