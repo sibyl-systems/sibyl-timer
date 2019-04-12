@@ -2,7 +2,7 @@ import './App.css'
 
 import React from 'react'
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { HashRouter, Switch, Route } from 'react-router-dom'
 import RouteIf from './helpers/RouteIf'
 
 import Setup from './pages/Setup'
@@ -16,7 +16,7 @@ import { submitApiKey, reorderTimer } from './store/actions'
 const App = (props) => {
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Switch>
                 {/* <Route exact path="/" 
                     render={() => (
@@ -33,7 +33,7 @@ const App = (props) => {
                     <ProjectList {...props} />
                 )}  /> */}
             </Switch>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
 

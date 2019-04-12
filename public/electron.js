@@ -60,9 +60,11 @@ function createWindow() {
 }
 
 app.on('ready', async () => {
-  await BrowserWindow.addDevToolsExtension(
-    path.join(os.homedir(), 'AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0')
-  )
+  if(isDev) {
+    await BrowserWindow.addDevToolsExtension(
+      path.join(os.homedir(), 'AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0')
+    )
+  }
   createWindow()
 });
 
