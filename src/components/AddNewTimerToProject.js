@@ -20,16 +20,17 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
         setLoadingTasks(true)
         try {
             const result = await getTasks({projectId: project.id})
-            // An update to data structure broke this
-            // todo: fix for new structure
-            // const options = result['todo-items'].filter(
-            //     current => (!project.timerIds.includes(current.id))
-            // )
-            // setOptions(options)
+            // todo: Simplify this
+            const options = result['todo-items'].filter(
+                current => timers.reduce((acc, curr) => {
+                        acc = acc ? curr.task.id !== current.id : false
+                        return acc
+                }, true)
+            )
             setOptions(
                 [
                     {content: 'Unassigned task', id: uuidv4(), unassignedTask: true},
-                    ...result['todo-items']
+                    ...options
                 ]
             )
         } catch (error) {
