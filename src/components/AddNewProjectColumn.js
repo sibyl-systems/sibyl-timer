@@ -9,7 +9,7 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [loadingProjects, setLoadingProjects] = useState(false)
     const [options, setOptions] = useState([])
-    const [selectedProject, setSelectedProject] = useState([])
+    const [selectedProject, setSelectedProject] = useState(false)
     const handleLoadProjects = async () => {
         setLoadingProjects(true)
         const result = await getAllProjects()
@@ -28,10 +28,14 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
     }
     const handleCloseModal = () => {
         setModalOpen(false)
+        setSelectedProject(false)
     }
     const handleAddProject = () => {
-        addProject(selectedProject)
-        handleCloseModal()
+        if(selectedProject) {
+            addProject(selectedProject)
+            handleCloseModal()
+        }
+        console.warn('no project selected.')
     }
     return (
         <>

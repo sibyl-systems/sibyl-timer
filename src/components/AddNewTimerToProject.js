@@ -15,7 +15,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [loadingTasks, setLoadingTasks] = useState(false)
     const [options, setOptions] = useState([])
-    const [selectedTask, setSelectedTask] = useState([])
+    const [selectedTask, setSelectedTask] = useState(false)
     const handleLoadTasks = async () => {
         setLoadingTasks(true)
         try {
@@ -39,6 +39,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
         setLoadingTasks(false)
     }
     const handleSelectTask = task => {
+        console.log(task)
         setSelectedTask(task)
     }
     const handleOpenModal = () => {
@@ -47,14 +48,14 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
     }
     const handleCloseModal = () => {
         setModalOpen(false)
+        setSelectedTask(false)
     }
     const handleAddTimer = () => {
-        console.log(selectedTask);
         if(selectedTask) {
             addTimer({task: selectedTask, projectId: project.id})
             return handleCloseModal()
         }
-        console.log('no task selected');
+        console.warn('no task selected');
     }
     const thing = {content: "Unassigned", id: uuidv4()}
 
