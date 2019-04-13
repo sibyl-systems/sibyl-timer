@@ -11,8 +11,9 @@ const createTimeEntry = (timer) => {
     const now = new Date();
 
     return new Promise((resolve, reject) => {
+        console.log(timer)
         let url = `https://${state.user.code}.teamwork.com/tasks/${timer.task.id}/time_entries.json`
-        if(!timer.task.id) {
+        if(timer.task.unassignedTask) {
             url = `https://${state.user.code}.teamwork.com/projects/${projectId}/time_entries.json`
         }
         return fetch(url, {

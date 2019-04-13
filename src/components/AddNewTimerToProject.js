@@ -28,7 +28,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
             // setOptions(options)
             setOptions(
                 [
-                    {content: 'Unassigned task', id: uuidv4()},
+                    {content: 'Unassigned task', id: uuidv4(), unassignedTask: true},
                     ...result['todo-items']
                 ]
             )
@@ -51,7 +51,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
         console.log(selectedTask);
         if(selectedTask) {
             addTimer({task: selectedTask, projectId: project.id})
-            handleCloseModal()
+            return handleCloseModal()
         }
         console.log('no task selected');
     }

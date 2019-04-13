@@ -33,8 +33,8 @@ function createWindow() {
 
   mainWindow = new BrowserWindow({
     icon: image,
-    width: 520, 
-    height: 720, 
+    width: 1200, 
+    height: 960, 
     // frame: false //could be cool to have custom ui?
   });
   
