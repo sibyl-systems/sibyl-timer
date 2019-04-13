@@ -57,7 +57,6 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
         }
         console.warn('no task selected');
     }
-    const thing = {content: "Unassigned", id: uuidv4()}
 
     return (
         <>
