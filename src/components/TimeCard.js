@@ -10,6 +10,7 @@ import { startTimer, stopTimer, commitTimer, updateTimerDescription, updateTimer
 
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
 import ReassignTask from './ReassignTask';
+import EditTimer from './EditTimer';
 
 const WrappedMenuItem = ({ clickHandler, className, children }) => {
     return (
@@ -73,13 +74,16 @@ function TimeCard({
             id: timer.id,
             elapsedTime: 0
         })
-        stopTimer({
-            id: timer.id
-        })
+        handleStopTimer()
     }
 
     const handleChangeTask = () => {
         setModalOpen(true)
+    }
+    const handleEditTimer = () => {
+        Promise.resolve(stopTimer({ id: timer.id })).then(() => {
+            setEditTimerModalOpen(true)
+        })
     }
 
     const handleUpdateTimerDescription = e => {
@@ -118,9 +122,18 @@ function TimeCard({
     const closeModal = () => {
         setModalOpen(false)
     }
+    const handleCloseTimerModal = () => {
+        setEditTimerModalOpen(false)
+    }
+
+    const handleCommitEditTimer = (payload) => {
+        setClock(payload.elapsedTime)
+        commitTimer(payload)
+    }
 
 
     const [modalOpen, setModalOpen] = useState(false)
+    const [editTimerModalOpen, setEditTimerModalOpen] = useState(false)
 
     return (
         <>
@@ -164,6 +177,7 @@ function TimeCard({
                 )}
                 <MenuItem onClick={handleLogTimer}>Log Timer</MenuItem>
                 <MenuItem onClick={handleChangeTask}>Re-assign task</MenuItem>
+                <MenuItem onClick={handleEditTimer}>Edit Timer</MenuItem>
                 <MenuItem onClick={handleResetTimer}>Reset Timer</MenuItem>
                 <MenuItem divider />
                 <WrappedMenuItem
@@ -187,6 +201,14 @@ function TimeCard({
                 modalOpen={modalOpen}
                 closeModal={closeModal}
             />
+            {/* This is to force the state of the modal to reset to props values... todo: make this better. */}
+            {editTimerModalOpen && <EditTimer
+                timer={timer}
+                modalOpen={editTimerModalOpen}
+                closeModal={handleCloseTimerModal}
+                commitTimer={handleCommitEditTimer}
+                currentTimer={clock}
+            />}
         </>
     )
 }
