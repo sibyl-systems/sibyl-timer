@@ -90,6 +90,15 @@ export default function timerReducer(state = defaultState, action) {
         case 'REMOVE_TIMER':
             let {[action.payload]: omit, ...rest} = state
             return rest
+        case 'REASSIGN_TASK':
+            const {timer, selectedTask} = action.payload
+            return {
+                ...state,
+                [timer.id]: {
+                    ...state[timer.id],
+                    task: selectedTask
+                }
+            }
         default:
             return state
     }

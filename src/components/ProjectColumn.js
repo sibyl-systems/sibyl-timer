@@ -28,9 +28,7 @@ const TimerList = styled.div`
 `
 
 const InnerTimerList = React.memo(props => {
-    console.log(props.timers)
     return props.timers.map((timer, index) => {
-        console.log(timer)
         if(timer) {
             return (
                 <Timer

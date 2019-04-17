@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { startTimer, stopTimer, commitTimer, updateTimerDescription, updateTimerSettings, removeTimer } from '../store/actions.js'
 
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
+import ReassignTask from './ReassignTask';
 
 const WrappedMenuItem = ({ clickHandler, className, children }) => {
     return (
@@ -26,7 +27,7 @@ function TimeCard({
     commitTimer,
     updateTimerDescription,
     updateTimerSettings,
-    removeTimer
+    removeTimer,
 }) {
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
@@ -77,6 +78,10 @@ function TimeCard({
         })
     }
 
+    const handleChangeTask = () => {
+        setModalOpen(true)
+    }
+
     const handleUpdateTimerDescription = e => {
         if (e.target.value !== timer.description) {
             updateTimerDescription({
@@ -86,7 +91,6 @@ function TimeCard({
         }
     }
     const handleToggleTimerSettings = settingName => {
-        console.log('update timer settings')
         updateTimerSettings({
             id: timer.id,
             settings: {
@@ -100,9 +104,7 @@ function TimeCard({
         //into redux to get the right time.
         Promise.resolve(stopTimer({ id: timer.id })).then(() => {
             Promise.resolve(commitTimer({ id: timer.id, elapsedTime: clock })).then(() => {
-                console.log('do logging here')
                 createTimeEntry(timer).then(res => {
-                    console.log(res)
                     if(!timer.settings.keepTimer) {
                         removeTimer(timer.id)
                     } else {
@@ -112,6 +114,13 @@ function TimeCard({
             })
         })
     }
+
+    const closeModal = () => {
+        setModalOpen(false)
+    }
+
+
+    const [modalOpen, setModalOpen] = useState(false)
 
     return (
         <>
@@ -154,6 +163,7 @@ function TimeCard({
                     <MenuItem onClick={handleStartTimer}>Start</MenuItem>
                 )}
                 <MenuItem onClick={handleLogTimer}>Log Timer</MenuItem>
+                <MenuItem onClick={handleChangeTask}>Re-assign task</MenuItem>
                 <MenuItem onClick={handleResetTimer}>Reset Timer</MenuItem>
                 <MenuItem divider />
                 <WrappedMenuItem
@@ -171,12 +181,18 @@ function TimeCard({
                     &nbsp;Keep timer?
                 </WrappedMenuItem>
             </ContextMenu>
+
+            <ReassignTask
+                timer={timer}
+                modalOpen={modalOpen}
+                closeModal={closeModal}
+            />
         </>
     )
 }
 
-const mapStateToProps = ({ timers }) => {
-    return { timers }
+const mapStateToProps = ({  }) => {
+    return {  }
 }
 
 const mapDispatchToProps = { startTimer, stopTimer, commitTimer, updateTimerDescription, updateTimerSettings, removeTimer }

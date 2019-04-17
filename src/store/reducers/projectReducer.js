@@ -102,6 +102,29 @@ export default function userReducer(state = defaultState, action) {
                     ]
                 }
             }
+        case 'REASSIGN_TASK':
+            const {timer, selectedProject} = action.payload
+
+            const projectId1 = Object.keys(state).find(key => state[key].timerIds.includes(timer.id));
+
+            if(selectedProject.id !== projectId1) {
+                return {
+                    ...state,
+                    [projectId1]: {
+                        ...state[projectId1],
+                        timerIds: [
+                            ...state[projectId1].timerIds.filter(item => item !== timer.id),
+                        ]
+                    },
+                    [selectedProject.id]: {
+                        ...state[selectedProject.id],
+                        timerIds: [
+                            ...state[selectedProject.id].timerIds,
+                            timer.id
+                        ]
+                    }
+                }
+            }
         default:
             return state
     }

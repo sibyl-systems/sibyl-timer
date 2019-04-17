@@ -39,7 +39,6 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
         setLoadingTasks(false)
     }
     const handleSelectTask = task => {
-        console.log(task)
         setSelectedTask(task)
     }
     const handleOpenModal = () => {

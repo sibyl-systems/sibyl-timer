@@ -26,7 +26,7 @@ function createWindow() {
         mainWindow.show()
     })
     if (!globalSummon) {
-        console.log('Registration opening failed.')
+        console.info('Registration opening failed.')
     }
 
     mainWindow = new BrowserWindow({
@@ -44,7 +44,7 @@ function createWindow() {
                 mainWindow.webContents.send('toggle-timer', index)
             })
             if (!toggleTimer) {
-                console.log('Registration toggle-timer failed.')
+                console.info('Registration toggle-timer failed.')
             }
         }
     })

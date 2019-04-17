@@ -78,21 +78,10 @@ export const removeTimer = payload => ({
     type: 'REMOVE_TIMER',
     payload: payload
 })
-// export const stopTimer = payload => ({
-//     type: 'STOP_TIMER',
-//     payload: payload
-// })
 
-// export const logTimer = timerId => (dispatch, getState) => {
-//     const state = getState()
-//     const timer = state.timers[timerId]
-//     createTimeEntry(timer).then(res => {
-//         if (res.STATUS === 'OK') {
-//             return resetTimer(key)
-//         }
-//     })
-//     dispatch({
-//         type: 'COMMIT_TIMER',
-//         payload: payload
-//     })
-// }
+export const reassignTask = payload => dispatch => {
+    dispatch({
+        type: 'REASSIGN_TASK',
+        payload: payload
+    })
+}
