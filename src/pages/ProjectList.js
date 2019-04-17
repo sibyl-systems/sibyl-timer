@@ -64,13 +64,13 @@ const ProjectList = ({
     const onDragEnd = result => {
         setDragStartIndex(null)
         setDragStartIsAssigned(null)
-        if (result.type === 'timer') {
-            const { destination, source, draggableId } = result
-            if (!destination) return
+        const { destination, source, draggableId } = result
+        if (!destination) return
 
-            if (destination.droppableId === source.droppableId && destination.index === source.index) {
-                return
-            }
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return
+        }
+        if (result.type === 'timer') {
             return reorderTimer(result)
         }
         return reorderColumn(result)
