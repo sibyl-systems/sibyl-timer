@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router'
 
-const Setup = ({user, history, submitApiKey}) => {
+const Setup = ({ user, history, submitApiKey }) => {
     const [apikey, setApikey] = useState(user.apikey)
     const handleApikey = e => {
         setApikey(e.target.value)
     }
+    useEffect(() => {
+        console.log(user)
+        if (user.apikey) {
+            history.push('/dashboard')
+        }
+    }, [])
     return (
         <div>
             <button
@@ -16,7 +22,7 @@ const Setup = ({user, history, submitApiKey}) => {
                 Go to dashboard
             </button>
             This is the setup page
-            <input placeholder="Please enter your API key" value={apikey} onChange={(e) => handleApikey(e)} type="text" />
+            <input placeholder="Please enter your API key" value={apikey} onChange={e => handleApikey(e)} type="text" />
             <button className="button" onClick={() => submitApiKey(apikey)}>
                 Submit API Key
             </button>

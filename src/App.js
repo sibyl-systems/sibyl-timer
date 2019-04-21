@@ -2,6 +2,7 @@ import './App.css'
 
 import React from 'react'
 
+import AppLayout from './components/AppLayout'
 import { HashRouter, Switch, Route } from 'react-router-dom'
 import RouteIf from './helpers/RouteIf'
 
@@ -13,27 +14,22 @@ import { connect } from 'react-redux'
 
 import { submitApiKey, reorderTimer } from './store/actions'
 
-const App = (props) => {
-
+const App = props => {
     return (
-        <HashRouter>
-            <Switch>
-                {/* <Route exact path="/" 
-                    render={() => (
-                        <ProjectList {...props} />
-                    )} 
-                /> */}
-                <Route exact path="/" 
-                    render={() => (
-                        <Setup {...props} />
-                    )} 
-                />
-                <RouteIf condition={props.user.apikey} redirect="/" path="/dashboard" exact component={ProjectList} />
-                {/* <RouteIf condition={props.user.apikey} redirect="/" path="/dashboard" exact render={() => (
-                    <ProjectList {...props} />
-                )}  /> */}
-            </Switch>
-        </HashRouter>
+        <AppLayout>
+            <HashRouter>
+                <Switch>
+                    <Route exact path="/" render={() => <Setup {...props} />} />
+                    <RouteIf
+                        condition={props.user.apikey}
+                        redirect="/"
+                        path="/dashboard"
+                        exact
+                        component={ProjectList}
+                    />
+                </Switch>
+            </HashRouter>
+        </AppLayout>
     )
 }
 
@@ -42,7 +38,6 @@ const mapStateToProps = state => {
         user: state.user
     }
 }
-
 
 const mapDispatchToProps = { submitApiKey, reorderTimer }
 

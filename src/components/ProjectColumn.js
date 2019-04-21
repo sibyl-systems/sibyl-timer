@@ -10,26 +10,45 @@ import AddNewTimerToProject from './AddNewTimerToProject'
 
 const Container = styled.div`
     margin: 8px;
-    border: 1px solid lightgrey;
-    width: 380px;
-    background: white;
-    min-height: ;
+    width: 100%
+    min-width: 380px;
+    max-width: 464px;
+    background: #333355;
+    border-radius: 10px
+    box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5)
+`
+
+const ContainerHeader = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    margin: 0;
+    height: 50px;
+    justify-content: space-between;
 `
 const Title = styled.h3`
-    padding: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
 `
+
+const AddButton = styled.button``
 const TimerList = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 8px;
+    padding: 20px;
     transition: 0.2s ease-in-out;
     background: ${props => (props.isDraggingOver ? 'offwhite' : 'white')};
     min-height: 600px;
+    background: #2b2b47;
 `
 
 const InnerTimerList = React.memo(props => {
     return props.timers.map((timer, index) => {
-        if(timer) {
+        if (timer) {
             return (
                 <Timer
                     key={`inner-${timer.id}`}
@@ -50,7 +69,15 @@ const ProjectColumn = props => {
         <Draggable draggableId={props.project.id} index={props.index}>
             {provided => (
                 <Container {...provided.draggableProps} ref={provided.innerRef}>
-                    <Title {...provided.dragHandleProps}>{props.project.name}</Title>
+                    <ContainerHeader>
+                        <Title {...provided.dragHandleProps}>{props.project.name}</Title>
+                        <AddButton />
+                        {/* <AddNewTimerToProject
+                            addTimer={props.addTimer}
+                            timers={props.timers}
+                            project={props.project}
+                        /> */}
+                    </ContainerHeader>
                     <Droppable droppableId={props.project.id} type="timer" isDropDisabled={props.isDropDisabled}>
                         {(provided, snapshot) => (
                             <TimerList
@@ -65,11 +92,6 @@ const ProjectColumn = props => {
                                     commitTimer={props.commitTimer}
                                 />
                                 {provided.placeholder}
-                                <AddNewTimerToProject
-                                    addTimer={props.addTimer}
-                                    timers={props.timers}
-                                    project={props.project}
-                                />
                             </TimerList>
                         )}
                     </Droppable>

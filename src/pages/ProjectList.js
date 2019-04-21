@@ -15,11 +15,10 @@ import AddNewProjectColumn from '../components/AddNewProjectColumn'
 import styled from 'styled-components'
 
 const Container = styled.div`
-    margin: 8px;
-    border: 1px solid lightgrey;
-    min-width: 300px;
     display: flex;
-    flex-direction: row;
+    overflow: auto;
+    height: 100%;
+    align-items: flex-start;
 `
 
 const InnerProjectList = React.memo(props => {
@@ -98,7 +97,6 @@ const ProjectList = ({
                             )
                         })}
                         {provided.placeholder}
-                        <AddNewProjectColumn addProject={addProject} projects={projects} />
                     </Container>
                 )}
             </Droppable>

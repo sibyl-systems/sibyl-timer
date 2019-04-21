@@ -5,12 +5,87 @@ import useInterval from '../hooks/useInterval'
 import SquareButton from '../components/SquareButton'
 import createTimeEntry from '../api/createTimeEntry'
 
+import Styled from 'styled-components'
+
 import { connect } from 'react-redux'
-import { startTimer, stopTimer, commitTimer, updateTimerDescription, updateTimerSettings, removeTimer } from '../store/actions.js'
+import {
+    startTimer,
+    stopTimer,
+    commitTimer,
+    updateTimerDescription,
+    updateTimerSettings,
+    removeTimer
+} from '../store/actions.js'
 
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
-import ReassignTask from './ReassignTask';
-import EditTimer from './EditTimer';
+import ReassignTask from './ReassignTask'
+import EditTimer from './EditTimer'
+
+import { ReactComponent as PlayIcon } from '../assets/play.svg'
+import { ReactComponent as PauseIcon } from '../assets/pause.svg'
+
+const Container = Styled.div`
+    background-color: #333355;
+    margin-bottom: 24px;
+
+    font-weight: 400;
+`
+
+const TimerContainer = Styled.div`
+    padding: 12px;
+    display: flex;
+`
+const TimerActions = Styled.div`
+    margin-right: 12px;
+`
+const TimerClock = Styled.div`
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 16px;
+`
+const Seconds = Styled.div`
+    display: inline;
+`
+const PlayButton = Styled.button`
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border: 1px solid transparent;
+    background-color: #45476E;
+    border-radius: 50%;
+    padding-left: 18%;
+    margin-bottom: 14px;
+    &:hover {
+        background-color: #F18C64;
+    }
+    svg {
+        margin: auto;
+        fill: white;
+    }
+`
+const PauseButton = Styled.button`
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border: 1px solid transparent;
+    background-color: #F18C64;
+    border-radius: 50%;
+    margin-bottom: 14px;
+    &:hover {
+        background-color: #F18C64;
+    }
+    svg {
+        margin: auto;
+    }
+`
+
+const TimerTitle = Styled.h3`
+    font-weight: 300;
+    font-size: 18px;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+`
 
 const WrappedMenuItem = ({ clickHandler, className, children }) => {
     return (
@@ -28,7 +103,7 @@ function TimeCard({
     commitTimer,
     updateTimerDescription,
     updateTimerSettings,
-    removeTimer,
+    removeTimer
 }) {
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
@@ -109,7 +184,7 @@ function TimeCard({
         Promise.resolve(stopTimer({ id: timer.id })).then(() => {
             Promise.resolve(commitTimer({ id: timer.id, elapsedTime: clock })).then(() => {
                 createTimeEntry(timer).then(res => {
-                    if(!timer.settings.keepTimer) {
+                    if (!timer.settings.keepTimer) {
                         removeTimer(timer.id)
                     } else {
                         handleResetTimer()
@@ -126,48 +201,45 @@ function TimeCard({
         setEditTimerModalOpen(false)
     }
 
-    const handleCommitEditTimer = (payload) => {
+    const handleCommitEditTimer = payload => {
         setClock(payload.elapsedTime)
         commitTimer(payload)
     }
-
 
     const [modalOpen, setModalOpen] = useState(false)
     const [editTimerModalOpen, setEditTimerModalOpen] = useState(false)
 
     return (
-        <>
+        <Container {...provided.draggableProps} ref={provided.innerRef}>
             <ContextMenuTrigger id={timer.id}>
-                <div className={`time-card ${timer.running && 'time-card--active'}`} {...provided.dragHandleProps}>
-                    <h3 style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</h3>
-                    <input
-                        type="text"
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        onBlur={handleUpdateTimerDescription}
-                        style={{ marginBottom: '8px' }}
-                    />
-                    <div className="time-actions">
+                <TimerContainer {...provided.dragHandleProps}>
+                    <TimerActions>
                         {timer.running ? (
-                            <SquareButton
-                                icon="pause"
-                                className="time-button time-button--stop"
-                                title="Stop timer"
-                                clickHandler={handleStopTimer}
-                            />
+                            <PauseButton onClick={handleStopTimer}>
+                                <PauseIcon />
+                            </PauseButton>
                         ) : (
-                            <SquareButton
-                                icon="play"
-                                className="time-button"
-                                title="Start timer"
-                                clickHandler={handleStartTimer}
-                            />
+                            <PlayButton onClick={handleStartTimer}>
+                                <PlayIcon />
+                            </PlayButton>
                         )}
-                        <div className="time-total">
-                            {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}:{secondsToHMS(clock).seconds}
-                        </div>
+                        <TimerClock>
+                            {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}
+                            :<Seconds>{secondsToHMS(clock).seconds}</Seconds>
+                        </TimerClock>
+                    </TimerActions>
+                    <div>
+                        <TimerTitle style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</TimerTitle>
+                        <input
+                            type="text"
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                            onBlur={handleUpdateTimerDescription}
+                            style={{ marginBottom: '8px' }}
+                        />
                     </div>
-                </div>
+                    <div>Menu</div>
+                </TimerContainer>
             </ContextMenuTrigger>
             <ContextMenu id={timer.id}>
                 {timer.running ? (
@@ -196,28 +268,33 @@ function TimeCard({
                 </WrappedMenuItem>
             </ContextMenu>
 
-            <ReassignTask
-                timer={timer}
-                modalOpen={modalOpen}
-                closeModal={closeModal}
-            />
+            <ReassignTask timer={timer} modalOpen={modalOpen} closeModal={closeModal} />
             {/* This is to force the state of the modal to reset to props values... todo: make this better. */}
-            {editTimerModalOpen && <EditTimer
-                timer={timer}
-                modalOpen={editTimerModalOpen}
-                closeModal={handleCloseTimerModal}
-                commitTimer={handleCommitEditTimer}
-                currentTimer={clock}
-            />}
-        </>
+            {editTimerModalOpen && (
+                <EditTimer
+                    timer={timer}
+                    modalOpen={editTimerModalOpen}
+                    closeModal={handleCloseTimerModal}
+                    commitTimer={handleCommitEditTimer}
+                    currentTimer={clock}
+                />
+            )}
+        </Container>
     )
 }
 
-const mapStateToProps = ({  }) => {
-    return {  }
+const mapStateToProps = ({}) => {
+    return {}
 }
 
-const mapDispatchToProps = { startTimer, stopTimer, commitTimer, updateTimerDescription, updateTimerSettings, removeTimer }
+const mapDispatchToProps = {
+    startTimer,
+    stopTimer,
+    commitTimer,
+    updateTimerDescription,
+    updateTimerSettings,
+    removeTimer
+}
 
 export default connect(
     mapStateToProps,

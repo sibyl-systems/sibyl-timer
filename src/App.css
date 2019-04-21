@@ -1,31 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
-        'Helvetica Neue', sans-serif;
+    font-family: 'Nunito Sans', 'Roboto', 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+    color: #8a88c2;
 }
 
 #root {
-    min-height: 100vh;
-    min-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
 }
 
-h1 {
+/* h1 {
     font-weight: 900;
     margin-top: 0;
-}
+} */
 
-.container {
+/* .container {
     width: 100%;
     max-width: 480px;
     margin: 16px auto 16px;
     padding: 0 15px;
-}
+} */
 
-.temp-api-input {
+/* .temp-api-input {
     margin-bottom: 24px;
     display: flex;
     align-items: center;
@@ -93,10 +95,9 @@ h1 {
 
 .time-description:hover:not(:empty):not(:focus) {
     border: 1px dashed rgba(0, 0, 0, 0.2);
-}
-.time-description:focus {
-    /* outline: 1px solid rgb(8, 203, 148);
-  border-color: transparent; */
+} */
+
+/* .time-description:focus {
     outline: none;
     border: 1px solid rgb(8, 203, 148);
     background-color: #fff;
@@ -151,9 +152,9 @@ h1 {
     margin-right: 12px;
 }
 
-
+*/
 .react-contextmenu {
-    border: 1px solid rgba(0,0,0,0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
 }
 
 .react-contextmenu--visible {
@@ -174,7 +175,6 @@ h1 {
 }
 
 .react-contextmenu-toggle {
-
 }
 
 .react-contextmenu-toggle.is-selected {
