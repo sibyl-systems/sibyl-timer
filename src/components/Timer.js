@@ -16,7 +16,7 @@ const ProjectColumn = props => {
         <Draggable draggableId={props.timer.id} index={props.index} type="timer" isDragDisabled={props.timer.running}>
             {(provided, snapshot) => (
                 // <div {...provided.draggableProps} ref={provided.innerRef} isDragging={snapshot.isDragging}>
-                    <TimeCard timer={props.timer} provided={provided}/>
+                <TimeCard timer={props.timer} provided={provided} />
                 // </div>
             )}
         </Draggable>

@@ -1,6 +1,6 @@
 //todo: extract logic from here, and SIMPLIFY!!!
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import useInterval from '../hooks/useInterval'
 import SquareButton from '../components/SquareButton'
 import createTimeEntry from '../api/createTimeEntry'
@@ -21,79 +21,10 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
 import ReassignTask from './ReassignTask'
 import EditTimer from './EditTimer'
 
+import TimerContextMenu from './TimerContextMenu'
+
 import { ReactComponent as PlayIcon } from '../assets/play.svg'
 import { ReactComponent as PauseIcon } from '../assets/pause.svg'
-
-const Container = Styled.div`
-    background-color: #333355;
-    margin-bottom: 24px;
-
-    font-weight: 400;
-`
-
-const TimerContainer = Styled.div`
-    padding: 12px;
-    display: flex;
-`
-const TimerActions = Styled.div`
-    margin-right: 12px;
-`
-const TimerClock = Styled.div`
-    flex-shrink: 0;
-    text-align: center;
-    font-size: 16px;
-`
-const Seconds = Styled.div`
-    display: inline;
-`
-const PlayButton = Styled.button`
-    display: flex;
-    width: 60px;
-    height: 60px;
-    border: 1px solid transparent;
-    background-color: #45476E;
-    border-radius: 50%;
-    padding-left: 18%;
-    margin-bottom: 14px;
-    &:hover {
-        background-color: #F18C64;
-    }
-    svg {
-        margin: auto;
-        fill: white;
-    }
-`
-const PauseButton = Styled.button`
-    display: flex;
-    width: 60px;
-    height: 60px;
-    border: 1px solid transparent;
-    background-color: #F18C64;
-    border-radius: 50%;
-    margin-bottom: 14px;
-    &:hover {
-        background-color: #F18C64;
-    }
-    svg {
-        margin: auto;
-    }
-`
-
-const TimerTitle = Styled.h3`
-    font-weight: 300;
-    font-size: 18px;
-    min-height: 55px;
-    display: flex;
-    align-items: center;
-`
-
-const WrappedMenuItem = ({ clickHandler, className, children }) => {
-    return (
-        <div className={className} onClick={clickHandler}>
-            <MenuItem>{children}</MenuItem>
-        </div>
-    )
-}
 
 function TimeCard({
     timer,
@@ -107,6 +38,14 @@ function TimeCard({
 }) {
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
+
+    let contextTrigger = useRef(null)
+
+    const toggleContextMenu = e => {
+        if (contextTrigger) {
+            contextTrigger.handleContextClick(e)
+        }
+    }
 
     useInterval(() => {
         const newClock = clock + 1
@@ -211,7 +150,7 @@ function TimeCard({
 
     return (
         <Container {...provided.draggableProps} ref={provided.innerRef}>
-            <ContextMenuTrigger id={timer.id}>
+            <ContextMenuTrigger id={timer.id} ref={c => (contextTrigger = c)}>
                 <TimerContainer {...provided.dragHandleProps}>
                     <TimerActions>
                         {timer.running ? (
@@ -224,49 +163,37 @@ function TimeCard({
                             </PlayButton>
                         )}
                         <TimerClock>
-                            {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}
-                            :<Seconds>{secondsToHMS(clock).seconds}</Seconds>
+                            {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}:
+                            <Seconds>{secondsToHMS(clock).seconds}</Seconds>
                         </TimerClock>
                     </TimerActions>
-                    <div>
+                    <TimerInformation>
                         <TimerTitle style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</TimerTitle>
-                        <input
+                        <DescriptionInput
+                            isEmpty={!description}
                             type="text"
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                             onBlur={handleUpdateTimerDescription}
-                            style={{ marginBottom: '8px' }}
                         />
+                    </TimerInformation>
+                    <div>
+                        <TimerMenuButton onClick={toggleContextMenu}>
+                            <DottedMenu />
+                        </TimerMenuButton>
                     </div>
-                    <div>Menu</div>
                 </TimerContainer>
             </ContextMenuTrigger>
-            <ContextMenu id={timer.id}>
-                {timer.running ? (
-                    <MenuItem onClick={handleStopTimer}>Stop</MenuItem>
-                ) : (
-                    <MenuItem onClick={handleStartTimer}>Start</MenuItem>
-                )}
-                <MenuItem onClick={handleLogTimer}>Log Timer</MenuItem>
-                <MenuItem onClick={handleChangeTask}>Re-assign task</MenuItem>
-                <MenuItem onClick={handleEditTimer}>Edit Timer</MenuItem>
-                <MenuItem onClick={handleResetTimer}>Reset Timer</MenuItem>
-                <MenuItem divider />
-                <WrappedMenuItem
-                    className={`react-contextmenu-toggle ${timer.settings.isBillable && 'is-selected'}`}
-                    clickHandler={() => handleToggleTimerSettings('isBillable')}
-                >
-                    {timer.settings.isBillable ? <span>[&#10004;]</span> : <span>[&#10006;]</span>}
-                    &nbsp;Is billable?
-                </WrappedMenuItem>
-                <WrappedMenuItem
-                    className={`react-contextmenu-toggle ${timer.settings.keepTimer && 'is-selected'}`}
-                    clickHandler={() => handleToggleTimerSettings('keepTimer')}
-                >
-                    {timer.settings.keepTimer ? <span>[&#10004;]</span> : <span>[&#10006;]</span>}
-                    &nbsp;Keep timer?
-                </WrappedMenuItem>
-            </ContextMenu>
+            <TimerContextMenu
+                timer={timer}
+                handleStopTimer={handleStopTimer}
+                handleStartTimer={handleStartTimer}
+                handleLogTimer={handleLogTimer}
+                handleChangeTask={handleChangeTask}
+                handleEditTimer={handleEditTimer}
+                handleResetTimer={handleResetTimer}
+                handleToggleTimerSettings={handleToggleTimerSettings}
+            />
 
             <ReassignTask timer={timer} modalOpen={modalOpen} closeModal={closeModal} />
             {/* This is to force the state of the modal to reset to props values... todo: make this better. */}
@@ -309,3 +236,124 @@ function secondsToHMS(seconds) {
         seconds: pad(seconds % 60 | 0)
     }
 }
+
+const Container = Styled.div`
+    background-color: #333355;
+    margin-bottom: 24px;
+
+    font-weight: 400;
+`
+
+const TimerContainer = Styled.div`
+    padding: 12px;
+    display: flex;
+`
+const TimerActions = Styled.div`
+    margin-right: 12px;
+`
+const TimerClock = Styled.div`
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 16px;
+`
+const Seconds = Styled.div`
+    display: inline;
+`
+const PlayButton = Styled.button`
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border: 1px solid transparent;
+    background-color: #45476E;
+    border-radius: 50%;
+    padding-left: 18%;
+    margin-bottom: 14px;
+    &:hover {
+        background-color: #F18C64;
+    }
+    svg {
+        margin: auto;
+        fill: white;
+    }
+`
+const PauseButton = Styled.button`
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border: 1px solid transparent;
+    background-color: #F18C64;
+    border-radius: 50%;
+    margin-bottom: 14px;
+    &:hover {
+        background-color: #F18C64;
+    }
+    svg {
+        margin: auto;
+    }
+`
+
+const TimerTitle = Styled.h3`
+    font-weight: 300;
+    font-size: 18px;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+`
+const DescriptionInput = Styled.input`
+    background: none;
+    border: none;
+    color: #8a88c2;
+    margin-bottom: 0;
+    height: 24px;
+    margin-top: 3px;
+    border-bottom: 1px solid transparent;
+    width: 100%;
+    ${props => (props.isEmpty ? 'border-bottom: 1px solid #738FDF' : '')};
+        //This could be better achieved if I just wrapped the input and used pseudo elements
+    ${props => (!props.isEmpty ? '    height: 15px; margin-bottom: 0; margin-top: 12px;' : '')}; 
+    &:focus {
+        outline: none;
+        border-bottom: 1px solid #738FDF;
+    }
+`
+const TimerMenuButton = Styled.button`
+    width: 52px;
+    height: 52px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0;
+    &:hover {
+        background-color: #45476E;
+    }
+`
+const DottedMenu = Styled.div`
+    position: relative;
+    width: 5px;
+    height: 5px;
+    background-color: #627FD9;
+    border-radius: 50%;
+    margin: auto;
+    &::before,
+    &::after {
+        left: 0; right: 0;
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: inherit;
+        border-radius: 50%;
+    }
+    &::before {
+        top: -8px;
+    }
+    &::after {
+        bottom: -8px;
+    }
+`
+const TimerInformation = Styled.div`
+    flex-grow: 1;
+`

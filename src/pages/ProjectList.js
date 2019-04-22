@@ -8,7 +8,15 @@ import ProjectColumn from '../components/ProjectColumn'
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-import { reorderColumn, addProject, addTimer, startTimer, stopTimer, reorderTimer, commitTimer } from '../store/actions.js'
+import {
+    reorderColumn,
+    addProject,
+    addTimer,
+    startTimer,
+    stopTimer,
+    reorderTimer,
+    commitTimer
+} from '../store/actions.js'
 
 import AddNewProjectColumn from '../components/AddNewProjectColumn'
 
@@ -55,7 +63,7 @@ const ProjectList = ({
     const [dragStartIsAssigned, setDragStartIsAssigned] = useState(null)
     const onDragStart = start => {
         const index = projectOrder.indexOf(start.source.droppableId)
-        if(start.type === 'timer') {
+        if (start.type === 'timer') {
             setDragStartIndex(index)
             setDragStartIsAssigned(timers[start.draggableId].task['project-id'] ? true : false)
         }

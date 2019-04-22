@@ -34,7 +34,11 @@ See all available scripts in `package.json`
 
 - ~Save api key~
 - ~Save timers~
-- Configure all hotkeys
+- Configure summon hotkey (currently super+alt+s)
+- Add notifications for when timers have been logged.
+- View task on teamwork button
+
+- Clean up codebase into a better structure. It's very prototype right now.
 
 - Better design
     - Seperate screen when timer is running
@@ -42,7 +46,13 @@ See all available scripts in `package.json`
 
 ## Roadmap (ideas for the future)
 
+- Allow export of local data
+- Allow import of data
+- Allow logout and delete local data
 - Auto pause from inactivity
+- Mark task as complete checkbox
 - Regular reminders to stop timer after working hours?
 - Option to remove time from a timer left running
 - No timer running reminder
+- Add tags to timers
+- Save timers to somewhere in teamwork + sync
