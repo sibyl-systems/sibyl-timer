@@ -26,14 +26,15 @@ function AppHeader(props) {
     return (
         <Header>
             <StyledLogo width="32px" height="32px" />
-            <AddNewProjectColumn addProject={props.addProject} projects={props.projects} />
+            {props.user.code && <AddNewProjectColumn addProject={props.addProject} projects={props.projects} />}
         </Header>
     )
 }
 
 const mapStateToProps = state => {
     return {
-        projects: state.projects
+        projects: state.projects,
+        user: state.user
     }
 }
 

@@ -2,16 +2,10 @@
 import getUser from '../api/getUser'
 const uuidv4 = require('uuid/v4')
 
-// export const submitApiKey = payload => ({
-//     type: 'submit-apikey',
-//     payload: payload
-// })
-
-export const submitApiKey = payload => async dispatch => {
+export const submitApiKey = payload => dispatch => Promise.resolve().then(async() => {
     try {
         const result = await getUser(payload)
-
-        dispatch({
+        return dispatch({
             type: 'SUBMIT_APIKEY',
             payload: {
                 apikey: payload,
@@ -19,9 +13,12 @@ export const submitApiKey = payload => async dispatch => {
             }
         })
     } catch (error) {
+        // Promise.reject(error)
         console.warn(error)
+        return "error";
     }
-}
+})
+
 
 export const reorderTimer = payload => ({
     type: 'REORDER_TIMERS',
