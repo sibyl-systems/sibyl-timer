@@ -7,9 +7,41 @@ import React, { useState } from 'react'
 import Modal from 'react-modal'
 import Select from 'react-select'
 import getTasks from '../api/getTasks'
+import Styled from 'styled-components'
 const uuidv4 = require('uuid/v4');
 
+
 Modal.setAppElement('#root')
+
+
+const AddButton = Styled.button`
+    border: none;
+    background: none;
+    box-shadow: none;
+    width: 36px;
+    height: 36px;
+    position: relative;
+    border-radius: 5px;
+    &:hover {
+        background: #45476E;
+    }
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        background-color: #627FD9;
+        margin: auto;
+    }
+    &::before {
+        width: 45%;
+        height: 4px;
+    }
+    &::after {
+        height: 45%;
+        width: 4px;
+    }
+`
 
 const AddNewTimerToTask = ({ addTimer, timers, project }) => {
     const [modalOpen, setModalOpen] = useState(false)
@@ -59,7 +91,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
 
     return (
         <>
-            <button onClick={handleOpenModal} style={{ marginTop: 'auto' }}>Add new Task</button>
+            <AddButton onClick={handleOpenModal} ></AddButton>
             <Modal isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="TEST TASK MODAL">
                 <div>{loadingTasks ? 'Updating tasks...' : 'Tasks up to date!'}</div>
                 <Select

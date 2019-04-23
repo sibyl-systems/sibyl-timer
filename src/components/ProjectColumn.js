@@ -71,12 +71,7 @@ const ProjectColumn = props => {
                 <Container {...provided.draggableProps} ref={provided.innerRef}>
                     <ContainerHeader>
                         <Title {...provided.dragHandleProps}>{props.project.name}</Title>
-                        <AddButton />
-                        {/* <AddNewTimerToProject
-                            addTimer={props.addTimer}
-                            timers={props.timers}
-                            project={props.project}
-                        /> */}
+                        <AddNewTimerToProject addTimer={props.addTimer} timers={props.timers} project={props.project} />
                     </ContainerHeader>
                     <Droppable droppableId={props.project.id} type="timer" isDropDisabled={props.isDropDisabled}>
                         {(provided, snapshot) => (

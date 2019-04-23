@@ -2,6 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { ReactComponent as Logo } from '../assets/logo.svg'
+import { connect } from 'react-redux'
+
+import { addProject } from '../store/actions'
+import AddNewProjectColumn from './AddNewProjectColumn'
 
 const Header = styled.div`
     background: #333355;
@@ -22,11 +26,20 @@ function AppHeader(props) {
     return (
         <Header>
             <StyledLogo width="32px" height="32px" />
-
-            <button>Add Project</button>
-            {/* <AddNewProjectColumn addProject={addProject} projects={projects} /> */}
+            <AddNewProjectColumn addProject={props.addProject} projects={props.projects} />
         </Header>
     )
 }
 
-export default AppHeader
+const mapStateToProps = state => {
+    return {
+        projects: state.projects
+    }
+}
+
+const mapDispatchToProps = { addProject }
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AppHeader)
