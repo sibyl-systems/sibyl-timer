@@ -45,7 +45,8 @@ const FormGroup = Styled.div`
         color: #8a88c2;
         padding: 8px 16px;
         &:hover {
-            background-color: #333355;
+            background-color: #627FD9;
+            color: white;
         }
     }
 `
