@@ -10,9 +10,7 @@ import AddNewTimerToProject from './AddNewTimerToProject'
 
 const Container = styled.div`
     margin: 8px;
-    width: 100%
-    min-width: 380px;
-    max-width: 464px;
+    width: 464px;
     background: #333355;
     border-radius: 10px
     box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5)
