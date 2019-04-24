@@ -97,8 +97,8 @@ const ReassignTask = ({projects, timers, timer, reassignTask, modalOpen, closeMo
                     options={taskOptions}
                     onChange={handleSelectTask}
                 />
-                <button onClick={handleReassignTask}>Add Selected Project</button>
-                <button onClick={handleCloseModal}>Close Modal</button>
+                <button onClick={handleReassignTask}>Reassign</button>
+                <button onClick={handleCloseModal}>Cancel</button>
             </Modal>
         </>
     )

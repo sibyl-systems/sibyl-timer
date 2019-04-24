@@ -64,7 +64,7 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
                     onChange={handleSelectProject}
                 />
                 <button onClick={handleAddProject}>Add Selected Project</button>
-                <button onClick={handleCloseModal}>Close Modal</button>
+                <button onClick={handleCloseModal}>Cancel</button>
             </Modal>
         </>
     )

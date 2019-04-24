@@ -101,7 +101,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
                     onChange={handleSelectTask}
                 />
                 <button onClick={handleAddTimer}>Add Selected Task</button>
-                <button onClick={handleCloseModal}>Close Modal</button>
+                <button onClick={handleCloseModal}>Cancel</button>
             </Modal>
         </>
     )

@@ -38,8 +38,8 @@ const EditTimer = ({timer, currentTimer, modalOpen, closeModal, commitTimer}) =>
         <Modal isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="Edit timer">
         <input type="text" value={time.hours} onChange={handleOnChange} name="hours" />
         <input type="text" value={time.minutes} onChange={handleOnChange} name="minutes" />
-            <button onClick={handleEditTimer}>Add Selected Project</button>
-            <button onClick={handleCloseModal}>Close Modal</button>
+            <button onClick={handleEditTimer}>Update Timer</button>
+            <button onClick={handleCloseModal}>Cancel</button>
         </Modal>
     )
 }
