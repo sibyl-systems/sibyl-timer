@@ -3,6 +3,21 @@ import Modal from 'react-modal'
 import Select from 'react-select'
 import getAllProjects from '../api/getAllProjects'
 
+import Styled from 'styled-components'
+
+const Button = Styled.button`
+    background-color: transparent;
+    border: 1px solid #627FD9;
+    color: #8a88c2;
+    box-shadow: none;
+    border-radius: 100px;
+    padding: 8px 16px;
+    &:hover {
+        background-color: #627FD9;
+        color: white;
+    }
+`
+
 Modal.setAppElement('#root')
 
 const AddNewProjectColumn = ({ addProject, projects }) => {
@@ -39,7 +54,7 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
     }
     return (
         <>
-            <button onClick={handleOpenModal}>Add new project</button>
+            <Button onClick={handleOpenModal}>Add new project</Button>
             <Modal isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="TEST PROJECT MODAL">
                 <div>{loadingProjects ? 'Updating projects...' : 'Projects up to date!'}</div>
                 <Select
