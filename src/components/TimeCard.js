@@ -145,6 +145,10 @@ function TimeCard({
         commitTimer(payload)
     }
 
+    const handleRemoveTimer = () => {
+        removeTimer(timer.id)
+    }
+
     const [modalOpen, setModalOpen] = useState(false)
     const [editTimerModalOpen, setEditTimerModalOpen] = useState(false)
 
@@ -193,6 +197,7 @@ function TimeCard({
                 handleEditTimer={handleEditTimer}
                 handleResetTimer={handleResetTimer}
                 handleToggleTimerSettings={handleToggleTimerSettings}
+                removeTimer={handleRemoveTimer}
             />
 
             <ReassignTask timer={timer} modalOpen={modalOpen} closeModal={closeModal} />
