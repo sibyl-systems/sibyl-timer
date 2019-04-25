@@ -125,6 +125,10 @@ export default function userReducer(state = defaultState, action) {
                     }
                 }
             }
+        case 'REMOVE_PROJECT':
+            let {[action.payload]: omit, ...rest} = state
+            //  todo, remove all asigned tasks/timers
+            return rest
         default:
             return state
     }

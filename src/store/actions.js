@@ -82,3 +82,10 @@ export const reassignTask = payload => dispatch => {
         payload: payload
     })
 }
+
+export const removeProject = payload => dispatch => {
+    dispatch({
+        type: 'REMOVE_PROJECT',
+        payload: payload
+    })
+}

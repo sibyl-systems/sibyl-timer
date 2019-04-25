@@ -8,6 +8,10 @@ import Timer from './Timer'
 
 import AddNewTimerToProject from './AddNewTimerToProject'
 
+import { ContextMenuTrigger } from 'react-contextmenu'
+
+import ProjectContextMenu from './ProjectContextMenu'
+
 const Container = styled.div`
     margin: 8px;
     width: 464px;
@@ -68,9 +72,12 @@ const ProjectColumn = props => {
             {provided => (
                 <Container {...provided.draggableProps} ref={provided.innerRef}>
                     <ContainerHeader>
-                        <Title {...provided.dragHandleProps}>{props.project.name}</Title>
+                        <ContextMenuTrigger id={props.project.id}>
+                            <Title {...provided.dragHandleProps}>{props.project.name}</Title>
+                        </ContextMenuTrigger>
                         <AddNewTimerToProject addTimer={props.addTimer} timers={props.timers} project={props.project} />
                     </ContainerHeader>
+                    <ProjectContextMenu project={props.project} removeProject={props.removeProject} />
                     <Droppable droppableId={props.project.id} type="timer" isDropDisabled={props.isDropDisabled}>
                         {(provided, snapshot) => (
                             <TimerList

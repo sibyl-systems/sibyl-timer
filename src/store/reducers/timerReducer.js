@@ -99,6 +99,9 @@ export default function timerReducer(state = defaultState, action) {
                     task: selectedTask
                 }
             }
+        case 'REMOVE_PROJECT':
+            //  todo, tasks/timers in that project...
+            return state
         default:
             return state
     }

@@ -15,7 +15,8 @@ import {
     startTimer,
     stopTimer,
     reorderTimer,
-    commitTimer
+    commitTimer,
+    removeProject
 } from '../store/actions.js'
 
 import AddNewProjectColumn from '../components/AddNewProjectColumn'
@@ -30,7 +31,7 @@ const Container = styled.div`
 `
 
 const InnerProjectList = React.memo(props => {
-    const { project, timerMap, index, addTimer, isDropDisabled } = props
+    const { project, timerMap, index, addTimer, isDropDisabled, removeProject } = props
     const timers = project.timerIds.map(timerId => timerMap[timerId])
     return (
         <ProjectColumn
@@ -43,6 +44,7 @@ const InnerProjectList = React.memo(props => {
             timers={timers}
             index={index}
             addTimer={addTimer}
+            removeProject={removeProject}
         />
     )
 })
@@ -57,7 +59,8 @@ const ProjectList = ({
     addTimer,
     startTimer,
     stopTimer,
-    commitTimer
+    commitTimer,
+    removeProject
 }) => {
     const [dragStartIndex, setDragStartIndex] = useState(null)
     const [dragStartIsAssigned, setDragStartIsAssigned] = useState(null)
@@ -101,6 +104,7 @@ const ProjectList = ({
                                     startTimer={startTimer}
                                     stopTimer={stopTimer}
                                     commitTimer={commitTimer}
+                                    removeProject={removeProject}
                                 />
                             )
                         })}
@@ -116,7 +120,7 @@ const mapStateToProps = ({ user, projectOrder, projects, timers }) => {
     return { user, projectOrder, projects, timers }
 }
 
-const mapDispatchToProps = { reorderColumn, addProject, addTimer, startTimer, stopTimer, reorderTimer, commitTimer }
+const mapDispatchToProps = { reorderColumn, addProject, addTimer, startTimer, stopTimer, reorderTimer, commitTimer, removeProject }
 
 export default compose(
     withRouter,

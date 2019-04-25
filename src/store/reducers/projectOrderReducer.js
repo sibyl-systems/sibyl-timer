@@ -13,6 +13,8 @@ export default function userReducer(state = defaultState, action) {
             newProjectOrder.splice(source.index, 1)
             newProjectOrder.splice(destination.index, 0, draggableId)
             return newProjectOrder
+        case 'REMOVE_PROJECT':
+            return state.filter(id => id !== action.payload);
         default:
             return state
     }
