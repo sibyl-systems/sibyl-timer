@@ -48,6 +48,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
     const [loadingTasks, setLoadingTasks] = useState(false)
     const [options, setOptions] = useState([])
     const [selectedTask, setSelectedTask] = useState(false)
+    const defaultValue = {content: 'Unassigned task', id: uuidv4(), unassignedTask: true}
     const handleLoadTasks = async () => {
         setLoadingTasks(true)
         try {
@@ -61,7 +62,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
             )
             setOptions(
                 [
-                    {content: 'Unassigned task', id: uuidv4(), unassignedTask: true},
+                    defaultValue,
                     ...options
                 ]
             )
@@ -85,6 +86,9 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
         if(selectedTask) {
             addTimer({task: selectedTask, projectId: project.id})
             return handleCloseModal()
+        } else {
+            addTimer({task: defaultValue, projectId: project.id})
+            return handleCloseModal()
         }
         console.warn('no task selected');
     }
@@ -95,6 +99,7 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
             <Modal isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="TEST TASK MODAL">
                 <div>{loadingTasks ? 'Updating tasks...' : 'Tasks up to date!'}</div>
                 <Select
+                    defaultValue={defaultValue}
                     getOptionLabel={option => option.content}
                     getOptionValue={option => option.id}
                     options={options}
