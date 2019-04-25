@@ -90,7 +90,6 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
             addTimer({task: defaultValue, projectId: project.id})
             return handleCloseModal()
         }
-        console.warn('no task selected');
     }
 
     return (
