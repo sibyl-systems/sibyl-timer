@@ -26,7 +26,6 @@ const ModalContainer = Styled(Modal)`
     right: 0;
     width: 600px;
     max-width: 100%;
-    bottom: 40px;
     margin: auto;
     border: 1px solid rgb(204, 204, 204);
     background: #2b2b47;
@@ -34,18 +33,46 @@ const ModalContainer = Styled(Modal)`
     border-radius: 10px;
     overflow: hidden;
     outline: none;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+
 `
 const ModalTitle = Styled.div`
-    margin: -20px -20px 0;
-    padding: 16px;
+    padding: 20px;
     min-height: 50px;
-    color: #FFF;
+    color: #8a88c2;
     background: #333355;
-    margin-bottom: 20px;
+`
+const ModalContent = Styled.div`
+    padding: 20px;
+`;
+
+const ButtonContainer = Styled.div`
+    display: flex;
+    margin-top: auto;
 `
 
-const StyledSelect = Styled(Select)`
+const ActionButton = Styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid #627FD9;
+    color: #8a88c2;
+    box-shadow: none;
+    padding: 8px 16px;
+    width: 100%;
+    min-height: 50px;
+    &:hover {
+        background-color: #627FD9;
+        color: white;
+    }
+    &:first-child {
+        border-right: 1px solid #627FD9;
+    }
 
 `
 
@@ -60,16 +87,26 @@ const customStyles = {
     ...provided
   }),
   control: (provided, state) => ({
-      ...provided
+      ...provided,
+      background: "transparent",
+      border: "1px solid #627FD8",
+      color: "white"
     // none of react-select's styles are passed to <Control />
     // width: 200,
+  }),
+  dropdownIndicator: (provided, state) => ({
+      ...provided,
+      color: "white"
+
   }),
   singleValue: (provided, state) => {
     // const opacity = state.isDisabled ? 0.5 : 1;
     // const transition = 'opacity 300ms';
 
-    // return { ...provided, opacity, transition };
-    return provided
+    return {
+        ...provided,
+        color: '#8a88c2'
+    };
   }
 }
 
@@ -113,18 +150,22 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
             <Button onClick={handleOpenModal}>Add new project</Button>
             <ModalContainer isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="TEST PROJECT MODAL">
                 <ModalTitle>Add Project</ModalTitle>
-
-                <StyledSelect
-                    getOptionLabel={option => option.name}
-                    getOptionValue={option => option.id}
-                    options={options}
-                    onChange={handleSelectProject}
-                    styles={customStyles}
- 
-                />
-                <button onClick={handleAddProject}>Add Selected Project</button>
-                <button onClick={handleCloseModal}>Cancel</button>
-                <div>{loadingProjects ? 'Updating projects...' : 'Projects up to date!'}</div>
+                <ModalContent>
+                    <Select
+                        getOptionLabel={option => option.name}
+                        getOptionValue={option => option.id}
+                        options={options}
+                        onChange={handleSelectProject}
+                        styles={customStyles}
+    
+                    />
+                    {/* Todo: loading indicator... */}
+                    <div style={{paddingTop: "16px"}}>{loadingProjects ? 'Updating projects...' : 'Projects up to date!'}</div>
+                </ModalContent>
+                <ButtonContainer>
+                    <ActionButton onClick={handleCloseModal}>Cancel</ActionButton>
+                    <ActionButton onClick={handleAddProject}>Add Selected Project</ActionButton>
+                </ButtonContainer>
             </ModalContainer>
         </>
     )
