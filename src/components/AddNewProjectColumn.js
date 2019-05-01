@@ -18,7 +18,6 @@ const Button = Styled.button`
     }
 `
 
-
 const ModalContainer = Styled(Modal)`
     position: absolute;
     top: 40px;
@@ -46,7 +45,7 @@ const ModalTitle = Styled.div`
 `
 const ModalContent = Styled.div`
     padding: 20px;
-`;
+`
 
 const ButtonContainer = Styled.div`
     display: flex;
@@ -76,40 +75,79 @@ const ActionButton = Styled.button`
 
 `
 
-
-
 const customStyles = {
-  option: (provided, state) => ({
-    // ...provided,
-    // borderBottom: '1px dotted pink',
-    // color: state.isSelected ? 'red' : 'blue',
-    // padding: 20,
-    ...provided
-  }),
-  control: (provided, state) => ({
-      ...provided,
-      background: "transparent",
-      border: "1px solid #627FD8",
-      color: "white"
-    // none of react-select's styles are passed to <Control />
-    // width: 200,
-  }),
-  dropdownIndicator: (provided, state) => ({
-      ...provided,
-      color: "white"
+    option: (provided, state) => {
+        return({
+        // ...provided,
+        // borderBottom: '1px dotted pink',
+        // color: state.isSelected ? 'red' : 'blue',
+        // padding: 20,
+        padding: "8px",
+        backgroundColor: state.isSelected ? '#2b2b47' : 'transparent',
+        color: state.isSelected ? '#627FD8' : 'inherit',
+        '&:hover': {
+            backgroundColor: '#2b2b47',
+            color: '#627FD8',
+        },
+        // ...provided
+    })},
+    menuList: (provided, state) => ({
+        // ...provided,
+        // borderBottom: '1px dotted pink',
+        // color: state.isSelected ? 'red' : 'blue',
+        // padding: 20,
+        backgroundColor: '#333355',
+        borderColor: '#627FD8',
 
-  }),
-  singleValue: (provided, state) => {
-    // const opacity = state.isDisabled ? 0.5 : 1;
-    // const transition = 'opacity 300ms';
+        "::-webkit-scrollbar": {
+            "width": "16px",
+        },
 
-    return {
+        "::-webkit-scrollbar-track": {
+            "background": "#2b2b47" ,
+        },
+        
+        /* Handle */
+        "::-webkit-scrollbar-thumb": {
+            "background": "#8a88c2" ,
+        },
+
+        /* Handle on hover */
+        "::-webkit-scrollbar-thumb:hover": {
+            "background": "#627FD8" ,
+        },
+        ...provided
+    }),
+    control: (provided, state) => {
+        return {
+            ...provided,
+            background: 'transparent',
+            border: '1px solid #627FD8',
+            color: 'white',
+            boxShadow: 'none',
+            bordercolor: state.menuIsOpen && '#627FD8',
+            '&:hover': {
+                bordercolor: '#627FD8'
+            }
+        }
+    },
+    dropdownIndicator: (provided, state) => ({
         ...provided,
-        color: '#8a88c2'
-    };
-  }
-}
+        color: 'white',
+        '&:hover': {
+            color: 'white'
+        }
+    }),
+    singleValue: (provided, state) => {
+        // const opacity = state.isDisabled ? 0.5 : 1;
+        // const transition = 'opacity 300ms';
 
+        return {
+            ...provided,
+            color: '#8a88c2',
+        }
+    }
+}
 
 Modal.setAppElement('#root')
 
@@ -121,9 +159,7 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
     const handleLoadProjects = async () => {
         setLoadingProjects(true)
         const result = await getAllProjects()
-        const options = result.projects.filter(
-            current => !Object.keys(projects).includes(current.id)
-        )
+        const options = result.projects.filter(current => !Object.keys(projects).includes(current.id))
         setOptions(options)
         setLoadingProjects(false)
     }
@@ -139,7 +175,7 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
         setSelectedProject(false)
     }
     const handleAddProject = () => {
-        if(selectedProject) {
+        if (selectedProject) {
             addProject(selectedProject)
             handleCloseModal()
         }
@@ -157,10 +193,11 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
                         options={options}
                         onChange={handleSelectProject}
                         styles={customStyles}
-    
                     />
                     {/* Todo: loading indicator... */}
-                    <div style={{paddingTop: "16px"}}>{loadingProjects ? 'Updating projects...' : 'Projects up to date!'}</div>
+                    <div style={{ paddingTop: '16px' }}>
+                        {loadingProjects ? 'Updating projects...' : 'Projects up to date!'}
+                    </div>
                 </ModalContent>
                 <ButtonContainer>
                     <ActionButton onClick={handleCloseModal}>Cancel</ActionButton>
