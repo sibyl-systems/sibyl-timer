@@ -18,6 +18,62 @@ const Button = Styled.button`
     }
 `
 
+
+const ModalContainer = Styled(Modal)`
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    width: 600px;
+    max-width: 100%;
+    bottom: 40px;
+    margin: auto;
+    border: 1px solid rgb(204, 204, 204);
+    background: #2b2b47;
+    overflow: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    outline: none;
+    padding: 20px;
+`
+const ModalTitle = Styled.div`
+    margin: -20px -20px 0;
+    padding: 16px;
+    min-height: 50px;
+    color: #FFF;
+    background: #333355;
+    margin-bottom: 20px;
+`
+
+const StyledSelect = Styled(Select)`
+
+`
+
+
+
+const customStyles = {
+  option: (provided, state) => ({
+    // ...provided,
+    // borderBottom: '1px dotted pink',
+    // color: state.isSelected ? 'red' : 'blue',
+    // padding: 20,
+    ...provided
+  }),
+  control: (provided, state) => ({
+      ...provided
+    // none of react-select's styles are passed to <Control />
+    // width: 200,
+  }),
+  singleValue: (provided, state) => {
+    // const opacity = state.isDisabled ? 0.5 : 1;
+    // const transition = 'opacity 300ms';
+
+    // return { ...provided, opacity, transition };
+    return provided
+  }
+}
+
+
 Modal.setAppElement('#root')
 
 const AddNewProjectColumn = ({ addProject, projects }) => {
@@ -55,17 +111,21 @@ const AddNewProjectColumn = ({ addProject, projects }) => {
     return (
         <>
             <Button onClick={handleOpenModal}>Add new project</Button>
-            <Modal isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="TEST PROJECT MODAL">
-                <div>{loadingProjects ? 'Updating projects...' : 'Projects up to date!'}</div>
-                <Select
+            <ModalContainer isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="TEST PROJECT MODAL">
+                <ModalTitle>Add Project</ModalTitle>
+
+                <StyledSelect
                     getOptionLabel={option => option.name}
                     getOptionValue={option => option.id}
                     options={options}
                     onChange={handleSelectProject}
+                    styles={customStyles}
+ 
                 />
                 <button onClick={handleAddProject}>Add Selected Project</button>
                 <button onClick={handleCloseModal}>Cancel</button>
-            </Modal>
+                <div>{loadingProjects ? 'Updating projects...' : 'Projects up to date!'}</div>
+            </ModalContainer>
         </>
     )
 }
