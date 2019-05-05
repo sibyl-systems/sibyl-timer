@@ -19,8 +19,6 @@ import {
     removeProject
 } from '../store/actions.js'
 
-import AddNewProjectColumn from '../components/AddNewProjectColumn'
-
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -98,13 +96,7 @@ const ProjectList = ({
                                     isDropDisabled={isDropDisabled}
                                     key={project.id}
                                     project={project}
-                                    timerMap={timers}
                                     index={index}
-                                    addTimer={addTimer}
-                                    startTimer={startTimer}
-                                    stopTimer={stopTimer}
-                                    commitTimer={commitTimer}
-                                    removeProject={removeProject}
                                 />
                             )
                         })}

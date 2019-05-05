@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import Timer from './Timer'
 
-import AddNewTimerToProject from './AddNewTimerToProject'
+import AddNewTimerToProject from 'components/Modals/AddNewTimerToProject'
 
 import { ContextMenuTrigger } from 'react-contextmenu'
 

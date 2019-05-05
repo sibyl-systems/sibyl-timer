@@ -5,7 +5,7 @@ import { ReactComponent as Logo } from '../assets/logo.svg'
 import { connect } from 'react-redux'
 
 import { addProject } from '../store/actions'
-import AddNewProjectColumn from './AddNewProjectColumn'
+import AddNewProjectColumn from 'components/Modals/AddNewProjectColumn'
 
 const Header = styled.div`
     background: #333355;

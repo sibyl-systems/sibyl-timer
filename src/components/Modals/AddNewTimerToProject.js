@@ -4,11 +4,15 @@
  */
 
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Modal from 'react-modal'
 import Select from 'react-select'
-import getTasks from '../api/getTasks'
+import getTasks from '../../api/getTasks'
 import Styled from 'styled-components'
+import { addTimer } from 'store/actions'
+
 const uuidv4 = require('uuid/v4')
+
 
 Modal.setAppElement('#root')
 
@@ -98,24 +102,103 @@ const ActionButton = Styled.button`
 
 `
 
-const AddNewTimerToTask = ({ addTimer, timers, project }) => {
+const customStyles = {
+    option: (provided, state) => {
+        return {
+            // ...provided,
+            // borderBottom: '1px dotted pink',
+            // color: state.isSelected ? 'red' : 'blue',
+            // padding: 20,
+            padding: '8px',
+            backgroundColor: state.isSelected ? '#2b2b47' : 'transparent',
+            color: state.isSelected ? '#627FD8' : 'inherit',
+            '&:hover': {
+                backgroundColor: '#2b2b47',
+                color: '#627FD8'
+            }
+            // ...provided
+        }
+    },
+    menuList: (provided, state) => ({
+        // ...provided,
+        // borderBottom: '1px dotted pink',
+        // color: state.isSelected ? 'red' : 'blue',
+        // padding: 20,
+        backgroundColor: '#333355',
+        borderColor: '#627FD8',
+
+        '::-webkit-scrollbar': {
+            width: '16px'
+        },
+
+        '::-webkit-scrollbar-track': {
+            background: '#2b2b47'
+        },
+
+        /* Handle */
+        '::-webkit-scrollbar-thumb': {
+            background: '#8a88c2'
+        },
+
+        /* Handle on hover */
+        '::-webkit-scrollbar-thumb:hover': {
+            background: '#627FD8'
+        },
+        ...provided
+    }),
+    control: (provided, state) => {
+        return {
+            ...provided,
+            background: 'transparent',
+            border: '1px solid #627FD8',
+            color: 'white',
+            boxShadow: 'none',
+            bordercolor: state.menuIsOpen && '#627FD8',
+            '&:hover': {
+                bordercolor: '#627FD8'
+            }
+        }
+    },
+    dropdownIndicator: (provided, state) => ({
+        ...provided,
+        color: 'white',
+        '&:hover': {
+            color: 'white'
+        }
+    }),
+    singleValue: (provided, state) => {
+        // const opacity = state.isDisabled ? 0.5 : 1;
+        // const transition = 'opacity 300ms';
+
+        return {
+            ...provided,
+            color: '#8a88c2'
+        }
+    }
+}
+
+const AddNewTimerToTask = ({ project }) => {
+    const timers = useSelector(state => state.timers)
+    const dispatch = useDispatch()
     const [modalOpen, setModalOpen] = useState(false)
     const [loadingTasks, setLoadingTasks] = useState(false)
     const [options, setOptions] = useState([])
     const [selectedTask, setSelectedTask] = useState(false)
     const defaultValue = { content: 'Unassigned task', id: uuidv4(), unassignedTask: true }
+    console.log(timers);
     const handleLoadTasks = async () => {
         setLoadingTasks(true)
         try {
             const result = await getTasks({ projectId: project.id })
             // todo: Simplify this
-            const options = result['todo-items'].filter(current =>
-                timers.reduce((acc, curr) => {
-                    acc = acc ? curr.task.id !== current.id : false
-                    return acc
-                }, true)
-            )
-            setOptions([defaultValue, ...options])
+            // const options = result['todo-items'].filter(current =>
+            //     timers.reduce((acc, curr) => {
+            //         acc = acc ? curr.task.id !== current.id : false
+            //         return acc
+            //     }, true)
+            // )
+            // setOptions([defaultValue, ...options])
+            setOptions([defaultValue, ...result['todo-items']])
         } catch (error) {
             console.error(error)
         }
@@ -134,10 +217,10 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
     }
     const handleAddTimer = () => {
         if (selectedTask) {
-            addTimer({ task: selectedTask, projectId: project.id })
+            dispatch(addTimer({ task: selectedTask, projectId: project.id }))
             return handleCloseModal()
         } else {
-            addTimer({ task: defaultValue, projectId: project.id })
+            dispatch(addTimer({ task: defaultValue, projectId: project.id }))
             return handleCloseModal()
         }
     }
@@ -155,10 +238,12 @@ const AddNewTimerToTask = ({ addTimer, timers, project }) => {
                         getOptionValue={option => option.id}
                         options={options}
                         onChange={handleSelectTask}
+                        styles={customStyles}
                     />
                     {/* Todo: loading indicator... */}
                     <div style={{ paddingTop: '16px' }}>{loadingTasks ? 'Updating tasks...' : 'Tasks up to date!'}</div>
                 </ModalContent>
+                <input type="text" />
                 <ButtonContainer>
                     <ActionButton onClick={handleCloseModal}>Cancel</ActionButton>
                     <ActionButton onClick={handleAddTimer}>Add Selected Task</ActionButton>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Modal from 'react-modal'
 import Select from 'react-select'
-import getAllProjects from '../api/getAllProjects'
+import getAllProjects from '../../api/getAllProjects'
 
 import Styled from 'styled-components'
 

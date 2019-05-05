@@ -1,189 +1,54 @@
-import '../App.css'
+import React from 'react'
 
-import React, { useState, useEffect } from 'react'
-import createTimeEntry from '../api/createTimeEntry'
-import TimeCard from '../components/TimeCard'
+import DroppableProjectColumns from 'containers/DroppableProjectColumns'
+import DraggableProjectColumn from 'containers/DraggableProjectColumn'
+import DraggableTimerRow from 'containers/DraggableTimerRow'
+import DroppableTimerRows from 'containers/DroppableTimerRows'
+import Timer from 'containers/Timer'
 
-const electron = window.require('electron')
-const ipcRenderer = electron.ipcRenderer
-
-
-const defaultTimers = {
-    1: {
-        running: false,
-        logging: true,
-        startedTime: null,
-        description: 'Test timer',
-        entries: []
-    },
-    2: {
-        running: false,
-        logging: false,
-        startedTime: null,
-        description: '',
-        entries: []
-    },
-    3: {
-        running: false,
-        logging: false,
-        startedTime: null,
-        description: '',
-        entries: []
-    }
-}
-
-function Dashboard() {
-    const [apiKey, setApiKey] = useState('twp_VMyI6WbcxsdhUSGobMc6OFMJ3U8u')
-    const [account, setAccount] = useState({code: 'climbteam'})
-    const [timers, settimers] = useState(defaultTimers)
-
-    useEffect(() => {
-        ipcRenderer.on('toggle-timer', toggleTimer)
-        return () => {
-            ipcRenderer.removeListener('toggle-timer', toggleTimer)
-        }
-    }, [timers])
-
-    const toggleTimer = (event, key) => {
-        if (timers[key].running) {
-            stopTimer(key)
-        } else {
-            startTimer(key)
-        }
-    }
-
-    const getAccount = () => {
-        return fetch(`https://api.teamwork.com/authenticate.json`, {
-            method: 'GET',
-            headers: {
-                Authorization: `Basic ${btoa(`${apiKey}:X`)}`
-            }
-        })
-            .then(response => response.json())
-            .then(res => {
-                setAccount(res.account)
-            })
-    }
-
-    const startTimer = key => {
-        //todo: stop all other timers.
-        for (let timer in timers) {
-            if (timer !== key && timers[timer].running) {
-                stopTimer(timer)
-            }
-        }
-        const currentTime = Date.now()
-        settimers(timers => ({
-            ...timers,
-            [key]: {
-                ...timers[key],
-                running: true,
-                startedTime: timers[key].startedTime || currentTime,
-                entries: [
-                    ...timers[key].entries,
-                    {
-                        start: currentTime
-                    }
-                ]
-            }
-        }))
-    }
-    const editTimerDescription = (key, description) => {
-        settimers(timers => ({
-            ...timers,
-            [key]: {
-                ...timers[key],
-                description
-            }
-        }))
-    }
-    const stopTimer = key => {
-        const currentTime = Date.now()
-        settimers(timers => {
-            const newEntry = timers[key].entries[timers[key].entries.length - 1]
-            newEntry.end = currentTime
-            return {
-                ...timers,
-                [key]: {
-                    ...timers[key],
-                    running: false,
-                    entries: [...timers[key].entries]
-                }
-            }
-        })
-    }
-    const resetTimer = key => {
-        settimers(timers => {
-            return {
-                ...timers,
-                [key]: defaultTimers[key]
-            }
-        })
-    }
-    const logTimer = key => {
-        const seconds = totalHistoricTime(timers[key].entries)
-        createTimeEntry(account, apiKey, secondsToHoursAndMinutes(seconds), timers[key].description).then(res => {
-            if (res.STATUS === 'OK') {
-                return resetTimer(key)
-            }
-        })
-    }
-
+const Dashboard = () => {
     return (
-        <div className="container">
-            <div style={{ display: 'flex', alignItems: 'baseline' }}>
-                <h1>TimeKeys </h1>
-                &nbsp;&nbsp;&nbsp;
-                <small>Better TeamWork time tracking</small>
-            </div>
-            <div className="temp-api-input">
-                <input
-                    placeholder="Please enter your API key"
-                    value={apiKey}
-                    onChange={e => setApiKey(e.target.value)}
-                    type="text"
-                />
-                <button className="button" onClick={getAccount}>
-                    Submit API Key
-                </button>
-            </div>
-            {(!account || !apiKey) && (
-                <h5>
-                    Warning, no api key has been provided! <small>(Also no errors if wrong key is entered)</small>
-                </h5>
+        <DroppableProjectColumns>
+            {(isDropDisabled, project, index, timers) => (
+                <DraggableProjectColumn
+                    isDropDisabled={isDropDisabled}
+                    project={project}
+                    index={index}
+                    key={project.id}
+                >
+                    {(timers, project, isDropDisabled) => (
+                        <DroppableTimerRows timers={timers} project={project} isDropDisabled={isDropDisabled}>
+                            {timers => (
+                                <DraggableTimerRow timers={timers}>
+                                    {(provided, timer) => (
+                                        <Timer provided={provided} timer={timer}>
+                                            {(provided, timer) => <TimeCard provided={provided} timer={timer} />}
+                                        </Timer>
+                                    )}
+                                </DraggableTimerRow>
+                            )}
+                        </DroppableTimerRows>
+                    )}
+                </DraggableProjectColumn>
             )}
-            {Object.keys(timers).map((key, index) => {
-                return (
-                    <TimeCard
-                        apiKey={apiKey}
-                        data={timers[key]}
-                        running={timers[key].running}
-                        timerName={key}
-                        functions={{ startTimer, stopTimer, resetTimer, logTimer, editTimerDescription }}
-                        account={account}
-                        key={key}
-                    />
-                )
-            })}
-        </div>
+        </DroppableProjectColumns>
     )
 }
 
 export default Dashboard
 
-const totalHistoricTime = entries => {
-    return entries.reduce((acc, curr) => {
-        if (curr.end) {
-            acc = acc + (curr.end / 1000 - curr.start / 1000)
-        }
-        return acc
-    }, 0)
-}
-
-function secondsToHoursAndMinutes(seconds) {
-    const pad = n => (n < 10 ? '0' : '') + n
-    return {
-        hours: pad((seconds / 3600) | 0),
-        minutes: pad(((seconds % 3600) / 60) | 1)
-    }
+const TimeCard = props => {
+    return (
+        <div
+            style={{ height: '60px', width: '100%' }}
+            {...props.provided.draggableProps}
+            ref={props.provided.innerRef}
+        >
+            <div {...props.provided.dragHandleProps}>
+                {props.timer.task.content}
+                <br></br>
+                Hi {props.timer.id} 
+            </div>
+        </div>
+    )
 }

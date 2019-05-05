@@ -7,7 +7,7 @@ import { HashRouter, Switch, Route } from 'react-router-dom'
 import RouteIf from './helpers/RouteIf'
 
 import Setup from './pages/Setup'
-// import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/Dashboard'
 import ProjectList from './pages/ProjectList'
 
 import { connect } from 'react-redux'
@@ -26,6 +26,13 @@ const App = props => {
                         path="/dashboard"
                         exact
                         component={ProjectList}
+                    />
+                    <RouteIf
+                        condition={props.user.apikey}
+                        redirect="/"
+                        path="/test"
+                        exact
+                        component={Dashboard}
                     />
                 </Switch>
             </HashRouter>
