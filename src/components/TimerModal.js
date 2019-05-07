@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 
+import Select from 'react-select'
 import Styled from 'styled-components'
 
 const TimerModal = (props) => {
+
+    const {
+        projectOptions,
+        taskOptions
+    } = props
 
     return (
         <ModalContent>
@@ -10,13 +16,13 @@ const TimerModal = (props) => {
             <Title>{props.title}</Title>
 
             <Label>Select Project</Label>
-            <StyledReactSelect options={} defaultValue={} />
+            <Select options={projectOptions} />
 
             <Label>Select Task</Label>
-            <StyledReactSelect options={} defaultValue={} />
+            <Select options={taskOptions}  />
 
             <Label>Description</Label>
-            <StyleInput />
+            {/* <StyleInput value={description} onChange={setDescription} onBlur={handleDes} /> */}
 
             <TimeInputs>
 

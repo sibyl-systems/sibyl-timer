@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
 import DroppableProjectColumns from 'containers/DroppableProjectColumns'
 import DraggableProjectColumn from 'containers/DraggableProjectColumn'
@@ -12,6 +12,9 @@ import Styled from 'styled-components'
 import { ReactComponent as PlayIcon } from '../assets/play.svg'
 import { ReactComponent as PauseIcon } from '../assets/pause.svg'
 
+import {ContextMenuTrigger} from 'react-contextmenu'
+import TimerContextMenu from 'components/TimerContextMenu'
+
 
 
 
@@ -19,7 +22,7 @@ const Dashboard = () => {
     return (
         <DroppableProjectColumns>
             {(isDropDisabled, project, index) => (
-                <DraggableProjectColumn 
+                <DraggableProjectColumn
                     isDropDisabled={isDropDisabled}
                     project={project}
                     index={index}
@@ -31,7 +34,14 @@ const Dashboard = () => {
                                 <DraggableTimerRow timers={timers}>
                                     {(provided, timer) => (
                                         <Timer timer={timer}>
-                                            {(timer) => <TimeCard provided={provided} timer={timer} />}
+                                            {(timer, state, methods) => (
+                                                <TimeCard 
+                                                    provided={provided} 
+                                                    timer={timer} 
+                                                    state={state} 
+                                                    methods={methods} 
+                                                />
+                                            )}
                                         </Timer>
                                     )}
                                 </DraggableTimerRow>
@@ -60,7 +70,7 @@ export default Dashboard
 
 const Container = Styled.div`
     background-color: #333355;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
 
     font-weight: 400;
     width: 100%;
@@ -192,59 +202,75 @@ function secondsToHMS(seconds) {
 }
 
 const TimeCard = props => {
-    const {provided, timer} = props
-    let handleStopTimer, handleStartTimer, setDescription, handleUpdateTimerDescription, toggleContextMenu
-    let clock = 0
-    let description = '';
+    const { provided, timer, state, methods } = props
+
+    const { 
+        handleStopTimer, 
+        handleStartTimer, 
+        setDescription, 
+        handleUpdateDescription,
+        handleResetTimer,
+        handleRemoveTimer,
+        handleEditTimer,
+        handleLogTimer,
+        handleToggleTimerSettings
+    } = methods
+    const { clock, description } = state
+
+
+    let contextTrigger = useRef(null)
+
+    const toggleContextMenu = e => {
+        if (contextTrigger) {
+            contextTrigger.handleContextClick(e)
+        }
+    }
     return (
 
 
         <Container {...provided.draggableProps} ref={provided.innerRef}>
-            {/* <ContextMenuTrigger id={timer.id} ref={c => (contextTrigger = c)}> */}
-                <TimerContainer {...provided.dragHandleProps}>
-                    <TimerActions>
-                        {timer.running ? (
-                            <PauseButton onClick={handleStopTimer}>
-                                <PauseIcon />
-                            </PauseButton>
-                        ) : (
+            <ContextMenuTrigger id={timer.id} ref={c => (contextTrigger = c)}>
+            <TimerContainer {...provided.dragHandleProps}>
+                <TimerActions>
+                    {timer.running ? (
+                        <PauseButton onClick={handleStopTimer}>
+                            <PauseIcon />
+                        </PauseButton>
+                    ) : (
                             <PlayButton onClick={handleStartTimer}>
                                 <PlayIcon />
                             </PlayButton>
                         )}
-                        <TimerClock>
-                            {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}:
+                    <TimerClock>
+                        {secondsToHMS(clock).hours}:{secondsToHMS(clock).minutes}:
                             <Seconds>{secondsToHMS(clock).seconds}</Seconds>
-                        </TimerClock>
-                    </TimerActions>
-                    <TimerInformation>
-                        <TimerTitle style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</TimerTitle>
-                        <DescriptionInput
-                            isEmpty={!description}
-                            type="text"
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                            onBlur={handleUpdateTimerDescription}
-                        />
-                    </TimerInformation>
-                    <div>
-                        <TimerMenuButton onClick={toggleContextMenu}>
-                            <DottedMenu />
-                        </TimerMenuButton>
-                    </div>
-                </TimerContainer>
-            {/* </ContextMenuTrigger> */}
-            {/* <TimerContextMenu
+                    </TimerClock>
+                </TimerActions>
+                <TimerInformation>
+                    <TimerTitle style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</TimerTitle>
+                    <DescriptionInput
+                        isEmpty={!description}
+                        type="text"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        onBlur={handleUpdateDescription}
+                    />
+                </TimerInformation>
+                <div>
+                    <TimerMenuButton onClick={toggleContextMenu}>
+                        <DottedMenu />
+                    </TimerMenuButton>
+                </div>
+            </TimerContainer>
+            </ContextMenuTrigger>
+            <TimerContextMenu
                 timer={timer}
-                handleStopTimer={handleStopTimer}
-                handleStartTimer={handleStartTimer}
                 handleLogTimer={handleLogTimer}
-                handleChangeTask={handleChangeTask}
                 handleEditTimer={handleEditTimer}
                 handleResetTimer={handleResetTimer}
                 handleToggleTimerSettings={handleToggleTimerSettings}
                 removeTimer={handleRemoveTimer}
-            /> */}
+            />
 
             {/* <ReassignTask timer={timer} modalOpen={modalOpen} closeModal={closeModal} /> */}
             {/* This is to force the state of the modal to reset to props values... todo: make this better. */}

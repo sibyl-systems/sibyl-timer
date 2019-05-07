@@ -8,9 +8,11 @@ import AddNewTimerToProject from 'components/Modals/AddNewTimerToProject'
 const Container = styled.div`
     margin: 8px;
     width: 464px;
-    background: #333355;
-    border-radius: 10px
-    box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5)
+    
+    background: #2b2b47;
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5);
+    overflow: hidden;
 `
 
 const Header = styled.div`
@@ -20,6 +22,7 @@ const Header = styled.div`
     margin: 0;
     height: 50px;
     justify-content: space-between;
+    background: #333355;
 `
 
 const Title = styled.h3`
@@ -29,6 +32,10 @@ const Title = styled.h3`
     height: 100%;
     display: flex;
     align-items: center;
+`
+
+const CardList = styled.div`
+    padding: 12px;
 `
 
 
@@ -43,7 +50,9 @@ function ProjectListColumn(props) {
                 </ContextMenuTrigger>
                 <AddNewTimerToProject project={props.project} />
             </Header>
-            {props.children}
+            <CardList>
+                {props.children}
+            </CardList>
         </Container>
     )
 }

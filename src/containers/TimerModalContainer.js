@@ -1,11 +1,19 @@
-import React, { useState } from 'react'
-import getAllProjects from '../../api/getAllProjects'
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
-const TimerModalContainer = ({modalOpen, modalType, selectedProject}) => {
+import uuidv4 from 'uuid'
+
+import getAllProjects from 'api/getAllProjects'
+import getTasks from 'api/getTasks'
+
+const TimerModalContainer = ({ children, modalOpen, modalType, current }) => {
+
+    const projects = useSelector(state => state.projects)
+    const timers = useSelector(state => state.timers)
 
     useEffect(() => {
-        if(modalOpen) {
-            if(modalType === 'add') {
+        if (modalOpen) {
+            if (modalType === 'add') {
                 handleLoadTasks(selectedProject)
             } else {
                 handleLoadProjects()
@@ -49,20 +57,24 @@ const TimerModalContainer = ({modalOpen, modalType, selectedProject}) => {
 
     const handleLoadTasks = async (project) => {
         setLoadingTasks(true)
-        const result = await getTasks({projectId: project.id})
-        const unassignedTask = {content: 'Unassigned task', id: uuidv4(), unassignedTask: true}
+        const result = await getTasks({ projectId: project.id })
+        const unassignedTask = { content: 'Unassigned task', id: uuidv4(), unassignedTask: true }
         const options = result['todo-items'].filter(
             current => Object.keys(timers).reduce((acc, curr) => {
-                    acc = acc ? timers[curr].task.id !== current.id : false
-                    return acc
+                acc = acc ? timers[curr].task.id !== current.id : false
+                return acc
             }, true)
         )
-        setTaskOptions( [ unassignedTask, ...options ] )
+        setTaskOptions([unassignedTask, ...options])
         setSelectedTask(unassignedTask)
         setLoadingTasks(false)
     }
     const handleSelectTask = task => {
         setSelectedTask(task)
+    }
+
+    const functions = () => {
+
     }
 
     //handleSubmitModal = () => {
@@ -81,7 +93,7 @@ const TimerModalContainer = ({modalOpen, modalType, selectedProject}) => {
     */
     //}
 
-    return props.children(functions)
+    return children(functions)
 }
 
 

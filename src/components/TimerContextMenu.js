@@ -12,27 +12,18 @@ const WrappedMenuItem = ({ clickHandler, className, children }) => {
 
 const TimerContextMenu = ({
     timer,
-    handleStopTimer,
-    handleStartTimer,
     handleLogTimer,
-    handleChangeTask,
     handleEditTimer,
     handleResetTimer,
     handleToggleTimerSettings,
-    removeTimer
+    handleRemoveTimer
 }) => {
     return (
         <ContextMenu id={timer.id}>
-            {timer.running ? (
-                <MenuItem onClick={handleStopTimer}>Stop</MenuItem>
-            ) : (
-                <MenuItem onClick={handleStartTimer}>Start</MenuItem>
-            )}
             <MenuItem onClick={handleLogTimer}>Log Timer</MenuItem>
-            <MenuItem onClick={handleChangeTask}>Re-assign task</MenuItem>
             <MenuItem onClick={handleEditTimer}>Edit Timer</MenuItem>
             <MenuItem onClick={handleResetTimer}>Reset Timer</MenuItem>
-            <MenuItem onClick={removeTimer}>Remove Timer</MenuItem>
+            <MenuItem onClick={handleRemoveTimer}>Remove Timer</MenuItem>
             <MenuItem divider />
             <WrappedMenuItem
                 className={`react-contextmenu-toggle ${timer.settings.isBillable && 'is-selected'}`}

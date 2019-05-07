@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import useInterval from 'hooks/useInterval'
 
+import TimerModalContainer from 'containers/TimerModalContainer'
+import TimerModal from 'components/TimerModal'
+
 import {
     startTimer,
     stopTimer,
@@ -12,11 +15,12 @@ import {
 } from '../store/actions.js'
 
 const Timer = ({ timer, children }) => {
-    let toggleContextMenu
 
+    const dispatch = useDispatch()
+    
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
-
+    
     useInterval(() => {
         const newClock = clock + 1
         //Commit time every 5 minutes
@@ -39,22 +43,23 @@ const Timer = ({ timer, children }) => {
             })
         }
     ])
+    
 
-    // const confirmMethods = () => {
-        const handleResetTimer = () => {
-            setClock(0)
-            dispatch(commitTimer({
-                id: timer.id,
-                elapsedTime: 0
-            }))
-            handleStopTimer()
-        }
-        const handleRemoveTimer = () => {
-            dispatch(removeTimer(timer.id))
-        }
-    // }
+
+    const handleResetTimer = () => {
+        setClock(0)
+        dispatch(commitTimer({
+            id: timer.id,
+            elapsedTime: 0
+        }))
+        handleStopTimer()
+    }
+    const handleRemoveTimer = () => {
+        dispatch(removeTimer(timer.id))
+    }
 
     const handleStartTimer = () => {
+        console.log('start')
         dispatch(startTimer({
             id: timer.id,
             startedTime: Date.now()
@@ -69,7 +74,7 @@ const Timer = ({ timer, children }) => {
 
 
 
-    const handleUpdateTimerDescription = e => {
+    const handleUpdateDescription = e => {
         if (e.target.value !== timer.description) {
             updateTimerDescription({
                 id: timer.id,
@@ -79,20 +84,20 @@ const Timer = ({ timer, children }) => {
     }
 
     const handleToggleTimerSettings = settingName => {
-        updateTimerSettings({
+        dispatch(updateTimerSettings({
             id: timer.id,
             settings: {
                 [settingName]: timer.settings[settingName] ? false : true
             }
-        })
+        }))
     }
 
 
-    // const handleEditTimer = () => {
-    //     Promise.resolve(stopTimer({ id: timer.id })).then(() => {
-    //         openTimerModal('edit')
-    //     })
-    // }
+    const handleEditTimer = () => {
+        Promise.resolve(stopTimer({ id: timer.id })).then(() => {
+            openTimerModal('edit')
+        })
+    }
 
     // const handleChangeTask = () => {
     //     setModalOpen(true)
@@ -132,7 +137,23 @@ const Timer = ({ timer, children }) => {
     
     return (
         <>
-            {children(timer)}
+            {children(
+                timer,
+                {
+                    clock,
+                    description,
+                },
+                {
+                    handleResetTimer,
+                    handleRemoveTimer,
+                    handleStartTimer,
+                    handleStopTimer,
+                    setDescription,
+                    handleUpdateDescription,
+                    handleToggleTimerSettings,
+                    handleEditTimer,
+                }
+            )}
 
             {modalOpen && <TimerModalContainer modalType={modalType}>
                 {(props) => (
