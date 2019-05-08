@@ -97,6 +97,7 @@ const ProjectList = ({
                                     key={project.id}
                                     project={project}
                                     index={index}
+                                    timerMap={timers}
                                 />
                             )
                         })}
