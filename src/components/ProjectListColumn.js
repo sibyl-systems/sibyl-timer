@@ -68,14 +68,14 @@ const CardList = styled.div`
 function ProjectListColumn(props) {
     return (
         <Container {...props.provided.draggableProps} ref={props.provided.innerRef}>
-            <Header>
-                <ContextMenuTrigger id={props.project.id}>
+            <ContextMenuTrigger id={props.project.id}>
+                <Header>
                     <Title {...props.provided.dragHandleProps}>
                         {props.project.name}
                     </Title>
-                </ContextMenuTrigger>
-                <AddNewTimerToProject project={props.project} />
-            </Header>
+                    <AddNewTimerToProject project={props.project} />
+                </Header>
+            </ContextMenuTrigger>
             <CardList>
                 {props.children}
             </CardList>
