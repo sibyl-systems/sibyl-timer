@@ -11,6 +11,7 @@ import Timer from 'containers/Timer'
 import Styled from 'styled-components'
 import { ReactComponent as PlayIcon } from '../assets/play.svg'
 import { ReactComponent as PauseIcon } from '../assets/pause.svg'
+import ResizableTextarea from 'components/ResizableTextarea'
 
 import {ContextMenuTrigger} from 'react-contextmenu'
 import TimerContextMenu from 'components/TimerContextMenu'
@@ -77,7 +78,7 @@ const Container = Styled.div`
 `
 
 const TimerContainer = Styled.div`
-    padding: 12px;
+    padding: 12px 12px 8px;
     display: flex;
 `
 const TimerActions = Styled.div`
@@ -86,20 +87,20 @@ const TimerActions = Styled.div`
 const TimerClock = Styled.div`
     flex-shrink: 0;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
 `
 const Seconds = Styled.div`
     display: inline;
 `
 const PlayButton = Styled.button`
     display: flex;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     border: 1px solid transparent;
     background-color: #45476E;
     border-radius: 50%;
-    padding-left: 18%;
-    margin-bottom: 14px;
+    padding-left: 10px;
+    margin: 0 auto 14px;
     &:hover {
         background-color: #F18C64;
     }
@@ -110,12 +111,12 @@ const PlayButton = Styled.button`
 `
 const PauseButton = Styled.button`
     display: flex;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     border: 1px solid transparent;
     background-color: #F18C64;
     border-radius: 50%;
-    margin-bottom: 14px;
+    margin: 0 auto 14px;
     &:hover {
         background-color: #F18C64;
     }
@@ -126,31 +127,48 @@ const PauseButton = Styled.button`
 
 const TimerTitle = Styled.h3`
     font-weight: 300;
-    font-size: 18px;
-    min-height: 55px;
+    font-size: 15px;
+    min-height: 54px;
     display: flex;
     align-items: center;
+    margin: 0;
+    line-height: 20px;
+    padding-bottom: 4px;
+    padding-right: 16px;
 `
-const DescriptionInput = Styled.input`
+const DescriptionTextarea = Styled(ResizableTextarea)`
     background: none;
-    border: none;
     color: #8a88c2;
-    margin-bottom: 0;
-    height: 24px;
-    margin-top: 3px;
     border-bottom: 1px solid transparent;
     width: 100%;
     ${props => (props.isEmpty ? 'border-bottom: 1px solid #738FDF' : '')};
-        //This could be better achieved if I just wrapped the input and used pseudo elements
-    ${props => (!props.isEmpty ? '    height: 15px; margin-bottom: 0; margin-top: 12px;' : '')}; 
     &:focus {
         outline: none;
         border-bottom: 1px solid #738FDF;
     }
+
+
+
+    box-sizing: border-box;
+	border: none;
+	border-radius: 0;
+	resize: none;
+	font-size: 14px;
+	line-height: 18px;
+	overflow: auto;
+	height: auto;
+	padding: 6px 1px 2px;
+	&::placeholder {
+		color: #8a88c2a1;
+    }
+	
+	&:focus {
+		outline: none;
+    }
 `
 const TimerMenuButton = Styled.button`
-    width: 52px;
-    height: 52px;
+    width: 20px;
+    height: 32px;
     border: none;
     background: none;
     box-shadow: none;
@@ -158,14 +176,15 @@ const TimerMenuButton = Styled.button`
     align-items: center;
     border-radius: 5px;
     padding: 0;
+    margin-top: 9px;
     &:hover {
         background-color: #45476E;
     }
 `
 const DottedMenu = Styled.div`
     position: relative;
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     background-color: #627FD9;
     border-radius: 50%;
     margin: auto;
@@ -180,10 +199,10 @@ const DottedMenu = Styled.div`
         border-radius: 50%;
     }
     &::before {
-        top: -8px;
+        top: -7px;
     }
     &::after {
-        bottom: -8px;
+        bottom: -7px;
     }
 `
 const TimerInformation = Styled.div`
@@ -247,12 +266,11 @@ const TimeCard = props => {
                     </TimerClock>
                 </TimerActions>
                 <TimerInformation>
-                    <TimerTitle style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</TimerTitle>
-                    <DescriptionInput
-                        isEmpty={!description}
-                        type="text"
+                    <TimerTitle>{timer.task.content}</TimerTitle>
+                    <DescriptionTextarea 
+                        isEmpty={!description} 
                         value={description}
-                        onChange={e => setDescription(e.target.value)}
+                        setValue={setDescription}
                         onBlur={handleUpdateDescription}
                     />
                 </TimerInformation>
