@@ -164,8 +164,6 @@ function secondsToHMS(seconds) {
     }
 }
 
-
-
 const ModalContainer = Styled(Modal)`
     position: absolute;
     top: 40px;

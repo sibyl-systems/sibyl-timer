@@ -38,12 +38,14 @@ const Title = styled.h3`
 
 const CardList = styled.div`
     max-height: calc(100vh - 200px);
-    overflow-y: auto;
+    overflow-y: overlay;
     padding: 0 12px 12px;
     margin-top: 12px;
+    overflow-x: hidden;
+    padding-bottom: 80px;
 
     &::-webkit-scrollbar {
-        width: 16px
+        width: 4px
     }
 
     &::-webkit-scrollbar-track {
@@ -59,6 +61,7 @@ const CardList = styled.div`
     &::-webkit-scrollbar-thumb:hover {
         background: #627FD8
     }
+
 `
 
 

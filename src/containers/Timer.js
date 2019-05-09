@@ -15,43 +15,46 @@ import {
 } from '../store/actions.js'
 
 const Timer = ({ timer, children }) => {
-
     const dispatch = useDispatch()
-    
+
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
-    
+
     useInterval(() => {
         const newClock = clock + 1
         //Commit time every 5 minutes
         if (newClock % 300 === 0) {
-            dispatch(commitTimer({
-                id: timer.id,
-                elapsedTime: newClock
-            }))
+            dispatch(
+                commitTimer({
+                    id: timer.id,
+                    elapsedTime: newClock
+                })
+            )
         }
         setClock(newClock)
     }, [
         timer.running ? 1000 : null,
         () => {
             return setClock(countingSeconds => {
-                dispatch(commitTimer({
-                    id: timer.id,
-                    elapsedTime: countingSeconds
-                }))
+                dispatch(
+                    commitTimer({
+                        id: timer.id,
+                        elapsedTime: countingSeconds
+                    })
+                )
                 return countingSeconds
             })
         }
     ])
-    
-
 
     const handleResetTimer = () => {
         setClock(0)
-        dispatch(commitTimer({
-            id: timer.id,
-            elapsedTime: 0
-        }))
+        dispatch(
+            commitTimer({
+                id: timer.id,
+                elapsedTime: 0
+            })
+        )
         handleStopTimer()
     }
     const handleRemoveTimer = () => {
@@ -59,38 +62,42 @@ const Timer = ({ timer, children }) => {
     }
 
     const handleStartTimer = () => {
-        dispatch(startTimer({
-            id: timer.id,
-            startedTime: Date.now()
-        }))
+        dispatch(
+            startTimer({
+                id: timer.id,
+                startedTime: Date.now()
+            })
+        )
     }
     const handleStopTimer = () => {
-        dispatch(stopTimer({
-            id: timer.id
-        }))
+        dispatch(
+            stopTimer({
+                id: timer.id
+            })
+        )
     }
-
-
-
 
     const handleUpdateDescription = e => {
         if (e.target.value !== timer.description) {
-            dispatch(updateTimerDescription({
-                id: timer.id,
-                description: e.target.value
-            }))
+            dispatch(
+                updateTimerDescription({
+                    id: timer.id,
+                    description: e.target.value
+                })
+            )
         }
     }
 
     const handleToggleTimerSettings = settingName => {
-        dispatch(updateTimerSettings({
-            id: timer.id,
-            settings: {
-                [settingName]: timer.settings[settingName] ? false : true
-            }
-        }))
+        dispatch(
+            updateTimerSettings({
+                id: timer.id,
+                settings: {
+                    [settingName]: timer.settings[settingName] ? false : true
+                }
+            })
+        )
     }
-
 
     const handleEditTimer = () => {
         Promise.resolve(stopTimer({ id: timer.id })).then(() => {
@@ -120,28 +127,26 @@ const Timer = ({ timer, children }) => {
         })
     }
 
-
-
     const [modalOpen, setModalOpen] = useState(false)
     const [modalType, setModalType] = useState(null)
 
-    const openTimerModal = (modalType) => {
+    const openTimerModal = modalType => {
         setModalOpen(true)
         setModalType(modalType) //edit, log, add
     }
-    
+
     const closeTimerModal = () => {
         setModalOpen(false)
         setModalType(null) //edit, log, add
     }
-    
+
     return (
         <>
             {children(
                 timer,
                 {
                     clock,
-                    description,
+                    description
                 },
                 {
                     handleResetTimer,
@@ -151,12 +156,18 @@ const Timer = ({ timer, children }) => {
                     setDescription,
                     handleUpdateDescription,
                     handleToggleTimerSettings,
-                    handleEditTimer,
+                    handleEditTimer
                 }
             )}
 
-            {modalOpen && <TimerModalContainer closeTimerModal={closeTimerModal} modalOpen={modalOpen} timer={timer} modalType={modalType}></TimerModalContainer>
-            }
+            {modalOpen && (
+                <TimerModalContainer
+                    closeTimerModal={closeTimerModal}
+                    modalOpen={modalOpen}
+                    timer={timer}
+                    modalType={modalType}
+                />
+            )}
         </>
     )
 }
