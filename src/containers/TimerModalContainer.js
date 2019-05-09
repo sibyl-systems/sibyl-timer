@@ -12,6 +12,7 @@ import getTasks from 'api/getTasks'
 import Select from 'react-select'
 
 import ResizableTextarea from 'components/ResizableTextarea'
+import { object } from 'prop-types';
 
 Modal.setAppElement('#root')
 
@@ -53,10 +54,10 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
         setLoadingProjects(true)
         const result = await getAllProjects()
         const options = result.projects
+        const project = projects[Object.keys(projects).filter((key) => {
+            return projects[key].timerIds.includes(timer.id)
+        })]
         setProjectOptions(options)
-        const project = options.find(item => {
-            return Number(item.id) === Number(timer.task['project-id'])
-        })
         setSelectedProject(project)
         setLoadingProjects(false)
         handleLoadTasks(project)
@@ -83,7 +84,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
             setSelectedTask(
                 options.find(option => {
                     return option.id === timer.task.id
-                })
+                }) || timer.task
             )
         }
         setLoadingTasks(false)
@@ -148,7 +149,6 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
             <br />
             <br />
             <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} />
-            <br />
             <br />
             <br />
 
