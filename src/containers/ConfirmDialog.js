@@ -4,9 +4,7 @@ import Styled from 'styled-components'
 import { hideMenu } from 'react-contextmenu';
 
 const ConfirmDialog = (props) => {
-    console.log(props)
     const {children, title, description} = props
-    console.log(children)
     const [open, setOpen] = useState(false)
     const [callback, setCallback] = useState({cb: null})
     const [messages, setMessages] = useState({

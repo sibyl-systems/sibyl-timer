@@ -57,7 +57,6 @@ const Setup = ({ user, history, submitApiKey }) => {
         setApikey(e.target.value)
     }
     useEffect(() => {
-        console.log(user)
         if (user.apikey) {
             history.push('/dashboard')
         }

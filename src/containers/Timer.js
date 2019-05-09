@@ -55,12 +55,10 @@ const Timer = ({ timer, children }) => {
         handleStopTimer()
     }
     const handleRemoveTimer = () => {
-        console.log('handle remove timer');
         dispatch(removeTimer(timer.id))
     }
 
     const handleStartTimer = () => {
-        console.log('start')
         dispatch(startTimer({
             id: timer.id,
             startedTime: Date.now()
@@ -100,10 +98,6 @@ const Timer = ({ timer, children }) => {
         })
     }
 
-    // const handleChangeTask = () => {
-    //     setModalOpen(true)
-    // }
-
     ////// For later use
     const handleCommitEditTimer = payload => {
         setClock(payload.elapsedTime)
@@ -136,6 +130,11 @@ const Timer = ({ timer, children }) => {
         setModalType(modalType) //edit, log, add
     }
     
+    const closeTimerModal = () => {
+        setModalOpen(false)
+        setModalType(null) //edit, log, add
+    }
+    
     return (
         <>
             {children(
@@ -156,11 +155,7 @@ const Timer = ({ timer, children }) => {
                 }
             )}
 
-            {modalOpen && <TimerModalContainer modalType={modalType}>
-                {(props) => (
-                    <TimerModal modalType={modalType} {...props} />
-                )}
-            </TimerModalContainer>
+            {modalOpen && <TimerModalContainer closeTimerModal={closeTimerModal} modalOpen={modalOpen} timer={timer} modalType={modalType}></TimerModalContainer>
             }
         </>
     )

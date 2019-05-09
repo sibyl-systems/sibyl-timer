@@ -185,7 +185,6 @@ const AddNewTimerToTask = ({ project }) => {
     const [options, setOptions] = useState([])
     const [selectedTask, setSelectedTask] = useState(false)
     const defaultValue = { content: 'Unassigned task', id: uuidv4(), unassignedTask: true }
-    console.log(timers);
     const handleLoadTasks = async () => {
         setLoadingTasks(true)
         try {

@@ -69,8 +69,6 @@ export default function timerReducer(state = defaultState, action) {
                 }
             }
         case 'UPDATE_TIMER_DESCRIPTION':
-        console.log('UPDATE_TIMER_DESCRIPTION');
-        console.log(action);
             return {
                 ...state,
                 [action.payload.id]: {

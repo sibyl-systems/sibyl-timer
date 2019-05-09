@@ -4,7 +4,6 @@ import { Draggable } from 'react-beautiful-dnd'
 
 const DraggableTimerRow = React.memo(props => {
     return props.timers.map((timer, index) => {
-        console.log(timer);
         if (timer) {
             return (
                 <Draggable
