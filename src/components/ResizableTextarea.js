@@ -25,9 +25,11 @@ const ResizableTextarea = ({value, setValue, onBlur, minRows = 1, maxRows = 15, 
         setValue(event.target.value)
         setRows(currentRows < maxRows ? currentRows : maxRows)
     }
-    const handleOnBlur = event => {
-        onBlur(event)
-    }
+    // const handleOnBlur = event => {
+    //     if(onBlur) {
+    //         onBlur(event)
+    //     }
+    // }
 
     return (
         <textarea
@@ -36,7 +38,7 @@ const ResizableTextarea = ({value, setValue, onBlur, minRows = 1, maxRows = 15, 
             value={value}
             placeholder={'description...'}
             onChange={handleChange}
-            onBlur={handleOnBlur}
+            // onBlur={handleOnBlur}
         />
     )
 }

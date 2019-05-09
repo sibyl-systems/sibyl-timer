@@ -11,6 +11,8 @@ import getTasks from 'api/getTasks'
 
 import Select from 'react-select'
 
+import ResizableTextarea from 'components/ResizableTextarea'
+
 Modal.setAppElement('#root')
 
 const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimerModal }) => {
@@ -20,6 +22,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
     useEffect(() => {
         if (modalOpen && !loadingProjects) {
             handleLoadProjects()
+            setDescription(timer.description)
         }
         return () => {
             setSelectedProject(false)
@@ -35,7 +38,6 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
     const [loadingTasks, setLoadingTasks] = useState(false)
     const [taskOptions, setTaskOptions] = useState([])
     const [selectedTask, setSelectedTask] = useState(false)
-
     const [description, setDescription] = useState(timer.description | '')
 
     const { hours, minutes } = secondsToHMS(timer.elapsedTime)
@@ -143,8 +145,30 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                 </>
             )}
 
+            <br />
+            <br />
+            <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} />
+            <br />
+            <br />
+            <br />
+
             <input type="text" value={time.hours} onChange={handleTimeOnChange} name="hours" />
             <input type="text" value={time.minutes} onChange={handleTimeOnChange} name="minutes" />
+
+            <input
+                type="checkbox"
+                checked={isBillable}
+                value="isBillable"
+                name="isBillable"
+                onChange={() => setIsBillable(value => !value)}
+            />
+            <input
+                type="checkbox"
+                checked={keepTimer}
+                value="keepTimer"
+                name="keepTimer"
+                onChange={() => setIsBillable(value => !value)}
+            />
         </ModalContainer>
     )
 }
@@ -182,4 +206,28 @@ const ModalContainer = Styled(Modal)`
     flex-direction: column;
     min-height: 600px;
 
+`
+
+const DescriptionTextarea = Styled(ResizableTextarea)`
+    background: none;
+    color: #8a88c2;
+    width: 100%;
+    box-sizing: border-box;
+	border: none;
+	border-radius: 0;
+	resize: none;
+	font-size: 14px;
+	line-height: 18px;
+	overflow: auto;
+	height: auto;
+	padding: 6px 1px 2px;
+    border-bottom: 1px solid transparent;
+    font-weight: 400;
+    &:focus {
+        outline: none;
+        border-bottom: 1px solid #738FDF;
+    }
+	&::placeholder {
+		color: #8a88c2a1;
+    }
 `
