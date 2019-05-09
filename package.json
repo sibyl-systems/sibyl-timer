@@ -22,6 +22,7 @@
         "wait-on": "^3.2.0"
     },
     "dependencies": {
+        "@reach/dialog": "^0.2.8",
         "electron-is-dev": "^1.0.1",
         "node-notifier": "^5.4.0",
         "react": "^16.8.6",

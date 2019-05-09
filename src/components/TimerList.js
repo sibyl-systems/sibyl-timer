@@ -7,6 +7,7 @@ const Container = styled.div`
     align-items: flex-start;
     flex-direction: column;
     min-height: 300px;
+    padding-bottom: 80px;
 `
 function TimerList(props) {
     return (

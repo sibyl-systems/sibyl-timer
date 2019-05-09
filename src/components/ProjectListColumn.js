@@ -7,7 +7,8 @@ import AddNewTimerToProject from 'components/Modals/AddNewTimerToProject'
 
 const Container = styled.div`
     margin: 8px;
-    width: 464px;
+    width: 400px;
+    flex-shrink: 0;
     
     background: #2b2b47;
     border-radius: 6px 6px 0 0;
@@ -32,10 +33,32 @@ const Title = styled.h3`
     height: 100%;
     display: flex;
     align-items: center;
+    letter-spacing: 0.018em;
 `
 
 const CardList = styled.div`
-    padding: 12px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding: 0 12px 12px;
+    margin-top: 12px;
+
+    &::-webkit-scrollbar {
+        width: 16px
+    }
+
+    &::-webkit-scrollbar-track {
+        background: 
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #393960
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #627FD8
+    }
 `
 
 

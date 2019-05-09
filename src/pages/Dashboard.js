@@ -18,7 +18,6 @@ import TimerContextMenu from 'components/TimerContextMenu'
 
 
 
-
 const Dashboard = () => {
     return (
         <DroppableProjectColumns>
@@ -70,11 +69,18 @@ export default Dashboard
 
 
 const Container = Styled.div`
-    background-color: #333355;
     margin-bottom: 12px;
-
     font-weight: 400;
     width: 100%;
+
+    ${props => (props.isRunning 
+    ? `
+        background: transparent;
+        box-shadow: inset 0 0 0px 2px #333355;
+    ` : `
+        background-color: #333355;
+    `)}
+    
 `
 
 const TimerContainer = Styled.div`
@@ -139,16 +145,7 @@ const TimerTitle = Styled.h3`
 const DescriptionTextarea = Styled(ResizableTextarea)`
     background: none;
     color: #8a88c2;
-    border-bottom: 1px solid transparent;
     width: 100%;
-    ${props => (props.isEmpty ? 'border-bottom: 1px solid #738FDF' : '')};
-    &:focus {
-        outline: none;
-        border-bottom: 1px solid #738FDF;
-    }
-
-
-
     box-sizing: border-box;
 	border: none;
 	border-radius: 0;
@@ -158,12 +155,14 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
 	overflow: auto;
 	height: auto;
 	padding: 6px 1px 2px;
+    border-bottom: 1px solid transparent;
+    font-weight: 400;
+    &:focus {
+        outline: none;
+        border-bottom: 1px solid #738FDF;
+    }
 	&::placeholder {
 		color: #8a88c2a1;
-    }
-	
-	&:focus {
-		outline: none;
     }
 `
 const TimerMenuButton = Styled.button`
@@ -247,7 +246,7 @@ const TimeCard = props => {
     return (
 
 
-        <Container {...provided.draggableProps} ref={provided.innerRef}>
+        <Container {...provided.draggableProps} ref={provided.innerRef} isRunning={timer.running}>
             <ContextMenuTrigger id={timer.id} ref={c => (contextTrigger = c)}>
             <TimerContainer {...provided.dragHandleProps}>
                 <TimerActions>
@@ -287,7 +286,7 @@ const TimeCard = props => {
                 handleEditTimer={handleEditTimer}
                 handleResetTimer={handleResetTimer}
                 handleToggleTimerSettings={handleToggleTimerSettings}
-                removeTimer={handleRemoveTimer}
+                handleRemoveTimer={handleRemoveTimer}
             />
 
             {/* <ReassignTask timer={timer} modalOpen={modalOpen} closeModal={closeModal} /> */}

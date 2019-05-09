@@ -55,6 +55,7 @@ const Timer = ({ timer, children }) => {
         handleStopTimer()
     }
     const handleRemoveTimer = () => {
+        console.log('handle remove timer');
         dispatch(removeTimer(timer.id))
     }
 
@@ -76,10 +77,10 @@ const Timer = ({ timer, children }) => {
 
     const handleUpdateDescription = e => {
         if (e.target.value !== timer.description) {
-            updateTimerDescription({
+            dispatch(updateTimerDescription({
                 id: timer.id,
                 description: e.target.value
-            })
+            }))
         }
     }
 
