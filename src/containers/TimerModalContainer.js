@@ -12,7 +12,20 @@ import getTasks from 'api/getTasks'
 import Select from 'react-select'
 
 import ResizableTextarea from 'components/ResizableTextarea'
-import { object } from 'prop-types';
+import { object } from 'prop-types'
+
+import {
+    AddButton,
+    ModalContainer,
+    ModalTitle,
+    ModalContent,
+    ButtonContainer,
+    ActionButton,
+    selectStyles,
+    Loader,
+    Label,
+    FormGroup,
+} from 'components/styles/modal'
 
 Modal.setAppElement('#root')
 
@@ -51,12 +64,16 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
     const [keepTimer, setKeepTimer] = useState(timer.settings.keepTimer | false)
 
     const handleLoadProjects = async () => {
+        //2do: set current projects in memory as the available options first.
         setLoadingProjects(true)
         const result = await getAllProjects()
         const options = result.projects
-        const project = projects[Object.keys(projects).filter((key) => {
-            return projects[key].timerIds.includes(timer.id)
-        })]
+        const project =
+            projects[
+                Object.keys(projects).filter(key => {
+                    return projects[key].timerIds.includes(timer.id)
+                })
+            ]
         setProjectOptions(options)
         setSelectedProject(project)
         setLoadingProjects(false)
@@ -107,69 +124,103 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
         closeTimerModal()
     }
 
-    //handleSubmitModal = () => {
-    /* 
-        submitModal({
-            timer
-            selectedProject
-            selectedTask
-            description
-            HoursAndMinutesToSeconds(time)
-            settings: {
-                isBillable,
-                keepTimer,
-            }
-        })
-    */
-    //}
+    const handleSubmitModal = () => {
+        if(modalType === 'edit') {
+            console.log('edit timer');
+        } else if(modalType === 'log') {
+            console.log('log timer');
+        }
+        setSelectedProject(false)
+        setSelectedTask(false)
+        closeTimerModal()
+        // submitModal({
+        //     timer
+        //     selectedProject
+        //     selectedTask
+        //     description
+        //     HoursAndMinutesToSeconds(time)
+        //     settings: {
+        //         isBillable,
+        //         keepTimer,
+        //     }
+        // })
+    }
 
     return (
-        <ModalContainer isOpen={modalOpen} onRequestClose={handleCloseModal} contentLabel="TEST PROJECT MODAL">
-            <div>{loadingProjects ? 'Updating projects...' : 'Projects up to date!'}</div>
-            <Select
-                getOptionLabel={option => option.name}
-                getOptionValue={option => option.id}
-                options={projectOptions}
-                onChange={handleSelectProject}
-                value={selectedProject}
-            />
-            {selectedProject && (
-                <>
-                    <div>{loadingTasks ? 'Updating tasks...' : 'Tasks up to date!'}</div>
-                    <Select
-                        getOptionLabel={option => option.content}
-                        getOptionValue={option => option.id}
-                        options={taskOptions}
-                        onChange={handleSelectTask}
-                        value={selectedTask}
-                    />
-                </>
-            )}
+        <ModalOuterContainer isOpen={modalOpen} onRequestClose={handleCloseModal}>
+            <ModalTitle>
+                {modalType === 'edit' && 'Edit timer'}
+                {modalType === 'log' && 'Log timer'}
+            </ModalTitle>
+            <ModalContent>
+                <FormGroup>
 
-            <br />
-            <br />
-            <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} />
-            <br />
-            <br />
+                <Label>Select Project {loadingProjects ? <Loader title="Loading..." /> : null}</Label>
+                <Select
+                    styles={selectStyles}
+                    getOptionLabel={option => option.name}
+                    getOptionValue={option => option.id}
+                    options={projectOptions}
+                    onChange={handleSelectProject}
+                    value={selectedProject}
+                />
+                </FormGroup>
 
-            <input type="text" value={time.hours} onChange={handleTimeOnChange} name="hours" />
-            <input type="text" value={time.minutes} onChange={handleTimeOnChange} name="minutes" />
+                <FormGroup>
+                    <Label>Select Task {loadingTasks ? <Loader title="Loading..." /> : null}</Label>
+                    {selectedProject ? (
+                            <Select
+                                styles={selectStyles}
+                                getOptionLabel={option => option.content}
+                                getOptionValue={option => option.id}
+                                options={taskOptions}
+                                onChange={handleSelectTask}
+                                value={selectedTask}
+                            />
+                    ) : <Select styles={selectStyles} isDisabled={true} />}
+                </FormGroup>
 
-            <input
-                type="checkbox"
-                checked={isBillable}
-                value="isBillable"
-                name="isBillable"
-                onChange={() => setIsBillable(value => !value)}
-            />
-            <input
-                type="checkbox"
-                checked={keepTimer}
-                value="keepTimer"
-                name="keepTimer"
-                onChange={() => setKeepTimer(value => !value)}
-            />
-        </ModalContainer>
+                <FormGroup>
+                    <Label>Timer description</Label>
+                    <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} />
+                </FormGroup>
+                
+
+
+                <TimeInputContainer>
+                    <TimeInputGroup>
+                        <Label>Hours</Label>
+                        <TimeInput type="text" value={time.hours} onChange={handleTimeOnChange} name="hours" />
+                    </TimeInputGroup>
+                    <TimeInputGroup>
+                        <Label>Minutes</Label>
+                        <TimeInput type="text" value={time.minutes} onChange={handleTimeOnChange} name="minutes" />
+                    </TimeInputGroup>
+                </TimeInputContainer>
+
+                <input
+                    type="checkbox"
+                    checked={isBillable}
+                    value="isBillable"
+                    name="isBillable"
+                    onChange={() => setIsBillable(value => !value)}
+                />
+                <input
+                    type="checkbox"
+                    checked={keepTimer}
+                    value="keepTimer"
+                    name="keepTimer"
+                    onChange={() => setKeepTimer(value => !value)}
+                />
+            </ModalContent>
+            <ButtonContainer>
+                <ActionButton onClick={handleCloseModal}>Cancel</ActionButton>
+                <ActionButton onClick={handleSubmitModal}>
+                    {modalType === 'edit' && 'Edit timer'}
+                    {modalType === 'log' && 'Log timer'}
+                </ActionButton>
+            </ButtonContainer>
+        </ModalOuterContainer>
     )
 }
 
@@ -188,7 +239,7 @@ function secondsToHMS(seconds) {
     }
 }
 
-const ModalContainer = Styled(Modal)`
+const ModalOuterContainer = Styled(ModalContainer)`
     position: absolute;
     top: 40px;
     left: 0;
@@ -197,7 +248,7 @@ const ModalContainer = Styled(Modal)`
     max-width: 100%;
     margin: auto;
     border: 1px solid rgb(204, 204, 204);
-    background: #2b2b47;
+    background: ${props => props.theme.backgroundColor};;
     overflow: auto;
     border-radius: 10px;
     overflow: hidden;
@@ -210,7 +261,7 @@ const ModalContainer = Styled(Modal)`
 
 const DescriptionTextarea = Styled(ResizableTextarea)`
     background: none;
-    color: #8a88c2;
+    color: ${props => props.theme.textColor};
     width: 100%;
     box-sizing: border-box;
 	border: none;
@@ -223,11 +274,42 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
 	padding: 6px 1px 2px;
     border-bottom: 1px solid transparent;
     font-weight: 400;
+    border-bottom: 1px solid ${props => props.theme.foregroundColor};
     &:focus {
         outline: none;
         border-bottom: 1px solid #738FDF;
     }
 	&::placeholder {
-		color: #8a88c2a1;
+		color: ${props => props.theme.textColor}a1;
     }
+    background-color: rgba(0,0,0,0.1);
+    padding: 9px 9px;
+    border: 1px solid #738FDF;
+    width: calc(100% - 10px);
+`
+
+
+const TimeInputContainer = Styled.div`
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+`
+const TimeInputGroup = Styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 16px;
+`
+const TimeInput = Styled.input`
+    width: 100px;
+    background-color: rgba(0,0,0,0.1);
+    border: none;
+    box-shadow: none;
+    color: white;
+    line-height: 18px;
+    height: 18px;
+    border: 1px solid #738FDF;
+    height: 35px;
+    padding: 4px 12px;
+    text-align: center;
 `

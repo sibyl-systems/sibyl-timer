@@ -15,7 +15,7 @@ import ProjectContextMenu from './ProjectContextMenu'
 const Container = styled.div`
     margin: 8px;
     width: 464px;
-    background: #333355;
+    background: ${props => props.theme.foregroundColor};
     border-radius: 10px
     box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5)
 `
@@ -45,7 +45,7 @@ const TimerList = styled.div`
     transition: 0.2s ease-in-out;
     background: ${props => (props.isDraggingOver ? 'offwhite' : 'white')};
     min-height: 600px;
-    background: #2b2b47;
+    background: ${props => props.theme.backgroundColor};;
 `
 
 const InnerTimerList = React.memo(props => {

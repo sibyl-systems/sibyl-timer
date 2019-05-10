@@ -243,7 +243,7 @@ function secondsToHMS(seconds) {
 }
 
 const Container = Styled.div`
-    background-color: #333355;
+    background-color: ${props => props.theme.foregroundColor};
     margin-bottom: 24px;
 
     font-weight: 400;
@@ -274,7 +274,7 @@ const PlayButton = Styled.button`
     padding-left: 18%;
     margin-bottom: 14px;
     &:hover {
-        background-color: #F18C64;
+        background-color: ${props => props.theme.secondaryAccentColor};
     }
     svg {
         margin: auto;
@@ -286,11 +286,11 @@ const PauseButton = Styled.button`
     width: 60px;
     height: 60px;
     border: 1px solid transparent;
-    background-color: #F18C64;
+    background-color: ${props => props.theme.secondaryAccentColor};
     border-radius: 50%;
     margin-bottom: 14px;
     &:hover {
-        background-color: #F18C64;
+        background-color: ${props => props.theme.secondaryAccentColor};
     }
     svg {
         margin: auto;
@@ -307,7 +307,7 @@ const TimerTitle = Styled.h3`
 const DescriptionInput = Styled.input`
     background: none;
     border: none;
-    color: #8a88c2;
+    color: ${props => props.theme.textColor};
     margin-bottom: 0;
     height: 24px;
     margin-top: 3px;
@@ -339,7 +339,7 @@ const DottedMenu = Styled.div`
     position: relative;
     width: 5px;
     height: 5px;
-    background-color: #627FD9;
+    background-color: ${props => props.theme.primaryAccentColor};
     border-radius: 50%;
     margin: auto;
     &::before,

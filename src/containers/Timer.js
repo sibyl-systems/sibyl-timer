@@ -104,28 +104,33 @@ const Timer = ({ timer, children }) => {
             openTimerModal('edit')
         })
     }
-
-    ////// For later use
-    const handleCommitEditTimer = payload => {
-        setClock(payload.elapsedTime)
-        commitTimer(payload)
-    }
-
     const handleLogTimer = () => {
-        //This is kind of long winded, but it's to ensure then local time is logged
-        //into redux to get the right time.
         Promise.resolve(stopTimer({ id: timer.id })).then(() => {
-            Promise.resolve(commitTimer({ id: timer.id, elapsedTime: clock })).then(() => {
-                // createTimeEntry(timer).then(res => {
-                //     if (!timer.settings.keepTimer) {
-                //         removeTimer(timer.id)
-                //     } else {
-                //         handleResetTimer()
-                //     }
-                // })
-            })
+            openTimerModal('log')
         })
     }
+
+    ////// For later use
+    // const handleCommitEditTimer = payload => {
+    //     setClock(payload.elapsedTime)
+    //     commitTimer(payload)
+    // }
+
+    // const handleLogTimer = () => {
+    //     //This is kind of long winded, but it's to ensure then local time is logged
+    //     //into redux to get the right time.
+    //     Promise.resolve(stopTimer({ id: timer.id })).then(() => {
+    //         Promise.resolve(commitTimer({ id: timer.id, elapsedTime: clock })).then(() => {
+    //             // createTimeEntry(timer).then(res => {
+    //             //     if (!timer.settings.keepTimer) {
+    //             //         removeTimer(timer.id)
+    //             //     } else {
+    //             //         handleResetTimer()
+    //             //     }
+    //             // })
+    //         })
+    //     })
+    // }
 
     const [modalOpen, setModalOpen] = useState(false)
     const [modalType, setModalType] = useState(null)
@@ -156,7 +161,8 @@ const Timer = ({ timer, children }) => {
                     setDescription,
                     handleUpdateDescription,
                     handleToggleTimerSettings,
-                    handleEditTimer
+                    handleEditTimer,
+                    handleLogTimer
                 }
             )}
 

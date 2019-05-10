@@ -60,11 +60,11 @@ const Container = Styled.div`
     ${props =>
         props.isRunning
             ? `
-        background: transparent;
-        box-shadow: inset 0 0 0px 2px #333355;
-    `
+                background: transparent;
+                box-shadow: inset 0 0 0px 2px ${props.theme.foregroundColor};
+            `
             : `
-        background-color: #333355;
+                background-color: ${props.theme.foregroundColor};
     `}
     
 `
@@ -94,10 +94,10 @@ const PlayButton = Styled.button`
     padding-left: 10px;
     margin: 0 auto 14px;
     &:focus {
-        border-color: #F18C64;
+        border-color: ${props => props.theme.secondaryAccentColor};
     }
     &:hover {
-        background-color: #F18C64;
+        background-color: ${props => props.theme.secondaryAccentColor};
     }
     svg {
         margin: auto;
@@ -109,14 +109,14 @@ const PauseButton = Styled.button`
     width: 48px;
     height: 48px;
     border: 1px solid transparent;
-    background-color: #F18C64;
+    background-color: ${props => props.theme.secondaryAccentColor};
     border-radius: 50%;
     margin: 0 auto 14px;
     &:focus {
-        border-color: #F18C64;
+        border-color: ${props => props.theme.secondaryAccentColor};
     }
     &:hover {
-        background-color: #F18C64;
+        background-color: ${props => props.theme.secondaryAccentColor};
     }
     svg {
         margin: auto;
@@ -136,7 +136,7 @@ const TimerTitle = Styled.h3`
 `
 const DescriptionTextarea = Styled(ResizableTextarea)`
     background: none;
-    color: #8a88c2;
+    color: ${props => props.theme.textColor};
     width: 100%;
     box-sizing: border-box;
 	border: none;
@@ -154,15 +154,18 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
         border-bottom: 1px solid #738FDF;
     }
 	&::placeholder {
-		color: #8a88c2a1;
+		color: ${props => props.theme.textColor}a1;
     }
-    ${props => props.isUnassigned ? `
+    ${props =>
+        props.isUnassigned
+            ? `
         background-color: rgba(0,0,0,0.1);
         padding: 5px 6px 4px;
         margin-top: 11px;
         margin-bottom: 11px;
         width: calc(100% - 10px);
-    ` : ``}
+    `
+            : ``}
 `
 const TimerMenuButton = Styled.button`
     width: 20px;
@@ -183,7 +186,7 @@ const DottedMenu = Styled.div`
     position: relative;
     width: 4px;
     height: 4px;
-    background-color: #627FD9;
+    background-color: ${props => props.theme.primaryAccentColor};
     border-radius: 50%;
     margin: auto;
     &::before,

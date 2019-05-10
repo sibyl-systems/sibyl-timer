@@ -74,7 +74,7 @@ export default ConfirmDialog
 
 const DialogWrapper = Styled.div`
     width: 100%;
-    background: #2b2b47;
+    background: ${props => props.theme.backgroundColor};;
     overflow: auto;
     border-radius: 10px;
     overflow: hidden;
@@ -87,8 +87,8 @@ const DialogWrapper = Styled.div`
 const ModalTitle = Styled.div`
     padding: 20px;
     min-height: 50px;
-    color: #8a88c2;
-    background: #333355;
+    color: ${props => props.theme.textColor};
+    background: ${props => props.theme.foregroundColor};
 `
 const ModalContent = Styled.div`
     padding: 20px;
@@ -105,18 +105,18 @@ const ActionButton = Styled.button`
 
     background-color: transparent;
     border: none;
-    border-top: 1px solid #627FD9;
-    color: #8a88c2;
+    border-top: 1px solid ${props => props.theme.primaryAccentColor};
+    color: ${props => props.theme.textColor};
     box-shadow: none;
     padding: 8px 16px;
     width: 100%;
     min-height: 50px;
     &:hover {
-        background-color: #627FD9;
+        background-color: ${props => props.theme.primaryAccentColor};
         color: white;
     }
     &:first-child {
-        border-right: 1px solid #627FD9;
+        border-right: 1px solid ${props => props.theme.primaryAccentColor};
     }
 
 `

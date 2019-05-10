@@ -8,7 +8,7 @@ import { addProject } from '../store/actions'
 import AddNewProjectColumn from 'components/Modals/AddNewProjectColumn'
 
 const Header = styled.div`
-    background: #333355;
+    background: ${props => props.theme.foregroundColor};
     width: 100%;
     height: 56px;
     display: flex;
@@ -18,7 +18,7 @@ const Header = styled.div`
 `
 const StyledLogo = styled(Logo)`
     path {
-        fill: #8a88c2;
+        fill: ${props => props.theme.textColor};
     }
 `
 

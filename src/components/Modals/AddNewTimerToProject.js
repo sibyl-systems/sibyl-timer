@@ -32,7 +32,7 @@ const AddButton = Styled.button`
         content: "";
         position: absolute;
         top: 0; right: 0; bottom: 0; left: 0;
-        background-color: #627FD9;
+        background-color: ${props => props.theme.primaryAccentColor};
         margin: auto;
     }
     &::before {
@@ -54,7 +54,7 @@ const ModalContainer = Styled(Modal)`
     max-width: 100%;
     margin: auto;
     border: 1px solid rgb(204, 204, 204);
-    background: #2b2b47;
+    background: ${props => props.theme.backgroundColor};;
     overflow: auto;
     border-radius: 10px;
     overflow: hidden;
@@ -68,7 +68,7 @@ const ModalTitle = Styled.div`
     padding: 20px;
     min-height: 50px;
     color: #FFF;
-    background: #333355;
+    background: ${props => props.theme.foregroundColor};
 `
 const ModalContent = Styled.div`
     padding: 20px;
@@ -86,18 +86,18 @@ const ActionButton = Styled.button`
 
     background-color: transparent;
     border: none;
-    border-top: 1px solid #627FD9;
-    color: #8a88c2;
+    border-top: 1px solid ${props => props.theme.primaryAccentColor};
+    color: ${props => props.theme.textColor};
     box-shadow: none;
     padding: 8px 16px;
     width: 100%;
     min-height: 50px;
     &:hover {
-        background-color: #627FD9;
+        background-color: ${props => props.theme.primaryAccentColor};
         color: white;
     }
     &:first-child {
-        border-right: 1px solid #627FD9;
+        border-right: 1px solid ${props => props.theme.primaryAccentColor};
     }
 
 `
@@ -110,10 +110,10 @@ const customStyles = {
             // color: state.isSelected ? 'red' : 'blue',
             // padding: 20,
             padding: '8px',
-            backgroundColor: state.isSelected ? '#2b2b47' : 'transparent',
+            backgroundColor: state.isSelected ? '${props => props.theme.backgroundColor};' : 'transparent',
             color: state.isSelected ? '#627FD8' : 'inherit',
             '&:hover': {
-                backgroundColor: '#2b2b47',
+                backgroundColor: '${props => props.theme.backgroundColor};',
                 color: '#627FD8'
             }
             // ...provided
@@ -124,7 +124,7 @@ const customStyles = {
         // borderBottom: '1px dotted pink',
         // color: state.isSelected ? 'red' : 'blue',
         // padding: 20,
-        backgroundColor: '#333355',
+        backgroundColor: '${props => props.theme.foregroundColor}',
         borderColor: '#627FD8',
 
         '::-webkit-scrollbar': {
@@ -132,12 +132,12 @@ const customStyles = {
         },
 
         '::-webkit-scrollbar-track': {
-            background: '#2b2b47'
+            background: '${props => props.theme.backgroundColor};'
         },
 
         /* Handle */
         '::-webkit-scrollbar-thumb': {
-            background: '#8a88c2'
+            background: '${props => props.theme.textColor}'
         },
 
         /* Handle on hover */
@@ -172,7 +172,7 @@ const customStyles = {
 
         return {
             ...provided,
-            color: '#8a88c2'
+            color: '${props => props.theme.textColor}'
         }
     }
 }

@@ -10,7 +10,7 @@ const Container = styled.div`
     width: 400px;
     flex-shrink: 0;
     
-    background: #2b2b47;
+    background: ${props => props.theme.backgroundColor};;
     border-radius: 6px 6px 0 0;
     box-shadow: 0 1px 3px -1px rgba(0,0,0,0.5);
     overflow: hidden;
@@ -23,7 +23,7 @@ const Header = styled.div`
     margin: 0;
     height: 50px;
     justify-content: space-between;
-    background: #333355;
+    background: ${props => props.theme.foregroundColor};
 `
 
 const Title = styled.h3`
@@ -54,7 +54,7 @@ const CardList = styled.div`
 
     /* Handle */
     &::-webkit-scrollbar-thumb {
-        background: #393960
+        background: ${props => props.theme.foregroundColor}
     }
 
     /* Handle on hover */
