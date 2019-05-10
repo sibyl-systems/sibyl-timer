@@ -89,7 +89,7 @@ const PlayButton = Styled.button`
     width: 48px;
     height: 48px;
     border: 1px solid transparent;
-    background-color: #45476E;
+    background-color: ${props => props.theme.foregroundColorLight};
     border-radius: 50%;
     padding-left: 10px;
     margin: 0 auto 14px;
@@ -159,7 +159,7 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
     ${props =>
         props.isUnassigned
             ? `
-        background-color: rgba(0,0,0,0.1);
+        background-color: ${props.theme.backgroundAugment};
         padding: 5px 6px 4px;
         margin-top: 11px;
         margin-bottom: 11px;
@@ -179,7 +179,7 @@ const TimerMenuButton = Styled.button`
     padding: 0;
     margin-top: 9px;
     &:hover {
-        background-color: #45476E;
+        background-color: ${props => props.theme.foregroundColorLight};
     }
 `
 const DottedMenu = Styled.div`

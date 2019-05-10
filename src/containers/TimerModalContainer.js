@@ -198,20 +198,35 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                     </TimeInputGroup>
                 </TimeInputContainer>
 
-                <input
-                    type="checkbox"
-                    checked={isBillable}
-                    value="isBillable"
-                    name="isBillable"
-                    onChange={() => setIsBillable(value => !value)}
-                />
-                <input
-                    type="checkbox"
-                    checked={keepTimer}
-                    value="keepTimer"
-                    name="keepTimer"
-                    onChange={() => setKeepTimer(value => !value)}
-                />
+
+
+                <TimeInputContainer>
+                    <CheckboxInput htmlFor={`is-billable-${timer.id}`}>
+                        <input
+                            type="checkbox"
+                            checked={isBillable}
+                            value="isBillable"
+                            name="isBillable"
+                            onChange={() => setIsBillable(value => !value)}
+                            id={`is-billable-${timer.id}`}
+                        />
+                        <CheckboxInputHelper />
+                        Is Billable?
+                    </CheckboxInput>
+                    <CheckboxInput htmlFor={`keep-timer-${timer.id}`}>
+                        <input
+                            id={`keep-timer-${timer.id}`}
+                            type="checkbox"
+                            checked={keepTimer}
+                            value="keepTimer"
+                            name="keepTimer"
+                            onChange={() => setKeepTimer(value => !value)}
+                        />
+                        <CheckboxInputHelper />
+                        Keep timer?
+                    </CheckboxInput>
+                </TimeInputContainer>
+
             </ModalContent>
             <ButtonContainer>
                 <ActionButton onClick={handleCloseModal}>Cancel</ActionButton>
@@ -277,14 +292,14 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
     border-bottom: 1px solid ${props => props.theme.foregroundColor};
     &:focus {
         outline: none;
-        border-bottom: 1px solid #738FDF;
+        border-bottom: 1px solid ${props => props.theme.primaryAccentColor};
     }
 	&::placeholder {
 		color: ${props => props.theme.textColor}a1;
     }
-    background-color: rgba(0,0,0,0.1);
+    background-color: ${props => props.theme.backgroundAugment2};
     padding: 9px 9px;
-    border: 1px solid #738FDF;
+    border: 1px solid ${props => props.theme.primaryAccentColor};
     width: calc(100% - 10px);
 `
 
@@ -292,24 +307,58 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
 const TimeInputContainer = Styled.div`
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
 `
 const TimeInputGroup = Styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-right: 16px;
+    ${props => props.horizontal && `
+        align-items: center;
+        flex-direction: row;
+        ${Label} {
+            margin-bottom: 0;
+        }
+        ${CheckboxInput} {
+            margin-right: 12px;
+        }
+    `}
 `
 const TimeInput = Styled.input`
     width: 100px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: ${props => props.theme.backgroundAugment2};
     border: none;
     box-shadow: none;
     color: white;
     line-height: 18px;
     height: 18px;
-    border: 1px solid #738FDF;
+    border: 1px solid ${props => props.theme.primaryAccentColor};
     height: 35px;
     padding: 4px 12px;
     text-align: center;
+`
+
+
+const CheckboxInputHelper = Styled.div`
+    width: 35px;
+    height: 35px;
+    border: 1px solid ${props => props.theme.primaryAccentColor};
+    background-color: ${props => props.theme.backgroundAugment2};
+    margin-right: 15px;
+`
+
+const CheckboxInput = Styled.label`
+    margin-right: 24px;
+    display: flex;
+    align-items: center;
+    color: ${props => props.theme.textColor};
+    input {
+        display: none;
+        &:checked {
+            ~ ${CheckboxInputHelper} {
+                background: red;
+            }
+        }
+    }
 `

@@ -4,16 +4,32 @@ import styled, {ThemeProvider, createGlobalStyle} from 'styled-components/macro'
 import AppHeader from './AppHeader'
 
 const darkTheme = {
+    backgroundGradient: "linear-gradient(45deg, #1c1e30 0%, #2f3050 100%)",
+    backgroundAugment: "rgba(0,0,0,0.1)",
+    backgroundAugment2: "rgba(0,0,0,0.1)",
     backgroundColor: "#2b2b47",
     foregroundColor: "#333355",
+    foregroundColorLight: "#45476E",
     textColor: "#8a88c2",
     textPlaceholderColor: "#8a88c2a1",
     primaryAccentColor: "#627FD9",
     secondaryAccentColor: "#F18C64",
 };
+// const darkTheme = {
+//     backgroundGradient: "linear-gradient(45deg, #FFF 0%, #EDE7F6 100%)",
+//     backgroundAugment: "rgba(255,255,255,0.6)",
+//     backgroundAugment2: "rgba(255,255,255,0.1)",
+//     backgroundColor: "#D1C4E9",
+//     foregroundColor: "#B39DDB",
+//     foregroundColorLight: "#D1C4E9",
+//     textColor: "#260e4c",
+//     textPlaceholderColor: "#474954a1",
+//     primaryAccentColor: "#9215b3",
+//     secondaryAccentColor: "#9277ea",
+// };
 
 const Container = styled.div`
-    background: linear-gradient(45deg, #1c1e30 0%, #2f3050 100%);
+    background: ${props => props.theme.backgroundGradient};
     // width: 100vw;
     // height: 100vh;
     max-width: 100%;

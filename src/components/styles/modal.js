@@ -124,8 +124,8 @@ const Loader = Styled.div`
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
         border: 1px solid transparent;
-        border-top-color: #3cefff;
-        border-bottom-color: #3cefff;
+        border-top-color: ${props => props.theme.primaryAccentColor};
+        border-bottom-color: ${props => props.theme.primaryAccentColor};
         border-radius: 50%;
         animation: ${spin} 1.5s linear infinite;
         box-sizing: border-box;
@@ -137,7 +137,7 @@ const Loader = Styled.div`
         margin: auto;
         width: 25%;
         height: 25%;
-        border: 1px solid #3cefff;
+        border: 1px solid ${props => props.theme.primaryAccentColor};
         border-radius: 50%;
         animation: ${pulse} 1s alternate ease-in-out infinite;
     }

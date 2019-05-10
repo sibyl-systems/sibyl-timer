@@ -269,7 +269,7 @@ const PlayButton = Styled.button`
     width: 60px;
     height: 60px;
     border: 1px solid transparent;
-    background-color: #45476E;
+    background-color:  ${props => props.theme.foregroundColorLight};
     border-radius: 50%;
     padding-left: 18%;
     margin-bottom: 14px;
@@ -332,7 +332,7 @@ const TimerMenuButton = Styled.button`
     border-radius: 5px;
     padding: 0;
     &:hover {
-        background-color: #45476E;
+        background-color:  ${props => props.theme.foregroundColorLight};
     }
 `
 const DottedMenu = Styled.div`
