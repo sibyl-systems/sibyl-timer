@@ -147,7 +147,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
     }
 
     return (
-        <ModalOuterContainer isOpen={modalOpen} onRequestClose={handleCloseModal}>
+        <ModalOuterContainer isOpen={modalOpen} onRequestClose={handleCloseModal} style={{ overlay: {backgroundColor: "hsla(0, 0%, 0%, 0.33)"}}}>
             <ModalTitle>
                 {modalType === 'edit' && 'Edit timer'}
                 {modalType === 'log' && 'Log timer'}
@@ -262,7 +262,7 @@ const ModalOuterContainer = Styled(ModalContainer)`
     width: 600px;
     max-width: 100%;
     margin: auto;
-    border: 1px solid rgb(204, 204, 204);
+    border: none;
     background: ${props => props.theme.backgroundColor};;
     overflow: auto;
     border-radius: 10px;
