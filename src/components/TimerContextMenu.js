@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {useSelector} from 'react-redux'
+
 import { ContextMenu, MenuItem } from 'react-contextmenu'
 
 import ConfirmDialog from 'containers/ConfirmDialog'
@@ -22,6 +24,7 @@ const TimerContextMenu = ({
     handleToggleTimerSettings,
     handleRemoveTimer
 }) => {
+    const user = useSelector(store => store.user)
     return (
         <ConfirmDialog title="Confirm" description="Are you sure?">
             {confirm => {
@@ -47,6 +50,9 @@ const TimerContextMenu = ({
                                 description: 'Are you sure you want to remove this timer and forfeit any tracked time?',
                             }
                         )}>Remove Timer</MenuItem>
+                        <MenuItem divider />
+                        {!timer.task.unassignedTask && <MenuItem ><a target="_blank" href={`${user.account.URL}#tasks/${timer.task.id}`}>Open in teamwork</a></MenuItem>}
+                        <MenuItem divider />
                         <MenuItem divider />
                         <WrappedMenuItem
                             className={`react-contextmenu-toggle ${timer.settings.isBillable && 'is-selected'}`}
