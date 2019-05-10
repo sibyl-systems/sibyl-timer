@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import Timer from './Timer'
 

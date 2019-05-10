@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { connect } from 'react-redux'

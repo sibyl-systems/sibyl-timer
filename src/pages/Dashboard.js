@@ -6,7 +6,7 @@ import DraggableTimerRow from 'containers/DraggableTimerRow'
 import DroppableTimerRows from 'containers/DroppableTimerRows'
 import Timer from 'containers/Timer'
 
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 import { ReactComponent as PlayIcon } from '../assets/play.svg'
 import { ReactComponent as PauseIcon } from '../assets/pause.svg'
 import ResizableTextarea from 'components/ResizableTextarea'

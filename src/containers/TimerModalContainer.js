@@ -4,7 +4,7 @@ import Modal from 'react-modal'
 
 import uuidv4 from 'uuid'
 
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 
 import getAllProjects from 'api/getAllProjects'
 import getTasks from 'api/getTasks'
@@ -167,7 +167,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                 checked={keepTimer}
                 value="keepTimer"
                 name="keepTimer"
-                onChange={() => setIsBillable(value => !value)}
+                onChange={() => setKeepTimer(value => !value)}
             />
         </ModalContainer>
     )

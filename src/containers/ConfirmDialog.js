@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Dialog, DialogOverlay } from '@reach/dialog'
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 import { hideMenu } from 'react-contextmenu';
 
 const ConfirmDialog = (props) => {

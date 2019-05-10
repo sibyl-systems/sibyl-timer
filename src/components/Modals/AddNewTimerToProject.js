@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Modal from 'react-modal'
 import Select from 'react-select'
 import getTasks from '../../api/getTasks'
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 import { addTimer } from 'store/actions'
 
 const uuidv4 = require('uuid/v4')

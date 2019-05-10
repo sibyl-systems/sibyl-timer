@@ -5,7 +5,7 @@ import useInterval from '../hooks/useInterval'
 import SquareButton from '../components/SquareButton'
 import createTimeEntry from '../api/createTimeEntry'
 
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 
 import { connect } from 'react-redux'
 import {

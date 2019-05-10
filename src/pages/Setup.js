@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router'
 
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 
 const Container = Styled.div`
     width: 480px;

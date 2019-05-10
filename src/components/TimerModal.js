@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import Select from 'react-select'
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 
 const TimerModal = (props) => {
 
