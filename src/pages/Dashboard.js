@@ -156,6 +156,13 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
 	&::placeholder {
 		color: #8a88c2a1;
     }
+    ${props => props.isUnassigned ? `
+        background-color: rgba(0,0,0,0.1);
+        padding: 5px 6px 4px;
+        margin-top: 11px;
+        margin-bottom: 11px;
+        width: calc(100% - 10px);
+    ` : ``}
 `
 const TimerMenuButton = Styled.button`
     width: 20px;
@@ -252,12 +259,13 @@ const TimeCard = props => {
                         </TimerClock>
                     </TimerActions>
                     <TimerInformation>
-                        <TimerTitle>{timer.task.content}</TimerTitle>
+                        {timer.task['project-id'] && <TimerTitle>{timer.task.content}</TimerTitle>}
                         <DescriptionTextarea
                             isEmpty={!description}
                             value={description}
                             setValue={setDescription}
                             onBlur={handleUpdateDescription}
+                            isUnassigned={!timer.task['project-id']}
                         />
                     </TimerInformation>
                     <div>
