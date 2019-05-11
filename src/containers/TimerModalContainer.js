@@ -211,7 +211,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             id={`is-billable-${timer.id}`}
                         />
                         <CheckboxInputHelper />
-                        Is Billable?
+                        Billable?
                     </CheckboxInput>
                     <CheckboxInput htmlFor={`keep-timer-${timer.id}`}>
                         <input
@@ -259,7 +259,7 @@ const ModalOuterContainer = Styled(ModalContainer)`
     top: 40px;
     left: 0;
     right: 0;
-    width: 600px;
+    width: 440px;
     max-width: 100%;
     margin: auto;
     border: none;
@@ -270,7 +270,7 @@ const ModalOuterContainer = Styled(ModalContainer)`
     outline: none;
     display: flex;
     flex-direction: column;
-    min-height: 600px;
+    min-height: 550px;
 
 `
 
@@ -297,7 +297,7 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
 	&::placeholder {
 		color: ${props => props.theme.textColor}a1;
     }
-    background-color: ${props => props.theme.backgroundAugment2};
+    // background-color: ${props => props.theme.backgroundAugment2};
     padding: 9px 9px;
     border: 1px solid ${props => props.theme.primaryAccentColor};
     width: calc(100% - 10px);
@@ -313,7 +313,7 @@ const TimeInputGroup = Styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-right: 16px;
+    margin-right: 24px;
     ${props => props.horizontal && `
         align-items: center;
         flex-direction: row;
@@ -326,8 +326,8 @@ const TimeInputGroup = Styled.div`
     `}
 `
 const TimeInput = Styled.input`
-    width: 100px;
-    background-color: ${props => props.theme.backgroundAugment2};
+    width: 70px;
+    background-color: ${props => props.theme.backgroundColor};
     border: none;
     box-shadow: none;
     color: white;
@@ -344,8 +344,21 @@ const CheckboxInputHelper = Styled.div`
     width: 35px;
     height: 35px;
     border: 1px solid ${props => props.theme.primaryAccentColor};
-    background-color: ${props => props.theme.backgroundAugment2};
+    // background-color: ${props => props.theme.backgroundAugment2};
     margin-right: 15px;
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right:0; bottom: 0;
+        width: 40%;
+        height: 15%;
+        border-left: 3px solid ${props => props.theme.primaryAccentColor};
+        border-bottom: 3px solid ${props => props.theme.primaryAccentColor};
+        margin: auto;
+        transform: translateY(-21%) translateX(6%) skew(-10deg, 0deg) rotate(-54deg);
+        display: none;
+    }
 `
 
 const CheckboxInput = Styled.label`
@@ -357,7 +370,9 @@ const CheckboxInput = Styled.label`
         display: none;
         &:checked {
             ~ ${CheckboxInputHelper} {
-                background: red;
+                &::before {
+                    display: block;
+                }
             }
         }
     }

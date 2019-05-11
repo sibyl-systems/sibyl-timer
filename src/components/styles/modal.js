@@ -54,6 +54,8 @@ const ModalTitle = Styled.div`
     min-height: 50px;
     color: ${props => props.theme.textColor};
     background: ${props => props.theme.foregroundColor};
+    font-size: 18px;
+    font-weight: 600;
 `
 const ModalContent = Styled.div`
     padding: 20px;
@@ -77,6 +79,8 @@ const ActionButton = Styled.button`
     padding: 8px 16px;
     width: 100%;
     min-height: 50px;
+    font-weight: 800;
+    text-transform: uppercase;
     &:hover {
         background-color: ${props => props.theme.primaryAccentColor};
         color: white;
