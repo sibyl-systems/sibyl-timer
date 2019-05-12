@@ -76,31 +76,48 @@ export default function timerReducer(state = defaultState, action) {
                     description: action.payload.description
                 }
             }
-        case 'UPDATE_TIMER_SETTINGS':
+        // case 'UPDATE_TIMER_SETTINGS':
+        //     return {
+        //         ...state,
+        //         [action.payload.id]: {
+        //             ...state[action.payload.id],
+        //             settings: {
+        //                 ...state[action.payload.id].settings,
+        //                 ...action.payload.settings
+        //             }
+        //         }
+        //     }
+        // case 'REASSIGN_TASK':
+        //     const {timer, selectedTask} = action.payload
+        //     return {
+        //         ...state,
+        //         [timer.id]: {
+        //             ...state[timer.id],
+        //             task: selectedTask
+        //         }
+        //     }
+
+        case 'EDIT_TIMER':
+            const {timerId, options} = action.payload
+            const {selectedTask, settings, description, elapsedTime} = options
             return {
                 ...state,
-                [action.payload.id]: {
-                    ...state[action.payload.id],
+                [timerId]: {
+                    ...state[timerId],
+                    task: selectedTask,
+                    description: description,
+                    elapsedTime: elapsedTime,
                     settings: {
-                        ...state[action.payload.id].settings,
-                        ...action.payload.settings
+                        ...state[timerId].settings,
+                        ...settings
                     }
                 }
             }
         case 'REMOVE_TIMER':
             let {[action.payload]: omit, ...rest} = state
             return rest
-        case 'REASSIGN_TASK':
-            const {timer, selectedTask} = action.payload
-            return {
-                ...state,
-                [timer.id]: {
-                    ...state[timer.id],
-                    task: selectedTask
-                }
-            }
         case 'REMOVE_PROJECT':
-            //  todo, tasks/timers in that project...
+            //  todo, remove tasks/timers in that project...
             return state
         default:
             return state

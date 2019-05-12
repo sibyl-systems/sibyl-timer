@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 const ResizableTextarea = ({value, setValue, onBlur, minRows = 1, maxRows = 15, className }) => {
-    // const [value, setValue] = useState('')
     const [rows, setRows] = useState(1)
-    // const [minRows, setMinRows] = useState(5)
-    // const [maxRows, setMaxRows] = useState(10)
-
     const handleChange = event => {
         const textareaLineHeight = 18
 
@@ -25,11 +21,11 @@ const ResizableTextarea = ({value, setValue, onBlur, minRows = 1, maxRows = 15, 
         setValue(event.target.value)
         setRows(currentRows < maxRows ? currentRows : maxRows)
     }
-    // const handleOnBlur = event => {
-    //     if(onBlur) {
-    //         onBlur(event)
-    //     }
-    // }
+    const handleOnBlur = event => {
+        if(onBlur) {
+            onBlur(event)
+        }
+    }
 
     return (
         <textarea
@@ -38,7 +34,7 @@ const ResizableTextarea = ({value, setValue, onBlur, minRows = 1, maxRows = 15, 
             value={value}
             placeholder={'description...'}
             onChange={handleChange}
-            // onBlur={handleOnBlur}
+            onBlur={handleOnBlur}
         />
     )
 }

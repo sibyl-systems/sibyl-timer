@@ -52,9 +52,9 @@ const TimerContextMenu = ({
                         )}>Remove Timer</MenuItem>
                         <MenuItem divider />
                         {!timer.task.unassignedTask && <MenuItem ><a target="_blank" href={`${user.account.URL}#tasks/${timer.task.id}`}>Open in teamwork</a></MenuItem>}
-                        <MenuItem divider />
-                        <MenuItem divider />
-                        <WrappedMenuItem
+                        {/* <MenuItem divider />
+                        <MenuItem divider /> */}
+                        {/* <WrappedMenuItem
                             className={`react-contextmenu-toggle ${timer.settings.isBillable && 'is-selected'}`}
                             clickHandler={() => handleToggleTimerSettings('isBillable')}
                         >
@@ -67,7 +67,7 @@ const TimerContextMenu = ({
                         >
                             {timer.settings.keepTimer ? <span>[&#10004;]</span> : <span>[&#10006;]</span>}
                             &nbsp;Keep timer?
-                        </WrappedMenuItem>
+                        </WrappedMenuItem> */}
                     </ContextMenu>
                 )
             }}

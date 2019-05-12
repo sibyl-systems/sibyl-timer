@@ -5,6 +5,10 @@ import useInterval from 'hooks/useInterval'
 import TimerModalContainer from 'containers/TimerModalContainer'
 import TimerModal from 'components/TimerModal'
 
+import { editTimer } from 'store/actions'
+
+import createTimeEntry from 'api/createTimeEntry'
+
 import {
     startTimer,
     stopTimer,
@@ -116,22 +120,6 @@ const Timer = ({ timer, children }) => {
     //     commitTimer(payload)
     // }
 
-    // const handleLogTimer = () => {
-    //     //This is kind of long winded, but it's to ensure then local time is logged
-    //     //into redux to get the right time.
-    //     Promise.resolve(stopTimer({ id: timer.id })).then(() => {
-    //         Promise.resolve(commitTimer({ id: timer.id, elapsedTime: clock })).then(() => {
-    //             // createTimeEntry(timer).then(res => {
-    //             //     if (!timer.settings.keepTimer) {
-    //             //         removeTimer(timer.id)
-    //             //     } else {
-    //             //         handleResetTimer()
-    //             //     }
-    //             // })
-    //         })
-    //     })
-    // }
-
     const [modalOpen, setModalOpen] = useState(false)
     const [modalType, setModalType] = useState(null)
 
@@ -143,6 +131,36 @@ const Timer = ({ timer, children }) => {
     const closeTimerModal = () => {
         setModalOpen(false)
         setModalType(null) //edit, log, add
+    }
+    const submitTimerModal = async ({ timerId, options }) => {
+        setClock(options.elapsedTime)
+        setDescription(options.description)
+
+        const test = await dispatch(
+            editTimer({
+                timerId,
+                options
+            })
+        )
+
+        if (modalType === 'log') {
+            createTimeEntry({
+                elapsedTime: options.elapsedTime,
+                settings: options.settings,
+                description: options.description,
+                task: options.selectedTask,
+                id: timer.id //2do: fix this. It's not waiting for redux to update before grabbing the new id...
+            }).then(res => {
+                if (options.settings.keepTimer) {
+                    // handleResetTimer()
+                } else {
+                    dispatch(removeTimer(timerId))
+                }
+            })
+        }
+
+        setModalOpen(false)
+        setModalType(null)
     }
 
     return (
@@ -169,6 +187,7 @@ const Timer = ({ timer, children }) => {
             {modalOpen && (
                 <TimerModalContainer
                     closeTimerModal={closeTimerModal}
+                    submitTimerModal={submitTimerModal}
                     modalOpen={modalOpen}
                     timer={timer}
                     modalType={modalType}

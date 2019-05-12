@@ -8,7 +8,6 @@ import RouteIf from './helpers/RouteIf'
 
 import Setup from './pages/Setup'
 import Dashboard from './pages/Dashboard'
-import ProjectList from './pages/ProjectList'
 
 import { connect } from 'react-redux'
 
@@ -20,20 +19,7 @@ const App = props => {
             <HashRouter>
                 <Switch>
                     <Route exact path="/" render={() => <Setup {...props} />} />
-                    <RouteIf
-                        condition={props.user.apikey}
-                        redirect="/"
-                        path="/dashboard"
-                        exact
-                        component={ProjectList}
-                    />
-                    <RouteIf
-                        condition={props.user.apikey}
-                        redirect="/"
-                        path="/test"
-                        exact
-                        component={Dashboard}
-                    />
+                    <RouteIf condition={props.user.apikey} redirect="/" path="/dashboard" exact component={Dashboard} />
                 </Switch>
             </HashRouter>
         </AppLayout>

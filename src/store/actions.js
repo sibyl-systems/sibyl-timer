@@ -1,4 +1,3 @@
-// import { uuidv4 } from 'uuid/v4'
 import getUser from '../api/getUser'
 const uuidv4 = require('uuid/v4')
 
@@ -86,6 +85,13 @@ export const reassignTask = payload => dispatch => {
 export const removeProject = payload => dispatch => {
     dispatch({
         type: 'REMOVE_PROJECT',
+        payload: payload
+    })
+}
+
+export const editTimer = payload => dispatch => {
+    dispatch({
+        type: 'EDIT_TIMER',
         payload: payload
     })
 }
