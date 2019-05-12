@@ -2,17 +2,16 @@ import './App.css'
 
 import React from 'react'
 
-import AppLayout from './components/AppLayout'
+import AppLayout from 'components/AppLayout'
 import { HashRouter, Switch, Route } from 'react-router-dom'
-import RouteIf from './helpers/RouteIf'
+import RouteIf from 'helpers/RouteIf'
 
-import Setup from './pages/Setup'
-// import Dashboard from './pages/Dashboard'
-import ProjectList from './pages/ProjectList'
+import Setup from 'pages/Setup'
+import Dashboard from 'pages/Dashboard'
 
 import { connect } from 'react-redux'
 
-import { submitApiKey, reorderTimer } from './store/actions'
+import { submitApiKey, reorderTimer } from 'store/actions'
 
 const App = props => {
     return (
@@ -20,13 +19,7 @@ const App = props => {
             <HashRouter>
                 <Switch>
                     <Route exact path="/" render={() => <Setup {...props} />} />
-                    <RouteIf
-                        condition={props.user.apikey}
-                        redirect="/"
-                        path="/dashboard"
-                        exact
-                        component={ProjectList}
-                    />
+                    <RouteIf condition={props.user.apikey} redirect="/" path="/dashboard" exact component={Dashboard} />
                 </Switch>
             </HashRouter>
         </AppLayout>

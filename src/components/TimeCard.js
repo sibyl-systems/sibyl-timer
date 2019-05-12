@@ -1,43 +1,30 @@
 //todo: extract logic from here, and SIMPLIFY!!!
 
-import React, { useState, useRef } from 'react'
-import useInterval from '../hooks/useInterval'
-import SquareButton from '../components/SquareButton'
-import createTimeEntry from '../api/createTimeEntry'
+import React, { useRef } from 'react'
 
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
+import { ReactComponent as PlayIcon } from 'assets/play.svg'
+import { ReactComponent as PauseIcon } from 'assets/pause.svg'
+import ResizableTextarea from 'components/ResizableTextarea'
 
-import { connect } from 'react-redux'
-import {
-    startTimer,
-    stopTimer,
-    commitTimer,
-    updateTimerDescription,
-    updateTimerSettings,
-    removeTimer
-} from '../store/actions.js'
+import { ContextMenuTrigger } from 'react-contextmenu'
+import TimerContextMenu from 'components/TimerContextMenu'
 
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
-import ReassignTask from './ReassignTask'
-import EditTimer from './EditTimer'
+const TimeCard = props => {
+    const { provided, timer, state, methods } = props
 
-import TimerContextMenu from './TimerContextMenu'
-
-import { ReactComponent as PlayIcon } from '../assets/play.svg'
-import { ReactComponent as PauseIcon } from '../assets/pause.svg'
-
-function TimeCard({
-    timer,
-    provided,
-    startTimer,
-    stopTimer,
-    commitTimer,
-    updateTimerDescription,
-    updateTimerSettings,
-    removeTimer
-}) {
-    const [clock, setClock] = useState(timer.elapsedTime)
-    const [description, setDescription] = useState(timer.description)
+    const {
+        handleStopTimer,
+        handleStartTimer,
+        setDescription,
+        handleUpdateDescription,
+        handleResetTimer,
+        handleRemoveTimer,
+        handleEditTimer,
+        handleLogTimer,
+        handleToggleTimerSettings
+    } = methods
+    const { clock, description } = state
 
     let contextTrigger = useRef(null)
 
@@ -46,114 +33,8 @@ function TimeCard({
             contextTrigger.handleContextClick(e)
         }
     }
-
-    useInterval(() => {
-        const newClock = clock + 1
-        //Commit time every 5 minutes
-        if (newClock % 300 === 0) {
-            commitTimer({
-                id: timer.id,
-                elapsedTime: newClock
-            })
-        }
-        setClock(newClock)
-    }, [
-        timer.running ? 1000 : null,
-        () => {
-            return setClock(countingSeconds => {
-                commitTimer({
-                    id: timer.id,
-                    elapsedTime: countingSeconds
-                })
-                return countingSeconds
-            })
-        }
-    ])
-
-    const handleStartTimer = () => {
-        startTimer({
-            id: timer.id,
-            startedTime: Date.now()
-        })
-    }
-    const handleStopTimer = () => {
-        stopTimer({
-            id: timer.id
-        })
-    }
-
-    const handleResetTimer = () => {
-        setClock(0)
-        commitTimer({
-            id: timer.id,
-            elapsedTime: 0
-        })
-        handleStopTimer()
-    }
-
-    const handleChangeTask = () => {
-        setModalOpen(true)
-    }
-    const handleEditTimer = () => {
-        Promise.resolve(stopTimer({ id: timer.id })).then(() => {
-            setEditTimerModalOpen(true)
-        })
-    }
-
-    const handleUpdateTimerDescription = e => {
-        if (e.target.value !== timer.description) {
-            updateTimerDescription({
-                id: timer.id,
-                description: e.target.value
-            })
-        }
-    }
-    const handleToggleTimerSettings = settingName => {
-        updateTimerSettings({
-            id: timer.id,
-            settings: {
-                [settingName]: timer.settings[settingName] ? false : true
-            }
-        })
-    }
-
-    const handleLogTimer = () => {
-        //This is kind of long winded, but it's to ensure then local time is logged
-        //into redux to get the right time.
-        Promise.resolve(stopTimer({ id: timer.id })).then(() => {
-            Promise.resolve(commitTimer({ id: timer.id, elapsedTime: clock })).then(() => {
-                createTimeEntry(timer).then(res => {
-                    if (!timer.settings.keepTimer) {
-                        removeTimer(timer.id)
-                    } else {
-                        handleResetTimer()
-                    }
-                })
-            })
-        })
-    }
-
-    const closeModal = () => {
-        setModalOpen(false)
-    }
-    const handleCloseTimerModal = () => {
-        setEditTimerModalOpen(false)
-    }
-
-    const handleCommitEditTimer = payload => {
-        setClock(payload.elapsedTime)
-        commitTimer(payload)
-    }
-
-    const handleRemoveTimer = () => {
-        removeTimer(timer.id)
-    }
-
-    const [modalOpen, setModalOpen] = useState(false)
-    const [editTimerModalOpen, setEditTimerModalOpen] = useState(false)
-
     return (
-        <Container {...provided.draggableProps} ref={provided.innerRef}>
+        <Container {...provided.draggableProps} ref={provided.innerRef} isRunning={timer.running}>
             <ContextMenuTrigger id={timer.id} ref={c => (contextTrigger = c)}>
                 <TimerContainer {...provided.dragHandleProps}>
                     <TimerActions>
@@ -172,13 +53,13 @@ function TimeCard({
                         </TimerClock>
                     </TimerActions>
                     <TimerInformation>
-                        <TimerTitle style={{ marginTop: 0, marginBottom: '8px' }}>{timer.task.content}</TimerTitle>
-                        <DescriptionInput
+                        {timer.task['project-id'] && <TimerTitle>{timer.task.content}</TimerTitle>}
+                        <DescriptionTextarea
                             isEmpty={!description}
-                            type="text"
                             value={description}
-                            onChange={e => setDescription(e.target.value)}
-                            onBlur={handleUpdateTimerDescription}
+                            setValue={setDescription}
+                            onBlur={handleUpdateDescription}
+                            isUnassigned={!timer.task['project-id']}
                         />
                     </TimerInformation>
                     <div>
@@ -190,48 +71,19 @@ function TimeCard({
             </ContextMenuTrigger>
             <TimerContextMenu
                 timer={timer}
-                handleStopTimer={handleStopTimer}
-                handleStartTimer={handleStartTimer}
                 handleLogTimer={handleLogTimer}
-                handleChangeTask={handleChangeTask}
                 handleEditTimer={handleEditTimer}
                 handleResetTimer={handleResetTimer}
                 handleToggleTimerSettings={handleToggleTimerSettings}
-                removeTimer={handleRemoveTimer}
+                handleRemoveTimer={handleRemoveTimer}
             />
-
-            <ReassignTask timer={timer} modalOpen={modalOpen} closeModal={closeModal} />
-            {/* This is to force the state of the modal to reset to props values... todo: make this better. */}
-            {editTimerModalOpen && (
-                <EditTimer
-                    timer={timer}
-                    modalOpen={editTimerModalOpen}
-                    closeModal={handleCloseTimerModal}
-                    commitTimer={handleCommitEditTimer}
-                    currentTimer={clock}
-                />
-            )}
         </Container>
     )
 }
 
-const mapStateToProps = ({}) => {
-    return {}
-}
 
-const mapDispatchToProps = {
-    startTimer,
-    stopTimer,
-    commitTimer,
-    updateTimerDescription,
-    updateTimerSettings,
-    removeTimer
-}
+export default TimeCard
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TimeCard)
 
 function secondsToHMS(seconds) {
     const pad = n => (n < 10 ? '0' : '') + n
@@ -242,15 +94,26 @@ function secondsToHMS(seconds) {
     }
 }
 
-const Container = Styled.div`
-    background-color: #333355;
-    margin-bottom: 24px;
 
+const Container = Styled.div`
+    margin-bottom: 12px;
     font-weight: 400;
+    width: 100%;
+
+    ${props =>
+        props.isRunning
+            ? `
+                background: transparent;
+                box-shadow: inset 0 0 0px 2px ${props.theme.foregroundColor};
+            `
+            : `
+                background-color: ${props.theme.foregroundColor};
+    `}
+    
 `
 
 const TimerContainer = Styled.div`
-    padding: 12px;
+    padding: 12px 12px 8px;
     display: flex;
 `
 const TimerActions = Styled.div`
@@ -259,22 +122,25 @@ const TimerActions = Styled.div`
 const TimerClock = Styled.div`
     flex-shrink: 0;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
 `
 const Seconds = Styled.div`
     display: inline;
 `
 const PlayButton = Styled.button`
     display: flex;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     border: 1px solid transparent;
-    background-color: #45476E;
+    background-color: ${props => props.theme.foregroundColorLight};
     border-radius: 50%;
-    padding-left: 18%;
-    margin-bottom: 14px;
+    padding-left: 10px;
+    margin: 0 auto 14px;
+    &:focus {
+        border-color: ${props => props.theme.secondaryAccentColor};
+    }
     &:hover {
-        background-color: #F18C64;
+        background-color: ${props => props.theme.secondaryAccentColor};
     }
     svg {
         margin: auto;
@@ -283,14 +149,17 @@ const PlayButton = Styled.button`
 `
 const PauseButton = Styled.button`
     display: flex;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     border: 1px solid transparent;
-    background-color: #F18C64;
+    background-color: ${props => props.theme.secondaryAccentColor};
     border-radius: 50%;
-    margin-bottom: 14px;
+    margin: 0 auto 14px;
+    &:focus {
+        border-color: ${props => props.theme.secondaryAccentColor};
+    }
     &:hover {
-        background-color: #F18C64;
+        background-color: ${props => props.theme.secondaryAccentColor};
     }
     svg {
         margin: auto;
@@ -299,31 +168,51 @@ const PauseButton = Styled.button`
 
 const TimerTitle = Styled.h3`
     font-weight: 300;
-    font-size: 18px;
-    min-height: 55px;
+    font-size: 15px;
+    min-height: 54px;
     display: flex;
     align-items: center;
+    margin: 0;
+    line-height: 20px;
+    padding-bottom: 4px;
+    padding-right: 16px;
 `
-const DescriptionInput = Styled.input`
+const DescriptionTextarea = Styled(ResizableTextarea)`
     background: none;
-    border: none;
-    color: #8a88c2;
-    margin-bottom: 0;
-    height: 24px;
-    margin-top: 3px;
-    border-bottom: 1px solid transparent;
+    color: ${props => props.theme.textColor};
     width: 100%;
-    ${props => (props.isEmpty ? 'border-bottom: 1px solid #738FDF' : '')};
-        //This could be better achieved if I just wrapped the input and used pseudo elements
-    ${props => (!props.isEmpty ? '    height: 15px; margin-bottom: 0; margin-top: 12px;' : '')}; 
+    box-sizing: border-box;
+	border: none;
+	border-radius: 0;
+	resize: none;
+	font-size: 14px;
+	line-height: 18px;
+	overflow: auto;
+	height: auto;
+	padding: 6px 1px 2px;
+    border-bottom: 1px solid transparent;
+    font-weight: 400;
     &:focus {
         outline: none;
         border-bottom: 1px solid #738FDF;
     }
+	&::placeholder {
+		color: ${props => props.theme.textColor}a1;
+    }
+    ${props =>
+        props.isUnassigned
+            ? `
+        background-color: ${props.theme.backgroundAugment};
+        padding: 5px 6px 4px;
+        margin-top: 11px;
+        margin-bottom: 11px;
+        width: calc(100% - 10px);
+    `
+            : ``}
 `
 const TimerMenuButton = Styled.button`
-    width: 52px;
-    height: 52px;
+    width: 20px;
+    height: 32px;
     border: none;
     background: none;
     box-shadow: none;
@@ -331,15 +220,16 @@ const TimerMenuButton = Styled.button`
     align-items: center;
     border-radius: 5px;
     padding: 0;
+    margin-top: 9px;
     &:hover {
-        background-color: #45476E;
+        background-color: ${props => props.theme.foregroundColorLight};
     }
 `
 const DottedMenu = Styled.div`
     position: relative;
-    width: 5px;
-    height: 5px;
-    background-color: #627FD9;
+    width: 4px;
+    height: 4px;
+    background-color: ${props => props.theme.primaryAccentColor};
     border-radius: 50%;
     margin: auto;
     &::before,
@@ -353,12 +243,13 @@ const DottedMenu = Styled.div`
         border-radius: 50%;
     }
     &::before {
-        top: -8px;
+        top: -7px;
     }
     &::after {
-        bottom: -8px;
+        bottom: -7px;
     }
 `
 const TimerInformation = Styled.div`
     flex-grow: 1;
 `
+

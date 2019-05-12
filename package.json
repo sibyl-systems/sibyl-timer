@@ -14,13 +14,16 @@
         "electron-pack": "electron-builder build"
     },
     "devDependencies": {
+        "babel-plugin-styled-components": "^1.10.0",
         "concurrently": "^4.1.0",
         "electron": "^4.0.6",
         "electron-builder": "^20.38.5",
+        "eslint-plugin-import": "^2.17.2",
         "typescript": "^3.3.3333",
         "wait-on": "^3.2.0"
     },
     "dependencies": {
+        "@reach/dialog": "^0.2.8",
         "electron-is-dev": "^1.0.1",
         "node-notifier": "^5.4.0",
         "react": "^16.8.6",
@@ -29,7 +32,7 @@
         "react-contextmenu": "^2.11.0",
         "react-dom": "^16.8.6",
         "react-modal": "^3.8.1",
-        "react-redux": "^6.0.1",
+        "react-redux": "^7.1.0-alpha.4",
         "react-router-dom": "^4.3.1",
         "react-scripts": "2.1.8",
         "react-select": "^2.4.2",

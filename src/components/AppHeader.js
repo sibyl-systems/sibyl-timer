@@ -1,14 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, {useState} from 'react'
+import Styled from 'styled-components/macro'
 
-import { ReactComponent as Logo } from '../assets/logo.svg'
+import { ReactComponent as Logo } from 'assets/logo.svg'
 import { connect } from 'react-redux'
 
-import { addProject } from '../store/actions'
-import AddNewProjectColumn from './AddNewProjectColumn'
+import { addProject } from 'store/actions'
 
-const Header = styled.div`
-    background: #333355;
+import ProjectModalContainer from 'containers/modals/ProjectModalContainer'
+
+const Header = Styled.div`
+    background: ${props => props.theme.foregroundColor};
     width: 100%;
     height: 56px;
     display: flex;
@@ -16,24 +17,31 @@ const Header = styled.div`
     align-items: center;
     justify-content: space-between;
 `
-const StyledLogo = styled(Logo)`
+const StyledLogo = Styled(Logo)`
     path {
-        fill: #8a88c2;
+        fill: ${props => props.theme.textColor};
     }
 `
 
 function AppHeader(props) {
+    const [modalOpen, setModalOpen] = useState(false)
     return (
         <Header>
             <StyledLogo width="32px" height="32px" />
-            {props.user.code && <AddNewProjectColumn addProject={props.addProject} projects={props.projects} />}
+            <Button onClick={() => setModalOpen(true)}>Add new project</Button>
+
+            {props.user.code && modalOpen && (
+                <ProjectModalContainer
+                    closeTimerModal={() => setModalOpen(false)}
+                    modalOpen={modalOpen}
+                />
+            )}
         </Header>
     )
 }
 
 const mapStateToProps = state => {
     return {
-        projects: state.projects,
         user: state.user
     }
 }
@@ -44,3 +52,17 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(AppHeader)
+
+
+const Button = Styled.button`
+    background-color: transparent;
+    border: 1px solid ${props => props.theme.primaryAccentColor};
+    color: ${props => props.theme.textColor};
+    box-shadow: none;
+    border-radius: 100px;
+    padding: 8px 16px;
+    &:hover {
+        background-color: ${props => props.theme.primaryAccentColor};
+        color: white;
+    }
+`

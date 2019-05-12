@@ -1,6 +1,6 @@
-// import { uuidv4 } from 'uuid/v4'
-import getUser from '../api/getUser'
-const uuidv4 = require('uuid/v4')
+import getUser from 'api/getUser'
+import uuidv4 from 'uuid'
+
 
 export const submitApiKey = payload => dispatch => Promise.resolve().then(async() => {
     try {
@@ -37,6 +37,8 @@ export const addProject = payload => ({
 
 export const addTimer = payload => dispatch => {
     const id = uuidv4()
+    console.log('payload');
+    console.log({ ...payload, id });
     dispatch({
         type: 'ADD_TIMER',
         payload: { ...payload, id }
@@ -86,6 +88,13 @@ export const reassignTask = payload => dispatch => {
 export const removeProject = payload => dispatch => {
     dispatch({
         type: 'REMOVE_PROJECT',
+        payload: payload
+    })
+}
+
+export const editTimer = payload => dispatch => {
+    dispatch({
+        type: 'EDIT_TIMER',
         payload: payload
     })
 }

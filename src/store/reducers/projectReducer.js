@@ -56,7 +56,7 @@ const reorderTimerInOtherColumn = (state, start, finish, source, destination, dr
 }
 
 const reorderTimer = (result, state) => {
-    const { source, destination, droppableId, draggableId } = result
+    const { source, destination, draggableId } = result
 
     const start = state[source.droppableId]
     const finish = state[destination.droppableId]
@@ -92,42 +92,49 @@ export default function userReducer(state = defaultState, action) {
                 ...reorderTimer(action.payload, state)
             }
         case 'REMOVE_TIMER':
-            const projectId = Object.keys(state).find(key => state[key].timerIds.includes(action.payload));
+            const projectId = Object.keys(state).find(key => state[key].timerIds.includes(action.payload))
             return {
                 ...state,
                 [projectId]: {
                     ...state[projectId],
-                    timerIds: [
-                        ...state[projectId].timerIds.filter(item => item !== action.payload),
-                    ]
+                    timerIds: [...state[projectId].timerIds.filter(item => item !== action.payload)]
                 }
             }
-        case 'REASSIGN_TASK':
-            const {timer, selectedProject} = action.payload
+        case 'EDIT_TIMER':
+            const { timerId, options } = action.payload
+            const { selectedProject } = options
 
-            const projectId1 = Object.keys(state).find(key => state[key].timerIds.includes(timer.id));
-
-            if(selectedProject.id !== projectId1) {
+            const projectId1 = Object.keys(state).find(key => state[key].timerIds.includes(timerId))
+            if (state[selectedProject.id] === undefined) {
                 return {
                     ...state,
                     [projectId1]: {
                         ...state[projectId1],
-                        timerIds: [
-                            ...state[projectId1].timerIds.filter(item => item !== timer.id),
-                        ]
+                        timerIds: [...state[projectId1].timerIds.filter(item => item !== timerId)]
                     },
                     [selectedProject.id]: {
-                        ...state[selectedProject.id],
-                        timerIds: [
-                            ...state[selectedProject.id].timerIds,
-                            timer.id
-                        ]
+                        ...selectedProject,
+                        timerIds: [timerId]
                     }
                 }
             }
+            if (selectedProject.id !== projectId1) {
+                return {
+                    ...state,
+                    [projectId1]: {
+                        ...state[projectId1],
+                        timerIds: [...state[projectId1].timerIds.filter(item => item !== timerId)]
+                    },
+                    [selectedProject.id]: {
+                        ...state[selectedProject.id],
+                        timerIds: [...state[selectedProject.id].timerIds, timerId]
+                    }
+                }
+            }
+            return state
         case 'REMOVE_PROJECT':
-            let {[action.payload]: omit, ...rest} = state
-            //  todo, remove all asigned tasks/timers
+            let { [action.payload]: omit, ...rest } = state
+            //  todo, remove all asigned tasks/timers from local state...
             return rest
         default:
             return state

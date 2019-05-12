@@ -1,4 +1,4 @@
-import { store } from '../store/configureStore'
+import { store } from 'store/configureStore'
 
 const getAllProjects = () => {
     const state = store.getState()

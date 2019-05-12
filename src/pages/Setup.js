@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router'
 
-import Styled from 'styled-components'
+import Styled from 'styled-components/macro'
 
 const Container = Styled.div`
+    margin: auto;
     width: 480px;
     max-width: 100%;
-    background-color: #2b2b47;
+    background-color: ${props => props.theme.backgroundColor};;
     border-radius: 5px;
     overflow: hidden;
 
 `
 const Title = Styled.div`
     width: 100%;
-    background-color: #333355;
+    background-color: ${props => props.theme.foregroundColor};
     padding: 16px;
     font-size: 18px;
     font-weight: 600;
@@ -23,14 +24,14 @@ const FormGroup = Styled.div`
     padding: 22px 8px;
     text-align: center;
     label {
-        color: #8a88c2;
+        color: ${props => props.theme.textColor};
     }
     input {
         background: none;
         border: none;
         box-shadow: none;
-        border-bottom: 1px solid #627FD9;
-        color: #8a88c2;
+        border-bottom: 1px solid ${props => props.theme.primaryAccentColor};
+        color: ${props => props.theme.textColor};
         width: 100%;
         margin: 8px 0 22px;
         text-align: center;
@@ -41,11 +42,11 @@ const FormGroup = Styled.div`
     button {
         background: none;
         box-shadow: none;
-        border: 1px solid #627FD9;
-        color: #8a88c2;
+        border: 1px solid ${props => props.theme.primaryAccentColor};
+        color: ${props => props.theme.textColor};
         padding: 8px 16px;
         &:hover {
-            background-color: #627FD9;
+            background-color: ${props => props.theme.primaryAccentColor};
             color: white;
         }
     }
@@ -57,7 +58,6 @@ const Setup = ({ user, history, submitApiKey }) => {
         setApikey(e.target.value)
     }
     useEffect(() => {
-        console.log(user)
         if (user.apikey) {
             history.push('/dashboard')
         }

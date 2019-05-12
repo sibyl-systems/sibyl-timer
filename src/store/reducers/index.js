@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import userReducer from './userReducer'
-import projectOrderReducer from './projectOrderReducer'
-import projectReducer from './projectReducer'
-import timerReducer from './timerReducer'
+import userReducer from 'store/reducers/userReducer'
+import projectOrderReducer from 'store/reducers/projectOrderReducer'
+import projectReducer from 'store/reducers/projectReducer'
+import timerReducer from 'store/reducers/timerReducer'
 
 const rootReducer = combineReducers({ 
     user: userReducer,

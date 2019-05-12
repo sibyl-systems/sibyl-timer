@@ -1,15 +1,13 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
         "es6": true,
         "jest": true
     },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
-        },
-        "sourceType": "module"
+        }
     },
     "rules": {
         "no-const-assign": "warn",
@@ -35,5 +33,12 @@
         "react",
         "jsx-a11y",
         "import"
-    ]
+    ],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "moduleDirectory": ["node_modules", "src/"]
+            }
+        }
+    }
 }
