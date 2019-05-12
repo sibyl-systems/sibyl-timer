@@ -87,16 +87,7 @@ export default function timerReducer(state = defaultState, action) {
         //             }
         //         }
         //     }
-        // case 'REASSIGN_TASK':
-        //     const {timer, selectedTask} = action.payload
-        //     return {
-        //         ...state,
-        //         [timer.id]: {
-        //             ...state[timer.id],
-        //             task: selectedTask
-        //         }
-        //     }
-
+        
         case 'EDIT_TIMER':
             const {timerId, options} = action.payload
             const {selectedTask, settings, description, elapsedTime} = options

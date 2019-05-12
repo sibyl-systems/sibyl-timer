@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import useInterval from 'hooks/useInterval'
 
 import TimerModalContainer from 'containers/TimerModalContainer'
-import TimerModal from 'components/TimerModal'
 
 import { editTimer } from 'store/actions'
 

@@ -3,7 +3,6 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { useSelector, useDispatch } from 'react-redux'
 import { reorderTimer, reorderColumn } from 'store/actions'
 
-import DraggableProjectColumn from 'containers/DraggableProjectColumn'
 import ProjectList from 'components/ProjectList'
 
 const DroppableProjectColumns = (props) => {
