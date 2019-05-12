@@ -37,6 +37,8 @@ export const addProject = payload => ({
 
 export const addTimer = payload => dispatch => {
     const id = uuidv4()
+    console.log('payload');
+    console.log({ ...payload, id });
     dispatch({
         type: 'ADD_TIMER',
         payload: { ...payload, id }

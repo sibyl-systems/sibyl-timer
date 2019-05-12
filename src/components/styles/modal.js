@@ -41,7 +41,6 @@ const ModalContainer = Styled(Modal)`
     border: 1px solid rgb(204, 204, 204);
     background: ${props => props.theme.backgroundColor};;
     overflow: auto;
-    border-radius: 10px;
     overflow: hidden;
     outline: none;
     display: flex;
@@ -56,6 +55,7 @@ const ModalTitle = Styled.div`
     background: ${props => props.theme.foregroundColor};
     font-size: 18px;
     font-weight: 600;
+    border-radius: 10px 10px 0 0;
 `
 const ModalContent = Styled.div`
     padding: 20px;

@@ -31,8 +31,12 @@ export default function timerReducer(state = defaultState, action) {
                 [action.payload.id]: {
                     ...defaultTimer,
                     id: action.payload.id,
+                    description: action.payload.description,
+                    settings: {
+                        ...action.payload.settings
+                    },
                     task: {
-                        ...action.payload.task
+                        ...action.payload.selectedTask
                     }
                 }
             }

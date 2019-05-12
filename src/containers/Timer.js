@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import useInterval from 'hooks/useInterval'
 
-import TimerModalContainer from 'containers/TimerModalContainer'
+import TimerCardModalContainer from 'containers/modals/TimerCardModalContainer'
 
 import { editTimer } from 'store/actions'
 
@@ -184,7 +184,7 @@ const Timer = ({ timer, children }) => {
             )}
 
             {modalOpen && (
-                <TimerModalContainer
+                <TimerCardModalContainer
                     closeTimerModal={closeTimerModal}
                     submitTimerModal={submitTimerModal}
                     modalOpen={modalOpen}

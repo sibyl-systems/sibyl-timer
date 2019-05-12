@@ -157,7 +157,6 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                         getOptionValue={option => option.id}
                         options={projectOptions}
                         onChange={handleSelectProject}
-                        // value={{ name: 'test', id: 54654 }}
                         value={selectedProject}
                     />
                 </FormGroup>

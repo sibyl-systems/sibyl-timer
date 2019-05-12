@@ -1,9 +1,39 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Styled from 'styled-components/macro'
 
 import { ContextMenuTrigger } from 'react-contextmenu'
 
-import AddNewTimerToProject from 'components/Modals/AddNewTimerToProject'
+import TaskModalContainer from 'containers/modals/TaskModalContainer'
+
+
+function ProjectListColumn(props) {
+    const [modalOpen, setModalOpen] = useState(false)
+    return (
+        <Container {...props.provided.draggableProps} ref={props.provided.innerRef}>
+            <ContextMenuTrigger id={props.project.id}>
+                <Header>
+                    <Title {...props.provided.dragHandleProps}>
+                        {props.project.name}
+                    </Title>
+                    <AddButton onClick={() => setModalOpen(true)}></AddButton>
+                    {modalOpen && 
+                        <TaskModalContainer 
+                            project={props.project}
+                            closeTimerModal={() => setModalOpen(false)}
+                            modalOpen={modalOpen}
+                        />
+                    }
+                </Header>
+            </ContextMenuTrigger>
+            <CardList>
+                {props.children}
+            </CardList>
+        </Container>
+    )
+}
+
+export default ProjectListColumn
+
 
 const Container = Styled.div`
     margin: 8px;
@@ -65,22 +95,32 @@ const CardList = Styled.div`
 `
 
 
-function ProjectListColumn(props) {
-    return (
-        <Container {...props.provided.draggableProps} ref={props.provided.innerRef}>
-            <ContextMenuTrigger id={props.project.id}>
-                <Header>
-                    <Title {...props.provided.dragHandleProps}>
-                        {props.project.name}
-                    </Title>
-                    <AddNewTimerToProject project={props.project} />
-                </Header>
-            </ContextMenuTrigger>
-            <CardList>
-                {props.children}
-            </CardList>
-        </Container>
-    )
-}
 
-export default ProjectListColumn
+const AddButton = Styled.button`
+    border: none;
+    background: none;
+    box-shadow: none;
+    width: 36px;
+    height: 36px;
+    position: relative;
+    border-radius: 5px;
+    &:hover {
+        background: #45476E;
+    }
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        background-color: ${props => props.theme.primaryAccentColor};
+        margin: auto;
+    }
+    &::before {
+        width: 45%;
+        height: 4px;
+    }
+    &::after {
+        height: 45%;
+        width: 4px;
+    }
+`
