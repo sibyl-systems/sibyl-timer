@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 import Styled from 'styled-components/macro'
 
 const Container = Styled.div`
+    margin: auto;
     width: 480px;
     max-width: 100%;
     background-color: ${props => props.theme.backgroundColor};;

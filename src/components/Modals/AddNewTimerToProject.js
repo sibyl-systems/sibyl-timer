@@ -4,15 +4,15 @@
  */
 
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Modal from 'react-modal'
 import Select from 'react-select'
 import getTasks from '../../api/getTasks'
 import Styled from 'styled-components/macro'
 import { addTimer } from 'store/actions'
+import { selectStyles } from 'components/styles/modal'
 
-const uuidv4 = require('uuid/v4')
-
+import uuidv4 from 'uuid'
 
 Modal.setAppElement('#root')
 
@@ -102,89 +102,14 @@ const ActionButton = Styled.button`
 
 `
 
-const customStyles = {
-    option: (provided, state) => {
-        return {
-            // ...provided,
-            // borderBottom: '1px dotted pink',
-            // color: state.isSelected ? 'red' : 'blue',
-            // padding: 20,
-            padding: '8px',
-            backgroundColor: state.isSelected ? '${props => props.theme.backgroundColor};' : 'transparent',
-            color: state.isSelected ? '#627FD8' : 'inherit',
-            '&:hover': {
-                backgroundColor: '${props => props.theme.backgroundColor};',
-                color: '#627FD8'
-            }
-            // ...provided
-        }
-    },
-    menuList: (provided, state) => ({
-        // ...provided,
-        // borderBottom: '1px dotted pink',
-        // color: state.isSelected ? 'red' : 'blue',
-        // padding: 20,
-        backgroundColor: '${props => props.theme.foregroundColor}',
-        borderColor: '#627FD8',
-
-        '::-webkit-scrollbar': {
-            width: '16px'
-        },
-
-        '::-webkit-scrollbar-track': {
-            background: '${props => props.theme.backgroundColor};'
-        },
-
-        /* Handle */
-        '::-webkit-scrollbar-thumb': {
-            background: '${props => props.theme.textColor}'
-        },
-
-        /* Handle on hover */
-        '::-webkit-scrollbar-thumb:hover': {
-            background: '#627FD8'
-        },
-        ...provided
-    }),
-    control: (provided, state) => {
-        return {
-            ...provided,
-            background: 'transparent',
-            border: '1px solid #627FD8',
-            color: 'white',
-            boxShadow: 'none',
-            bordercolor: state.menuIsOpen && '#627FD8',
-            '&:hover': {
-                bordercolor: '#627FD8'
-            }
-        }
-    },
-    dropdownIndicator: (provided, state) => ({
-        ...provided,
-        color: 'white',
-        '&:hover': {
-            color: 'white'
-        }
-    }),
-    singleValue: (provided, state) => {
-        // const opacity = state.isDisabled ? 0.5 : 1;
-        // const transition = 'opacity 300ms';
-
-        return {
-            ...provided,
-            color: '${props => props.theme.textColor}'
-        }
-    }
-}
-
 const AddNewTimerToTask = ({ project }) => {
-    const timers = useSelector(state => state.timers)
+    // const timers = useSelector(state => state.timers)
     const dispatch = useDispatch()
     const [modalOpen, setModalOpen] = useState(false)
     const [loadingTasks, setLoadingTasks] = useState(false)
     const [options, setOptions] = useState([])
     const [selectedTask, setSelectedTask] = useState(false)
-    const defaultValue = { content: 'Unassigned task', id: uuidv4(), unassignedTask: true }
+    const defaultValue = { content: uuidv4(), unassignedTask: true }
     const handleLoadTasks = async () => {
         setLoadingTasks(true)
         try {
@@ -237,7 +162,7 @@ const AddNewTimerToTask = ({ project }) => {
                         getOptionValue={option => option.id}
                         options={options}
                         onChange={handleSelectTask}
-                        styles={customStyles}
+                        styles={selectStyles}
                     />
                     {/* Todo: loading indicator... */}
                     <div style={{ paddingTop: '16px' }}>{loadingTasks ? 'Updating tasks...' : 'Tasks up to date!'}</div>

@@ -135,7 +135,7 @@ const Timer = ({ timer, children }) => {
         setClock(options.elapsedTime)
         setDescription(options.description)
 
-        const test = await dispatch(
+        await dispatch(
             editTimer({
                 timerId,
                 options

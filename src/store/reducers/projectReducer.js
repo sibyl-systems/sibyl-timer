@@ -56,7 +56,7 @@ const reorderTimerInOtherColumn = (state, start, finish, source, destination, dr
 }
 
 const reorderTimer = (result, state) => {
-    const { source, destination, droppableId, draggableId } = result
+    const { source, destination, draggableId } = result
 
     const start = state[source.droppableId]
     const finish = state[destination.droppableId]
@@ -131,6 +131,7 @@ export default function userReducer(state = defaultState, action) {
                     }
                 }
             }
+            return state
         case 'REMOVE_PROJECT':
             let { [action.payload]: omit, ...rest } = state
             //  todo, remove all asigned tasks/timers from local state...

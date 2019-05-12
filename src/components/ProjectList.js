@@ -1,7 +1,7 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import Styled from 'styled-components/macro'
 
-const Container = styled.div`
+const Container = Styled.div`
     display: flex;
     height: 100%;
     align-items: flex-start;

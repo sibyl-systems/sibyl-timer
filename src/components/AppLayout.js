@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, {ThemeProvider, createGlobalStyle} from 'styled-components/macro'
+import Styled, {ThemeProvider, createGlobalStyle} from 'styled-components/macro'
 
 import AppHeader from './AppHeader'
 
@@ -28,7 +28,7 @@ const darkTheme = {
 //     secondaryAccentColor: "#9277ea",
 // };
 
-const Container = styled.div`
+const Container = Styled.div`
     background: ${props => props.theme.backgroundGradient};
     // width: 100vw;
     // height: 100vh;
@@ -36,7 +36,7 @@ const Container = styled.div`
     min-height: 100%;
     // overflow: hidden;
 `
-const Body = styled.div`
+const Body = Styled.div`
     padding-top: 40px;
     height: calc(100vh - 56px);
     // touch-action: pan-x pan-y; //todo: Get drag scroll working

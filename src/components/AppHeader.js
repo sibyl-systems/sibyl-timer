@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import Styled from 'styled-components/macro'
 
 import { ReactComponent as Logo } from '../assets/logo.svg'
 import { connect } from 'react-redux'
@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { addProject } from '../store/actions'
 import AddNewProjectColumn from 'components/Modals/AddNewProjectColumn'
 
-const Header = styled.div`
+const Header = Styled.div`
     background: ${props => props.theme.foregroundColor};
     width: 100%;
     height: 56px;
@@ -16,7 +16,7 @@ const Header = styled.div`
     align-items: center;
     justify-content: space-between;
 `
-const StyledLogo = styled(Logo)`
+const StyledLogo = Styled(Logo)`
     path {
         fill: ${props => props.theme.textColor};
     }

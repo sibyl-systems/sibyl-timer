@@ -1,5 +1,6 @@
 import getUser from '../api/getUser'
-const uuidv4 = require('uuid/v4')
+import uuidv4 from 'uuid'
+
 
 export const submitApiKey = payload => dispatch => Promise.resolve().then(async() => {
     try {

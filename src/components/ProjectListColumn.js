@@ -1,11 +1,11 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import Styled from 'styled-components/macro'
 
 import { ContextMenuTrigger } from 'react-contextmenu'
 
 import AddNewTimerToProject from 'components/Modals/AddNewTimerToProject'
 
-const Container = styled.div`
+const Container = Styled.div`
     margin: 8px;
     width: 400px;
     flex-shrink: 0;
@@ -16,7 +16,7 @@ const Container = styled.div`
     overflow: hidden;
 `
 
-const Header = styled.div`
+const Header = Styled.div`
     display: flex;
     align-items: center;
     padding: 0 16px;
@@ -26,7 +26,7 @@ const Header = styled.div`
     background: ${props => props.theme.foregroundColor};
 `
 
-const Title = styled.h3`
+const Title = Styled.h3`
     font-size: 18px;
     font-weight: 700;
     flex-grow: 1;
@@ -36,7 +36,7 @@ const Title = styled.h3`
     letter-spacing: 0.018em;
 `
 
-const CardList = styled.div`
+const CardList = Styled.div`
     max-height: calc(100vh - 200px);
     overflow-y: overlay;
     padding: 0 12px 12px;

@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { Dialog, DialogOverlay } from '@reach/dialog'
+import { Dialog } from '@reach/dialog'
 import Styled from 'styled-components/macro'
-import { hideMenu } from 'react-contextmenu';
 
-const ConfirmDialog = (props) => {
-    const {children, title, description} = props
+const ConfirmDialog = props => {
+    const { children, title, description } = props
     const [open, setOpen] = useState(false)
-    const [callback, setCallback] = useState({cb: null})
+    const [callback, setCallback] = useState({ cb: null })
     const [messages, setMessages] = useState({
         title: null,
         description: null
@@ -21,15 +20,15 @@ const ConfirmDialog = (props) => {
         }
 
         setOpen(true)
-        setCallback({cb: () => callback(event)})
-        if(messages) {
+        setCallback({ cb: () => callback(event) })
+        if (messages) {
             setMessages(messages)
         }
     }
 
     const hide = () => {
         setOpen(false)
-        setCallback({cb: null})
+        setCallback({ cb: null })
     }
 
     const confirm = () => {
@@ -41,36 +40,34 @@ const ConfirmDialog = (props) => {
             {children(show)}
 
             {open && (
-                    <Dialog style={{
+                <Dialog
+                    style={{
                         width: '600px',
                         maxWidth: '100%',
                         margin: '155px auto 0',
                         background: 'transparent',
                         padding: '0',
-                        outline: 'none',
-                        }}
-                        onDismiss={hide}
-                    >
-                        <DialogWrapper>
-                                <ModalTitle>{messages.title || title}</ModalTitle>
-                                <ModalContent>
-                                    <p>{messages.description || description}</p>
-                                </ModalContent>
-                                <ButtonContainer>
-                                    <ActionButton onClick={hide}>Cancel</ActionButton>
-                                    <ActionButton onClick={confirm}>OK</ActionButton>
-                                </ButtonContainer>
-                        </DialogWrapper>
-                    </Dialog>
+                        outline: 'none'
+                    }}
+                    onDismiss={hide}
+                >
+                    <DialogWrapper>
+                        <ModalTitle>{messages.title || title}</ModalTitle>
+                        <ModalContent>
+                            <p>{messages.description || description}</p>
+                        </ModalContent>
+                        <ButtonContainer>
+                            <ActionButton onClick={hide}>Cancel</ActionButton>
+                            <ActionButton onClick={confirm}>OK</ActionButton>
+                        </ButtonContainer>
+                    </DialogWrapper>
+                </Dialog>
             )}
-            {/*<DialogOverlay style={{ background: "hsla(0, 100%, 100%, 0.9)" }} onClick={hide}>*/}
-            {/* </DialogOverlay> */}
         </>
     )
 }
 
 export default ConfirmDialog
-
 
 const DialogWrapper = Styled.div`
     width: 100%;
