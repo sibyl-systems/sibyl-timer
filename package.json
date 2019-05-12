@@ -41,7 +41,7 @@
         "redux-persist": "^5.10.0",
         "redux-thunk": "^2.3.0",
         "styled-components": "^4.2.0",
-        "import uuidv4 from 'uuid'": "^3.3.2"
+        "uuid": "^3.3.2"
     },
     "eslintConfig": {
         "extends": "react-app"

@@ -48,17 +48,19 @@ const TimerContextMenu = ({
                         >
                             Remove Timer
                         </MenuItem>
-                        <MenuItem divider />
                         {!timer.task.unassignedTask && (
-                            <MenuItem>
-                                <a
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    href={`${user.account.URL}#tasks/${timer.task.id}`}
-                                >
-                                    Open in teamwork
-                                </a>
-                            </MenuItem>
+                            <>
+                                <MenuItem divider />
+                                <MenuItem>
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={`${user.account.URL}#tasks/${timer.task.id}`}
+                                    >
+                                        Open in teamwork
+                                    </a>
+                                </MenuItem>
+                            </>
                         )}
                         {/* <MenuItem divider />
                         <MenuItem divider /> */}

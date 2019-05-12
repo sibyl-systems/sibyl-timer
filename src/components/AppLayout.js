@@ -63,6 +63,10 @@ export default AppLayout
 const GlobalStyle = createGlobalStyle`
     * {
         box-sizing: border-box;
+        user-select: none;
+    }
+    button {
+        outline: none;
     }
 
     body {
@@ -79,45 +83,43 @@ const GlobalStyle = createGlobalStyle`
         width: 100vw;
     }
 
+
+
+
     .react-contextmenu {
-        border: 1px solid rgba(0, 0, 0, 0.8);
+        border: 1px solid ${props => props.theme.primaryAccentColor};
         z-index: 800;
     }
 
     .react-contextmenu--visible {
-        background: white;
+        background: ${props => props.theme.backgroundColor};
     }
 
     .react-contextmenu-item {
         padding: 8px;
         cursor: default;
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
     }
     .react-contextmenu-item:hover {
-        background: rgb(8, 190, 203);
-        color: white;
+        background: ${props => props.theme.primaryAccentColor};
+        // color: ${props => props.theme.textColor};
+        color: #FFF;
     }
 
     .react-contextmenu-item--divider:hover {
-        background: white;
+        background: ${props => props.theme.backgroundColor};
     }
 
     .react-contextmenu-toggle {
     }
 
     .react-contextmenu-toggle.is-selected {
-        background-color: rgb(8, 203, 148);
-        color: white;
+        background-color: ${props => props.theme.foregroundColor};
+        color: ${props => props.theme.backgroundColor};
     }
-
-    * {
-        user-select: none;
-    }
-
-    button {
-        outline: none;
-    }
-
-
 
     ::-webkit-scrollbar {
         width: 16px
