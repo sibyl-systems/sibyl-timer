@@ -42,7 +42,7 @@ const ConfirmDialog = props => {
             {open && (
                 <Dialog
                     style={{
-                        width: '600px',
+                        width: '460px',
                         maxWidth: '100%',
                         margin: '155px auto 0',
                         background: 'transparent',
@@ -89,6 +89,9 @@ const ModalTitle = Styled.div`
 `
 const ModalContent = Styled.div`
     padding: 20px;
+    p {
+        line-height: 1.5;
+    }
 `
 
 const ButtonContainer = Styled.div`

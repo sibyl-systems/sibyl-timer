@@ -1,8 +1,8 @@
 {
-    "name": "timekeys",
+    "name": "sibyl-timer",
     "author": "Benjamin Sterling",
-    "description": "Global hotkeys for teamwork. Just add API key.",
-    "version": "0.2.0-alpha.0",
+    "description": "A timer app for TeamWork. Just add API key.",
+    "version": "0.3.0-beta.0",
     "private": true,
     "homepage": "./",
     "main": "public/electron.js",
@@ -53,6 +53,6 @@
         "not op_mini all"
     ],
     "build": {
-        "appId": "com.example.timekeys"
+        "appId": "com.example.sibyl-timer"
     }
 }

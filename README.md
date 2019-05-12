@@ -36,9 +36,7 @@ See all available scripts in `package.json`
 - ~Save timers~
 - Configure summon hotkey (currently super+alt+s)
 - Add notifications for when timers have been logged.
-- View task on teamwork button
-
-- Clean up codebase into a better structure. It's very prototype right now.
+- ~View task on teamwork button~
 
 - Better design
     - Seperate screen when timer is running

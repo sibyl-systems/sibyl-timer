@@ -38,16 +38,16 @@ function createWindow() {
     mainWindow.maximize()
     mainWindow.show()
 
-    mainWindow.webContents.once('dom-ready', () => {
-        for (let index = 1; index <= 3; index++) {
-            let toggleTimer = globalShortcut.register(`Alt+${index}`, () => {
-                mainWindow.webContents.send('toggle-timer', index)
-            })
-            if (!toggleTimer) {
-                console.info('Registration toggle-timer failed.')
-            }
-        }
-    })
+    // mainWindow.webContents.once('dom-ready', () => {
+    //     for (let index = 1; index <= 3; index++) {
+    //         let toggleTimer = globalShortcut.register(`Alt+${index}`, () => {
+    //             mainWindow.webContents.send('toggle-timer', index)
+    //         })
+    //         if (!toggleTimer) {
+    //             console.info('Registration toggle-timer failed.')
+    //         }
+    //     }
+    // })
 
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
     mainWindow.on('closed', () => (mainWindow = null))

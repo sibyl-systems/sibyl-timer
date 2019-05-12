@@ -4,7 +4,7 @@ import Styled from 'styled-components/macro'
 import { ContextMenuTrigger } from 'react-contextmenu'
 
 import TaskModalContainer from 'containers/modals/TaskModalContainer'
-
+import ProjectContextMenu from 'components/ProjectContextMenu'
 
 function ProjectListColumn(props) {
     const [modalOpen, setModalOpen] = useState(false)
@@ -25,6 +25,7 @@ function ProjectListColumn(props) {
                     }
                 </Header>
             </ContextMenuTrigger>
+            <ProjectContextMenu project={props.project} />
             <CardList>
                 {props.children}
             </CardList>
@@ -64,6 +65,7 @@ const Title = Styled.h3`
     display: flex;
     align-items: center;
     letter-spacing: 0.018em;
+    outline: none;
 `
 
 const CardList = Styled.div`

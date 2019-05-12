@@ -1,15 +1,33 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { removeProject } from 'store/actions'
 
 import { ContextMenu, MenuItem } from 'react-contextmenu'
 
-const ProjectContextMenu = ({
-    project,
-    removeProject
-}) => {
+import ConfirmDialog from 'containers/ConfirmDialog'
+
+import '@reach/dialog/styles.css'
+
+const ProjectContextMenu = ({ project }) => {
+    const dispatch = useDispatch()
     return (
-        <ContextMenu id={project.id}>
-            <MenuItem onClick={() => removeProject(project.id)}>Remove Project</MenuItem>
-        </ContextMenu>
+        <ConfirmDialog title="Confirm" description="Are you sure?">
+            {confirm => {
+                return (
+                    <ContextMenu id={project.id}>
+                        <MenuItem
+                            onClick={confirm(() => dispatch(removeProject(project.id)), {
+                                title: 'Remove this project?',
+                                description:
+                                    'Are you sure you want to remove this timer and all timers within it? You can’t undo this action.'
+                            })}
+                        >
+                            Remove Project
+                        </MenuItem>
+                    </ContextMenu>
+                )
+            }}
+        </ConfirmDialog>
     )
 }
 
