@@ -1,20 +1,20 @@
 import React from 'react'
-import Styled, {ThemeProvider, createGlobalStyle} from 'styled-components/macro'
+import Styled, { ThemeProvider, createGlobalStyle } from 'styled-components/macro'
 
-import AppHeader from './AppHeader'
+import AppHeader from 'components/AppHeader'
 
 const darkTheme = {
-    backgroundGradient: "linear-gradient(45deg, #1c1e30 0%, #2f3050 100%)",
-    backgroundAugment: "rgba(0,0,0,0.1)",
-    backgroundAugment2: "rgba(0,0,0,0.1)",
-    backgroundColor: "#2b2b47",
-    foregroundColor: "#333355",
-    foregroundColorLight: "#45476E",
-    textColor: "#8a88c2",
-    textPlaceholderColor: "#8a88c2a1",
-    primaryAccentColor: "#627FD9",
-    secondaryAccentColor: "#F18C64",
-};
+    backgroundGradient: 'linear-gradient(45deg, #1c1e30 0%, #2f3050 100%)',
+    backgroundAugment: 'rgba(0,0,0,0.1)',
+    backgroundAugment2: 'rgba(0,0,0,0.1)',
+    backgroundColor: '#2b2b47',
+    foregroundColor: '#333355',
+    foregroundColorLight: '#45476E',
+    textColor: '#8a88c2',
+    textPlaceholderColor: '#8a88c2a1',
+    primaryAccentColor: '#627FD9',
+    secondaryAccentColor: '#F18C64'
+}
 // const darkTheme = {
 //     backgroundGradient: "linear-gradient(45deg, #FFF 0%, #EDE7F6 100%)",
 //     backgroundAugment: "rgba(255,255,255,0.6)",
@@ -44,7 +44,7 @@ const Body = Styled.div`
 
 function AppLayout(props) {
     //2do, allow theme switching
-    const theme = darkTheme;
+    const theme = darkTheme
     return (
         <ThemeProvider theme={theme}>
             <>
@@ -59,7 +59,6 @@ function AppLayout(props) {
 }
 
 export default AppLayout
-
 
 const GlobalStyle = createGlobalStyle`
     * {

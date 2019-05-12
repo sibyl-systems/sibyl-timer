@@ -15,7 +15,7 @@ import {
     updateTimerDescription,
     updateTimerSettings,
     removeTimer
-} from '../store/actions.js'
+} from 'store/actions.js'
 
 const Timer = ({ timer, children }) => {
     const dispatch = useDispatch()

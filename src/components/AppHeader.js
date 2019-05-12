@@ -1,10 +1,10 @@
 import React from 'react'
 import Styled from 'styled-components/macro'
 
-import { ReactComponent as Logo } from '../assets/logo.svg'
+import { ReactComponent as Logo } from 'assets/logo.svg'
 import { connect } from 'react-redux'
 
-import { addProject } from '../store/actions'
+import { addProject } from 'store/actions'
 import AddNewProjectColumn from 'components/Modals/AddNewProjectColumn'
 
 const Header = Styled.div`

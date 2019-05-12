@@ -1,4 +1,4 @@
-import getUser from '../api/getUser'
+import getUser from 'api/getUser'
 import uuidv4 from 'uuid'
 
 

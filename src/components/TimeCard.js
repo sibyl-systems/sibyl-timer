@@ -3,8 +3,8 @@
 import React, { useRef } from 'react'
 
 import Styled from 'styled-components/macro'
-import { ReactComponent as PlayIcon } from '../assets/play.svg'
-import { ReactComponent as PauseIcon } from '../assets/pause.svg'
+import { ReactComponent as PlayIcon } from 'assets/play.svg'
+import { ReactComponent as PauseIcon } from 'assets/pause.svg'
 import ResizableTextarea from 'components/ResizableTextarea'
 
 import { ContextMenuTrigger } from 'react-contextmenu'

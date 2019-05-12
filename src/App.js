@@ -2,16 +2,16 @@ import './App.css'
 
 import React from 'react'
 
-import AppLayout from './components/AppLayout'
+import AppLayout from 'components/AppLayout'
 import { HashRouter, Switch, Route } from 'react-router-dom'
-import RouteIf from './helpers/RouteIf'
+import RouteIf from 'helpers/RouteIf'
 
-import Setup from './pages/Setup'
-import Dashboard from './pages/Dashboard'
+import Setup from 'pages/Setup'
+import Dashboard from 'pages/Dashboard'
 
 import { connect } from 'react-redux'
 
-import { submitApiKey, reorderTimer } from './store/actions'
+import { submitApiKey, reorderTimer } from 'store/actions'
 
 const App = props => {
     return (
