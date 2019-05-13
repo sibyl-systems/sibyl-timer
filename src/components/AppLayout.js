@@ -15,6 +15,7 @@ const darkTheme = {
     primaryAccentColor: '#627FD9',
     secondaryAccentColor: '#F18C64'
 }
+
 // const darkTheme = {
 //     backgroundGradient: "linear-gradient(45deg, #FFF 0%, #EDE7F6 100%)",
 //     backgroundAugment: "rgba(255,255,255,0.6)",

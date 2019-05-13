@@ -11,7 +11,7 @@
         "build": "react-scripts build",
         "electron-dev": "concurrently \"set BROWSER=none&&npm start\" \"wait-on http://localhost:3000 && electron .\"",
         "preelectron-pack": "npm run build",
-        "electron-pack": "electron-builder build"
+        "electron-pack": "electron-builder build --mac"
     },
     "devDependencies": {
         "babel-plugin-styled-components": "^1.10.0",

@@ -83,7 +83,7 @@ const ActionButton = Styled.button`
     text-transform: uppercase;
     &:hover {
         background-color: ${props => props.theme.primaryAccentColor};
-        color: white;
+        color: #FFF;
     }
     &:first-child {
         border-right: 1px solid ${props => props.theme.primaryAccentColor};
@@ -160,6 +160,12 @@ const FormGroup = Styled.div`
 `
 
 const selectStyles = {
+    input: (provided, state) => {
+        return {
+            ...provided,
+            color: '#8a88c2'
+        }
+    },
     option: (provided, state) => {
         return {
             // ...provided,
@@ -203,12 +209,18 @@ const selectStyles = {
         },
         ...provided
     }),
+    indicatorSeparator: (provided, state) => {
+        return {
+            ...provided,
+            backgroundColor: '#8a88c2'
+        }
+    },
     control: (provided, state) => {
         return {
             ...provided,
             background: 'transparent',
             border: '1px solid #627FD8',
-            color: 'white',
+            color: '#8a88c2',
             boxShadow: 'none',
             bordercolor: state.menuIsOpen && '#627FD8',
             '&:hover': {
@@ -218,9 +230,9 @@ const selectStyles = {
     },
     dropdownIndicator: (provided, state) => ({
         ...provided,
-        color: 'white',
+        color: '#8a88c2',
         '&:hover': {
-            color: 'white'
+            color: '#8a88c2'
         }
     }),
     singleValue: (provided, state) => {

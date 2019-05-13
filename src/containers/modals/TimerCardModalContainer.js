@@ -292,7 +292,6 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
     // background-color: ${props => props.theme.backgroundAugment2};
     padding: 9px 9px;
     border: 1px solid ${props => props.theme.primaryAccentColor};
-    width: calc(100% - 10px);
 `
 
 const TimeInputContainer = Styled.div`
