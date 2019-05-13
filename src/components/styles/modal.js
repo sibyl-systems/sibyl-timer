@@ -222,6 +222,7 @@ const selectStyles = {
             border: '1px solid #627FD8',
             color: '#8a88c2',
             boxShadow: 'none',
+            borderRadius: '0',
             bordercolor: state.menuIsOpen && '#627FD8',
             '&:hover': {
                 bordercolor: '#627FD8'
