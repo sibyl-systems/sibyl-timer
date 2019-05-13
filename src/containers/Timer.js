@@ -123,6 +123,7 @@ const Timer = ({ timer, children }) => {
     const [modalType, setModalType] = useState(null)
 
     const openTimerModal = modalType => {
+        handleStopTimer()
         setModalOpen(true)
         setModalType(modalType) //edit, log, add
     }
