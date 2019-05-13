@@ -152,7 +152,7 @@ const Timer = ({ timer, children }) => {
                 id: timer.id //2do: fix this. It's not waiting for redux to update before grabbing the new id...
             }).then(res => {
                 if (options.settings.keepTimer) {
-                    // handleResetTimer()
+                    handleResetTimer()
                 } else {
                     dispatch(removeTimer(timerId))
                 }
