@@ -10,6 +10,8 @@ const isDev = require('electron-is-dev')
 
 const os = require('os')
 
+const Menu = require('electron').Menu
+
 let mainWindow
 
 const isWin = process.platform === 'win32'
@@ -17,6 +19,75 @@ const isWin = process.platform === 'win32'
 const nativeImage = require('electron').nativeImage
 let image = nativeImage.createFromPath(__dirname + '/electron-icon.png')
 // where public folder on the root dir
+
+
+function createMenu() {
+    const application = {
+        label: "Application",
+        submenu: [
+            {
+                label: "About Application",
+                selector: "orderFrontStandardAboutPanel:"
+            },
+            {
+                type: "separator"
+            },
+            {
+                label: "Quit",
+                accelerator: "Command+Q",
+                click: () => {
+                    app.quit()
+                }
+            }
+        ]
+    }
+
+    const edit = {
+        label: "Edit",
+        submenu: [
+            {
+                label: "Undo",
+                accelerator: "CmdOrCtrl+Z",
+                selector: "undo:"
+            },
+            {
+                label: "Redo",
+                accelerator: "Shift+CmdOrCtrl+Z",
+                selector: "redo:"
+            },
+            {
+                type: "separator"
+            },
+            {
+                label: "Cut",
+                accelerator: "CmdOrCtrl+X",
+                selector: "cut:"
+            },
+            {
+                label: "Copy",
+                accelerator: "CmdOrCtrl+C",
+                selector: "copy:"
+            },
+            {
+                label: "Paste",
+                accelerator: "CmdOrCtrl+V",
+                selector: "paste:"
+            },
+            {
+                label: "Select All",
+                accelerator: "CmdOrCtrl+A",
+                selector: "selectAll:"
+            }
+        ]
+    }
+
+    const template = [
+        application,
+        edit
+    ]
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+}
 
 image.setTemplateImage(true)
 
@@ -51,6 +122,7 @@ function createWindow() {
 
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
     mainWindow.on('closed', () => (mainWindow = null))
+    createMenu()
 }
 
 app.on('ready', async () => {
