@@ -28,8 +28,7 @@ function AppHeader(props) {
     return (
         <Header>
             <StyledLogo width="32px" height="32px" />
-            <Button onClick={() => setModalOpen(true)}>Add new project</Button>
-
+            {props.user.code && <Button onClick={() => setModalOpen(true)}>Add new project</Button>}
             {props.user.code && modalOpen && (
                 <ProjectModalContainer
                     closeTimerModal={() => setModalOpen(false)}
