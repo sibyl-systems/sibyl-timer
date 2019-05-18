@@ -20,6 +20,7 @@ const defaultTimer = {
         isBillable: false,
         keepTimer: false,
     },
+    tags: [],
     task: {}
 }
 

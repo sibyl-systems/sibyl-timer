@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { addProject } from 'store/actions'
 
 import ProjectModalContainer from 'containers/modals/ProjectModalContainer'
+import SettingsModalContainer from 'containers/modals/SettingsModalContainer'
 
 const Header = Styled.div`
     background: ${props => props.theme.foregroundColor};
@@ -24,15 +25,25 @@ const StyledLogo = Styled(Logo)`
 `
 
 function AppHeader(props) {
-    const [modalOpen, setModalOpen] = useState(false)
+    const [projectModalOpen, setProjectModalOpen] = useState(false)
+    const [settingsOpen, setSettingsOpen] = useState(false)
     return (
         <Header>
             <StyledLogo width="32px" height="32px" />
-            {props.user.code && <Button onClick={() => setModalOpen(true)}>Add new project</Button>}
-            {props.user.code && modalOpen && (
+            <div>
+                {props.user.code && <Button onClick={() => setSettingsOpen(true)}>Settings</Button>}
+                {props.user.code && <Button onClick={() => setProjectModalOpen(true)}>Add new project</Button>}
+            </div>
+            {props.user.code && settingsOpen && (
+                <SettingsModalContainer
+                    closeTimerModal={() => setSettingsOpen(false)}
+                    modalOpen={settingsOpen}
+                />
+            )}
+            {props.user.code && projectModalOpen && (
                 <ProjectModalContainer
-                    closeTimerModal={() => setModalOpen(false)}
-                    modalOpen={modalOpen}
+                    closeTimerModal={() => setProjectModalOpen(false)}
+                    modalOpen={projectModalOpen}
                 />
             )}
         </Header>
@@ -63,5 +74,8 @@ const Button = Styled.button`
     &:hover {
         background-color: ${props => props.theme.primaryAccentColor};
         color: white;
+    }
+    &:not(:last-child) {
+        margin-right: 12px;
     }
 `

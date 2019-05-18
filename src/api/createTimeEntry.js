@@ -31,7 +31,8 @@ const createTimeEntry = timer => {
                     time: `${now.getHours()}:${now.getMinutes()}`, //This should be the start time for the timer, but it's the current time.
                     hours: hours, //hours logged
                     minutes: minutes, //minutes logged
-                    isbillable: isBillable.toString()
+                    isbillable: isBillable.toString(),
+                    tags: timer.tags ? timer.tags.join() : ''
                     // tags // todo: coming soon!
                 }
             })

@@ -55,6 +55,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
     const [selectedTask, setSelectedTask] = useState(timer.task)
     const [description, setDescription] = useState(timer.description || '')
 
+
     const { hours, minutes } = secondsToHMS(timer.elapsedTime)
     const [time, setTime] = useState({
         hours: hours | 0,
@@ -63,6 +64,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
 
     const [isBillable, setIsBillable] = useState(timer.settings.isBillable || false)
     const [keepTimer, setKeepTimer] = useState(timer.settings.keepTimer || false)
+    const [markAsComplete, setMarkAsComplete] = useState(false)
 
     const handleLoadProjects = async () => {
         //2do: set current projects in memory as the available options first.
@@ -217,6 +219,18 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                         />
                         <CheckboxInputHelper />
                         Keep timer?
+                    </CheckboxInput>
+                    <CheckboxInput htmlFor={`mark-as-complete-${timer.id}`}>
+                        <input
+                            id={`mark-as-complete-${timer.id}`}
+                            type="checkbox"
+                            checked={markAsComplete}
+                            value="markAsComplete"
+                            name="markAsComplete"
+                            onChange={() => setMarkAsComplete(value => !value)}
+                        />
+                        <CheckboxInputHelper />
+                        Mark task as complete?
                     </CheckboxInput>
                 </TimeInputContainer>
             </ModalContent>
