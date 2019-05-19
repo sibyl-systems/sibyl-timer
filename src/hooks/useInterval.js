@@ -1,26 +1,56 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react'
 
-const useInterval = (callback, [delay, cb]) => {
-  const savedCallback = useRef();
+const accurateInterval = (callback, delay, opts) => {
+    const now = new Date().getTime()
+    let nextAt = now
+    let timeout = null
 
-  // Remember the latest function.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  useEffect(() => {
-    const tick = () => {
-      savedCallback.current();
+    if (!opts) opts = {}
+    if (opts.aligned) {
+        nextAt += delay - (now % delay)
     }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => {
-        cb()
-        clearInterval(id)
-      };
+    if (!opts.immediate) {
+        nextAt += delay
     }
-  }, [delay]);
+
+    const wrapper = function wrapper() {
+        const scheduledTime = nextAt
+        nextAt += delay
+        timeout = setTimeout(wrapper, nextAt - new Date().getTime())
+        callback(scheduledTime)
+    }
+
+    const clear = function clear() {
+        return clearTimeout(timeout)
+    }
+
+    timeout = setTimeout(wrapper, nextAt - new Date().getTime())
+
+    return {
+        clear: clear
+    }
 }
 
+const useInterval = (callback, [delay, cb]) => {
+    const savedCallback = useRef()
+
+    // Remember the latest function.
+    useEffect(() => {
+        savedCallback.current = callback
+    }, [callback])
+
+    useEffect(() => {
+        const tick = () => {
+            savedCallback.current()
+        }
+        if (delay !== null) {
+            let id = accurateInterval(tick, delay, { aligned: true })
+            return () => {
+                cb()
+                id.clear()
+            }
+        }
+    }, [delay])
+}
 
 export default useInterval
