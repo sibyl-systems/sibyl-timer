@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import useInterval from 'hooks/useInterval'
 
@@ -12,6 +12,7 @@ import {
     startTimer,
     stopTimer,
     commitTimer,
+
     updateTimerDescription,
     updateTimerSettings,
     removeTimer
@@ -23,6 +24,19 @@ const Timer = ({ timer, children }) => {
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
 
+    useEffect(() => {
+        window.addEventListener('beforeunload', (event) => {
+            return setClock(countingSeconds => {
+                dispatch(
+                    commitTimer({
+                        id: timer.id,
+                        elapsedTime: countingSeconds
+                    })
+                )
+                return countingSeconds
+            })
+        });
+    }, [])
     useInterval(() => {
         const newClock = clock + 1
         //Commit time every 5 minutes
