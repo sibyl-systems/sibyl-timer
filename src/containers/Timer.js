@@ -42,17 +42,19 @@ const Timer = ({ timer, children }) => {
     }, [])
 
     useInterval(() => {
-        const newClock = clock + 1
-        //Commit time every 5 minutes
-        if (newClock % 300 === 0) {
-            dispatch(
-                commitTimer({
-                    id: timer.id,
-                    elapsedTime: newClock
-                })
-            )
-        }
-        setClock(newClock)
+        setClock(oldClock => {
+            const newClock = oldClock + 1
+            //Commit time every 5 minutes
+            if (newClock % 300 === 0) {
+                dispatch(
+                    commitTimer({
+                        id: timer.id,
+                        elapsedTime: newClock
+                    })
+                )
+            }
+            return newClock
+        })
     }, [
         timer.running ? 1000 : null,
         () => {
