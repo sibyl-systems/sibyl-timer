@@ -24,6 +24,9 @@ const Timer = ({ timer, children }) => {
     const [clock, setClock] = useState(timer.elapsedTime)
     const [description, setDescription] = useState(timer.description)
 
+    const [modalOpen, setModalOpen] = useState(false)
+    const [modalType, setModalType] = useState(null)
+
     useEffect(() => {
         window.addEventListener('beforeunload', (event) => {
             return setClock(countingSeconds => {
@@ -37,6 +40,7 @@ const Timer = ({ timer, children }) => {
             })
         });
     }, [])
+
     useInterval(() => {
         const newClock = clock + 1
         //Commit time every 5 minutes
@@ -126,15 +130,6 @@ const Timer = ({ timer, children }) => {
             openTimerModal('log')
         })
     }
-
-    ////// For later use
-    // const handleCommitEditTimer = payload => {
-    //     setClock(payload.elapsedTime)
-    //     commitTimer(payload)
-    // }
-
-    const [modalOpen, setModalOpen] = useState(false)
-    const [modalType, setModalType] = useState(null)
 
     const openTimerModal = modalType => {
         handleStopTimer()

@@ -1,5 +1,7 @@
 const defaultState = {
-    apikey: ''
+    apikey: '',
+    tags: [],
+    
 }
 
 export default function userReducer(state = defaultState, action) {

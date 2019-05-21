@@ -206,7 +206,9 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             id={`is-billable-${timer.id}`}
                         />
                         <CheckboxInputHelper />
-                        Billable?
+                        <div>
+                            Billable?
+                        </div>
                     </CheckboxInput>
                     <CheckboxInput htmlFor={`keep-timer-${timer.id}`}>
                         <input
@@ -218,7 +220,9 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             onChange={() => setKeepTimer(value => !value)}
                         />
                         <CheckboxInputHelper />
-                        Keep timer?
+                        <div>
+                            Keep timer?
+                        </div>
                     </CheckboxInput>
                     <CheckboxInput htmlFor={`mark-as-complete-${timer.id}`}>
                         <input
@@ -230,7 +234,9 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             onChange={() => setMarkAsComplete(value => !value)}
                         />
                         <CheckboxInputHelper />
-                        Mark task as complete?
+                        <div>
+                            Mark task as complete?
+                        </div>
                     </CheckboxInput>
                 </TimeInputContainer>
             </ModalContent>
@@ -311,13 +317,15 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
 const TimeInputContainer = Styled.div`
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 24px;
+    flex-wrap: wrap;
 `
 const TimeInputGroup = Styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-right: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
     ${props =>
         props.horizontal &&
         `
@@ -352,6 +360,7 @@ const CheckboxInputHelper = Styled.div`
     // background-color: ${props => props.theme.backgroundAugment2};
     margin-right: 15px;
     position: relative;
+    flex-shrink: 0;
     &::before {
         content: "";
         position: absolute;
@@ -368,6 +377,7 @@ const CheckboxInputHelper = Styled.div`
 
 const CheckboxInput = Styled.label`
     margin-right: 24px;
+    margin-bottom: 24px;
     display: flex;
     align-items: center;
     color: ${props => props.theme.textColor};
