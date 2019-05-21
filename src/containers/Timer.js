@@ -160,6 +160,7 @@ const Timer = ({ timer, children }) => {
                 settings: options.settings,
                 description: options.description,
                 task: options.selectedTask,
+                tags: options.tags,
                 id: timer.id //2do: fix this. It's not waiting for redux to update before grabbing the new id...
             }).then(res => {
                 if (options.settings.keepTimer) {

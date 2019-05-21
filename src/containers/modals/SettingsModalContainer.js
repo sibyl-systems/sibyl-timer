@@ -7,6 +7,7 @@ import Modal from 'react-modal'
 import Styled from 'styled-components/macro'
 import Select from 'react-select'
 
+import {addDefaultTags} from 'store/actions'
 
 import {
     ModalContainer,
@@ -64,6 +65,7 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
     }
 
     const handleSubmitModal = () => {
+        console.log(selectedTags);
         // if (selectedProject) {
             closeTimerModal()
         // }
@@ -90,9 +92,11 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
                         getOptionValue={option => option.id}
                         options={tagOptions}
                         onChange={handleSelectTags}
+                        value={selectedTags}
                         isMulti
                     ></Select>
                 </FormGroup>
+                <button onClick={() => {dispatch(addDefaultTags(selectedTags))}}>Save Tags</button>
                 <button>Log out (This will delete all your timers.)</button>
             </ModalContent>
             <ButtonContainer>

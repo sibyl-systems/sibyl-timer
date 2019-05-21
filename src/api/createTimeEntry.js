@@ -32,7 +32,7 @@ const createTimeEntry = timer => {
                     hours: hours, //hours logged
                     minutes: minutes, //minutes logged
                     isbillable: isBillable.toString(),
-                    tags: timer.tags ? timer.tags.join() : ''
+                    tags: timer.tags ? timer.tags.map(t => t.name).join(',') : ''
                     // tags // todo: coming soon!
                 }
             })

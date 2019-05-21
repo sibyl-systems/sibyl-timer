@@ -98,3 +98,10 @@ export const editTimer = payload => dispatch => {
         payload: payload
     })
 }
+
+export const addDefaultTags = payload => dispatch => {
+    dispatch({
+        type: 'ADD_DEFAULT_TAGS',
+        payload: payload
+    })
+}

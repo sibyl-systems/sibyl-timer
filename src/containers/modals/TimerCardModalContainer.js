@@ -30,6 +30,7 @@ Modal.setAppElement('#root')
 const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimerModal, submitTimerModal }) => {
     const projects = useSelector(state => state.projects)
     const timers = useSelector(state => state.timers)
+    const user = useSelector(state => state.user)
     const defaultProject =
         projects[
             Object.keys(projects).filter(key => {
@@ -127,6 +128,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
             selectedTask: selectedTask,
             description: description,
             elapsedTime: HoursAndMinutesToSeconds(time),
+            tags: tags,
             settings: {
                 isBillable: isBillable,
                 keepTimer: keepTimer
@@ -138,6 +140,17 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
         setSelectedProject(false)
         setSelectedTask(false)
         closeTimerModal()
+    }
+
+    const [tags, setTags] = useState(timer.tags ? timer.tags : [])
+
+    const toggleTag = (tag) => {
+        setTags(existingTags => {
+            if(existingTags.find(t => t.id === tag.id)) {
+                return existingTags.filter(t => t.id !== tag.id)
+            }
+            return existingTags.concat(tag)
+        })
     }
 
     return (
@@ -238,6 +251,22 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             Mark task as complete?
                         </div>
                     </CheckboxInput>
+                    {user.tags && user.tags.map(tag => (
+                        <CheckboxInput htmlFor={`tag-${tag.id}`} key={`tag-${tag.id}`}>
+                            <input
+                                id={`tag-${tag.id}`}
+                                type="checkbox"
+                                checked={tags.find(t => t.id === tag.id) ? true : false}
+                                value="markAsComplete"
+                                name="markAsComplete"
+                                onChange={() => toggleTag(tag)}
+                            />
+                            <CheckboxInputHelper />
+                            <div>
+                                {tag.name}
+                            </div>
+                        </CheckboxInput>
+                    ))}
                 </TimeInputContainer>
             </ModalContent>
             <ButtonContainer>
@@ -354,11 +383,11 @@ const TimeInput = Styled.input`
 `
 
 const CheckboxInputHelper = Styled.div`
-    width: 35px;
-    height: 35px;
+    width: 22px;
+    height: 22px;
     border: 1px solid ${props => props.theme.primaryAccentColor};
     // background-color: ${props => props.theme.backgroundAugment2};
-    margin-right: 15px;
+    margin-right: 12px;
     position: relative;
     flex-shrink: 0;
     &::before {
@@ -366,9 +395,9 @@ const CheckboxInputHelper = Styled.div`
         position: absolute;
         top: 0; left: 0; right:0; bottom: 0;
         width: 40%;
-        height: 15%;
-        border-left: 3px solid ${props => props.theme.primaryAccentColor};
-        border-bottom: 3px solid ${props => props.theme.primaryAccentColor};
+        height: 25%;
+        border-left: 2px solid ${props => props.theme.primaryAccentColor};
+        border-bottom: 2px solid ${props => props.theme.primaryAccentColor};
         margin: auto;
         transform: translateY(-21%) translateX(6%) skew(-10deg, 0deg) rotate(-54deg);
         display: none;
@@ -376,11 +405,22 @@ const CheckboxInputHelper = Styled.div`
 `
 
 const CheckboxInput = Styled.label`
-    margin-right: 24px;
-    margin-bottom: 24px;
+    margin-right: 20px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     color: ${props => props.theme.textColor};
+    font-size: 14px;
+    &:hover {
+        input:not(:checked) {
+            ~ ${CheckboxInputHelper} {
+                &::before {
+                    display: block;
+                    opacity: 0.4;
+                }
+            }
+        }
+    }
     input {
         display: none;
         &:checked {

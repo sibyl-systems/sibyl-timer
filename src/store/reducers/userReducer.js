@@ -13,6 +13,11 @@ export default function userReducer(state = defaultState, action) {
                 code: action.payload.account.code,
                 account: action.payload.account
             }
+        case 'ADD_DEFAULT_TAGS':
+            return {
+                ...state,
+                tags: action.payload
+            }
         default:
             return state
     }

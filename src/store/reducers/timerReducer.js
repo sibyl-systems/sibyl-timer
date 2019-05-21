@@ -95,7 +95,7 @@ export default function timerReducer(state = defaultState, action) {
         
         case 'EDIT_TIMER':
             const {timerId, options} = action.payload
-            const {selectedTask, settings, description, elapsedTime} = options
+            const {selectedTask, settings, description, elapsedTime, tags} = options
             return {
                 ...state,
                 [timerId]: {
@@ -103,6 +103,7 @@ export default function timerReducer(state = defaultState, action) {
                     task: selectedTask,
                     description: description,
                     elapsedTime: elapsedTime,
+                    tags: tags,
                     settings: {
                         ...state[timerId].settings,
                         ...settings
