@@ -163,6 +163,9 @@ const Timer = ({ timer, children }) => {
                 tags: options.tags,
                 id: timer.id //2do: fix this. It's not waiting for redux to update before grabbing the new id...
             }).then(res => {
+                if(options.settings.markAsComplete) {
+                    //Handle marking task as complete in teamowrk...
+                }
                 if (options.settings.keepTimer) {
                     handleResetTimer()
                 } else {
