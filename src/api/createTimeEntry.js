@@ -8,7 +8,17 @@ const createTimeEntry = timer => {
     const { hours, minutes } = secondsToHoursAndMinutes(timer.elapsedTime)
     const isBillable = timer.settings.isBillable
 
-    const now = new Date()
+    const utcSeconds = Math.floor(new Date().getTime() / 1000.0) - timer.elapsedTime
+    let startDate = new Date(0)
+    startDate.setUTCSeconds(utcSeconds)
+
+    const formattedStartDate = {
+        year: startDate.getFullYear(),
+        month: (startDate.getMonth() + 1).toString().padStart(2, '0'),
+        date: startDate.getDate().toString().padStart(2, '0'),
+        hours: startDate.getHours().toString().padStart(2, '0'),
+        minutes: startDate.getMinutes().toString().padStart(2, '0')
+    }
 
     return new Promise((resolve, reject) => {
         let url = `https://${state.user.code}.teamwork.com/tasks/${timer.task.id}/time_entries.json`
@@ -24,16 +34,12 @@ const createTimeEntry = timer => {
                 'time-entry': {
                     description: timer.description,
                     'person-id': state.user.account.userId,
-                    date: `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now
-                        .getDate()
-                        .toString()
-                        .padStart(2, '0')}`, //This should be the start date of the timer, but it's the current time.
-                    time: `${now.getHours()}:${now.getMinutes()}`, //This should be the start time for the timer, but it's the current time.
+                    date: `${formattedStartDate.year}${formattedStartDate.month}${formattedStartDate.date}`,
+                    time: `${formattedStartDate.hours}:${formattedStartDate.minutes}`,
                     hours: hours, //hours logged
                     minutes: minutes, //minutes logged
                     isbillable: isBillable.toString(),
                     tags: timer.tags ? timer.tags.map(t => t.name).join(',') : ''
-                    // tags // todo: coming soon!
                 }
             })
         })
