@@ -62,6 +62,7 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
     const handleSelectTags = tags => {
         console.log(tags)
         setSelectedTags(tags)
+        dispatch(addDefaultTags(tags))
     }
 
     const handleSubmitModal = () => {
@@ -82,7 +83,7 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
             <ModalContent>
                 <FormGroup>
                     <Label>API Key <FakeLink onClick={() => setHiddenInput(v => !v)}>Show</FakeLink></Label>
-                    <Input autocomplete="off" type={hiddenInput ? 'password' : 'text'} value={apiKey} onChange={(e) => setApiKey(e.target.value)} />
+                    <Input disabled autocomplete="off" type={hiddenInput ? 'password' : 'text'} value={apiKey} onChange={(e) => setApiKey(e.target.value)} />
                 </FormGroup>
                 <FormGroup>
                     <Label>Available timer tags</Label>
@@ -96,8 +97,6 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
                         isMulti
                     ></Select>
                 </FormGroup>
-                <button onClick={() => {dispatch(addDefaultTags(selectedTags))}}>Save Tags</button>
-                <button>Log out (This will delete all your timers.)</button>
             </ModalContent>
             <ButtonContainer>
                 {/* <ActionButton onClick={handleCloseModal}>Cancel</ActionButton>

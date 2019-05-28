@@ -244,6 +244,27 @@ const selectStyles = {
             ...provided,
             color: '#8a88c2'
         }
+    },
+    multiValueLabel: (provided, state) => {
+        return {
+            ...provided,
+            background: '#45476E',
+            borderRadius: 0,
+            color: '#FFF',
+        }
+    },
+    multiValueRemove: (provided, state) => {
+        console.log(provided);
+        return {
+            ...provided,
+            borderRadius: 0,
+            background: '#45476E',
+            borderLeft: '1px solid rgba(0,0,0,0.2)',
+            '&:hover': {
+                backgroundColor: '#627FD8',
+                color: '#FFF'
+            }
+        }
     }
 }
 
