@@ -56,7 +56,6 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
     const [selectedTask, setSelectedTask] = useState(timer.task)
     const [description, setDescription] = useState(timer.description || '')
 
-
     const { hours, minutes } = secondsToHMS(timer.elapsedTime)
     const [time, setTime] = useState({
         hours: hours | 0,
@@ -148,9 +147,9 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
 
     const [tags, setTags] = useState(timer.tags ? timer.tags : [])
 
-    const toggleTag = (tag) => {
+    const toggleTag = tag => {
         setTags(existingTags => {
-            if(existingTags.find(t => t.id === tag.id)) {
+            if (existingTags.find(t => t.id === tag.id)) {
                 return existingTags.filter(t => t.id !== tag.id)
             }
             return existingTags.concat(tag)
@@ -212,6 +211,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                     </TimeInputGroup>
                 </TimeInputContainer>
 
+                <Label>Settings</Label>
                 <TimeInputContainer>
                     <CheckboxInput htmlFor={`is-billable-${timer.id}`}>
                         <input
@@ -223,9 +223,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             id={`is-billable-${timer.id}`}
                         />
                         <CheckboxInputHelper />
-                        <div>
-                            Billable?
-                        </div>
+                        <div>Billable?</div>
                     </CheckboxInput>
                     <CheckboxInput htmlFor={`keep-timer-${timer.id}`}>
                         <input
@@ -237,9 +235,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             onChange={() => setKeepTimer(value => !value)}
                         />
                         <CheckboxInputHelper />
-                        <div>
-                            Keep timer?
-                        </div>
+                        <div>Keep timer?</div>
                     </CheckboxInput>
                     <CheckboxInput htmlFor={`mark-as-complete-${timer.id}`}>
                         <input
@@ -251,27 +247,30 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                             onChange={() => setMarkAsComplete(value => !value)}
                         />
                         <CheckboxInputHelper />
-                        <div>
-                            Mark task as complete?
-                        </div>
+                        <div>Mark as complete?</div>
                     </CheckboxInput>
-                    {user.tags && user.tags.map(tag => (
-                        <CheckboxInput htmlFor={`tag-${tag.id}`} key={`tag-${tag.id}`}>
-                            <input
-                                id={`tag-${tag.id}`}
-                                type="checkbox"
-                                checked={tags.find(t => t.id === tag.id) ? true : false}
-                                value="markAsComplete"
-                                name="markAsComplete"
-                                onChange={() => toggleTag(tag)}
-                            />
-                            <CheckboxInputHelper />
-                            <div>
-                                {tag.name}
-                            </div>
-                        </CheckboxInput>
-                    ))}
                 </TimeInputContainer>
+                {user.tags && (
+                    <>
+                        <Label>Tags</Label>
+                        <TimeInputContainer>
+                            {user.tags.map(tag => (
+                                <CheckboxInput htmlFor={`tag-${tag.id}`} key={`tag-${tag.id}`}>
+                                    <input
+                                        id={`tag-${tag.id}`}
+                                        type="checkbox"
+                                        checked={tags.find(t => t.id === tag.id) ? true : false}
+                                        value="markAsComplete"
+                                        name="markAsComplete"
+                                        onChange={() => toggleTag(tag)}
+                                    />
+                                    <CheckboxInputHelper />
+                                    <div>{tag.name}</div>
+                                </CheckboxInput>
+                            ))}
+                        </TimeInputContainer>
+                    </>
+                )}
             </ModalContent>
             <ButtonContainer>
                 <ActionButton onClick={handleCloseModal}>Cancel</ActionButton>
@@ -348,6 +347,7 @@ const DescriptionTextarea = Styled(ResizableTextarea)`
 `
 
 const TimeInputContainer = Styled.div`
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -391,7 +391,7 @@ const CheckboxInputHelper = Styled.div`
     height: 22px;
     border: 1px solid ${props => props.theme.primaryAccentColor};
     // background-color: ${props => props.theme.backgroundAugment2};
-    margin-right: 12px;
+    margin-right: 8px;
     position: relative;
     flex-shrink: 0;
     &::before {
@@ -409,7 +409,7 @@ const CheckboxInputHelper = Styled.div`
 `
 
 const CheckboxInput = Styled.label`
-    margin-right: 20px;
+    margin-right: 16px;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
