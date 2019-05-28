@@ -250,7 +250,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                         <div>Mark as complete?</div>
                     </CheckboxInput>
                 </TimeInputContainer>
-                {user.tags && (
+                {user.tags && user.tags.length > 0 && (
                     <>
                         <Label>Tags</Label>
                         <TimeInputContainer>
