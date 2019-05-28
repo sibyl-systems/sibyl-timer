@@ -1,34 +1,43 @@
-import React, { useState } from 'react'
-const ResizableTextarea = ({value, setValue, onBlur, minRows = 1, maxRows = 15, className }) => {
+import React, { useState, useEffect, useRef } from 'react'
+const ResizableTextarea = ({ value, setValue, onBlur, minRows = 1, maxRows = 15, className }) => {
     const [rows, setRows] = useState(1)
+    const textarea = useRef(null)
     const handleChange = event => {
-        const textareaLineHeight = 18
+        const target = event.target ? event.target : event.current
+        const lineHeightInPx = getComputedStyle(target)['line-height']
+        const textareaLineHeight = parseInt(lineHeightInPx, 10)
+        console.log(textareaLineHeight)
 
-        const previousRows = event.target.rows
-        event.target.rows = minRows
+        const previousRows = target.rows
+        target.rows = minRows
 
-        const currentRows = ~~(event.target.scrollHeight / textareaLineHeight)
+        const currentRows = ~~(target.scrollHeight / textareaLineHeight)
 
         if (currentRows === previousRows) {
-            event.target.rows = currentRows
+            target.rows = currentRows
         }
 
         if (currentRows >= maxRows) {
-            event.target.rows = maxRows
-            event.target.scrollTop = event.target.scrollHeight
+            target.rows = maxRows
+            target.scrollTop = target.scrollHeight
         }
 
-        setValue(event.target.value)
+        setValue(target.value)
         setRows(currentRows < maxRows ? currentRows : maxRows)
     }
     const handleOnBlur = event => {
-        if(onBlur) {
+        if (onBlur) {
             onBlur(event)
         }
     }
 
+    useEffect(() => {
+        handleChange(textarea)
+    }, [value])
+
     return (
         <textarea
+            ref={textarea}
             className={className}
             rows={rows}
             value={value}
