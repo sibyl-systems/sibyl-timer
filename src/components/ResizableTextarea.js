@@ -6,7 +6,6 @@ const ResizableTextarea = ({ value, setValue, onBlur, minRows = 1, maxRows = 15,
         const target = event.target ? event.target : event.current
         const lineHeightInPx = getComputedStyle(target)['line-height']
         const textareaLineHeight = parseInt(lineHeightInPx, 10)
-        console.log(textareaLineHeight)
 
         const previousRows = target.rows
         target.rows = minRows

@@ -254,7 +254,6 @@ const selectStyles = {
         }
     },
     multiValueRemove: (provided, state) => {
-        console.log(provided);
         return {
             ...provided,
             borderRadius: 0,

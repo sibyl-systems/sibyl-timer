@@ -19,6 +19,7 @@ const defaultTimer = {
     settings: {
         isBillable: false,
         keepTimer: false,
+        markAsComplete: false,
     },
     tags: [],
     task: {}

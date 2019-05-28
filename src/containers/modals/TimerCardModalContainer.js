@@ -64,7 +64,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
 
     const [isBillable, setIsBillable] = useState(timer.settings.isBillable || false)
     const [keepTimer, setKeepTimer] = useState(timer.settings.keepTimer || false)
-    const [markAsComplete, setMarkAsComplete] = useState(false)
+    const [markAsComplete, setMarkAsComplete] = useState(timer.settings.markAsComplete || false)
 
     const handleLoadProjects = async () => {
         //2do: set current projects in memory as the available options first.
@@ -134,7 +134,8 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
             tags: tags,
             settings: {
                 isBillable: isBillable,
-                keepTimer: keepTimer
+                keepTimer: keepTimer,
+                markAsComplete: markAsComplete
             }
         }
 
@@ -237,18 +238,20 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                         <CheckboxInputHelper />
                         <div>Keep timer?</div>
                     </CheckboxInput>
-                    <CheckboxInput htmlFor={`mark-as-complete-${timer.id}`}>
-                        <input
-                            id={`mark-as-complete-${timer.id}`}
-                            type="checkbox"
-                            checked={markAsComplete}
-                            value="markAsComplete"
-                            name="markAsComplete"
-                            onChange={() => setMarkAsComplete(value => !value)}
-                        />
-                        <CheckboxInputHelper />
-                        <div>Mark as complete?</div>
-                    </CheckboxInput>
+                    {!timer.task.unassignedTask && (
+                        <CheckboxInput htmlFor={`mark-as-complete-${timer.id}`}>
+                            <input
+                                id={`mark-as-complete-${timer.id}`}
+                                type="checkbox"
+                                checked={markAsComplete}
+                                value="markAsComplete"
+                                name="markAsComplete"
+                                onChange={() => setMarkAsComplete(value => !value)}
+                            />
+                            <CheckboxInputHelper />
+                            <div>Mark as complete?</div>
+                        </CheckboxInput>
+                    )}
                 </TimeInputContainer>
                 {user.tags && user.tags.length > 0 && (
                     <>
@@ -260,8 +263,8 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
                                         id={`tag-${tag.id}`}
                                         type="checkbox"
                                         checked={tags.find(t => t.id === tag.id) ? true : false}
-                                        value="markAsComplete"
-                                        name="markAsComplete"
+                                        value={`tag-${tag.id}`}
+                                        name={`tag-${tag.id}`}
                                         onChange={() => toggleTag(tag)}
                                     />
                                     <CheckboxInputHelper />

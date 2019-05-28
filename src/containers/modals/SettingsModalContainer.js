@@ -49,7 +49,6 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
         setLoadingTags(true)
         const result = await getTags()
         const options = result.tags
-        console.log(options)
         setTagOptions(options)
         // setSelectedtag(project)
         setLoadingTags(false)
@@ -60,13 +59,11 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
     }
 
     const handleSelectTags = tags => {
-        console.log(tags)
         setSelectedTags(tags)
         dispatch(addDefaultTags(tags))
     }
 
     const handleSubmitModal = () => {
-        console.log(selectedTags);
         // if (selectedProject) {
             closeTimerModal()
         // }

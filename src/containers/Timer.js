@@ -4,7 +4,7 @@ import useInterval from 'hooks/useInterval'
 
 import TimerCardModalContainer from 'containers/modals/TimerCardModalContainer'
 
-import { editTimer } from 'store/actions'
+import { editTimer, logToTeamWork } from 'store/actions'
 
 import createTimeEntry from 'api/createTimeEntry'
 
@@ -155,23 +155,7 @@ const Timer = ({ timer, children }) => {
         )
 
         if (modalType === 'log') {
-            createTimeEntry({
-                elapsedTime: options.elapsedTime,
-                settings: options.settings,
-                description: options.description,
-                task: options.selectedTask,
-                tags: options.tags,
-                id: timer.id //2do: fix this. It's not waiting for redux to update before grabbing the new id...
-            }).then(res => {
-                if(options.settings.markAsComplete) {
-                    //Handle marking task as complete in teamowrk...
-                }
-                if (options.settings.keepTimer) {
-                    handleResetTimer()
-                } else {
-                    dispatch(removeTimer(timerId))
-                }
-            })
+            dispatch(logToTeamWork({options, timer}))
         }
 
         setModalOpen(false)

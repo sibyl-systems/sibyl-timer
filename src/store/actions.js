@@ -1,24 +1,25 @@
 import getUser from 'api/getUser'
+import createTimeEntry from 'api/createTimeEntry'
+import markTaskComplete from 'api/markTaskComplete'
 import uuidv4 from 'uuid'
 
-
-export const submitApiKey = payload => dispatch => Promise.resolve().then(async() => {
-    try {
-        const result = await getUser(payload)
-        return dispatch({
-            type: 'SUBMIT_APIKEY',
-            payload: {
-                apikey: payload,
-                account: result.account
-            }
-        })
-    } catch (error) {
-        // Promise.reject(error)
-        console.warn(error)
-        return "error";
-    }
-})
-
+export const submitApiKey = payload => dispatch =>
+    Promise.resolve().then(async () => {
+        try {
+            const result = await getUser(payload)
+            return dispatch({
+                type: 'SUBMIT_APIKEY',
+                payload: {
+                    apikey: payload,
+                    account: result.account
+                }
+            })
+        } catch (error) {
+            // Promise.reject(error)
+            console.warn(error)
+            return 'error'
+        }
+    })
 
 export const reorderTimer = payload => ({
     type: 'REORDER_TIMERS',
@@ -37,8 +38,6 @@ export const addProject = payload => ({
 
 export const addTimer = payload => dispatch => {
     const id = uuidv4()
-    console.log('payload');
-    console.log({ ...payload, id });
     dispatch({
         type: 'ADD_TIMER',
         payload: { ...payload, id }
@@ -103,5 +102,39 @@ export const addDefaultTags = payload => dispatch => {
     dispatch({
         type: 'ADD_DEFAULT_TAGS',
         payload: payload
+    })
+}
+
+export const logToTeamWork = payload => dispatch => {
+    const {options, timer} = payload
+
+    dispatch({
+        type: 'TIMER_IS_LOGGING',
+        payload: timer
+    })
+
+    createTimeEntry({
+        elapsedTime: options.elapsedTime,
+        settings: options.settings,
+        description: options.description,
+        task: options.selectedTask,
+        tags: options.tags,
+        id: timer.id //2do: fix this. It's not waiting for redux to update before grabbing the new id...
+    }).then(res => {
+        console.log(options);
+        console.log(res);
+        if (options.settings.markAsComplete) {
+            console.log(options.selectedTask.id);
+            markTaskComplete(options.selectedTask.id)
+                .then((res) =>{
+                    console.log(res)
+                })
+        }
+        if (options.settings.keepTimer) {
+            dispatch(commitTimer({ id: timer.id, elapsedTime: 0 }))
+            dispatch(stopTimer({ id: timer.id }))
+        } else {
+            dispatch(removeTimer(timer.id))
+        }
     })
 }
