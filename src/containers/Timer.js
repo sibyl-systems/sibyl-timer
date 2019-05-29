@@ -155,7 +155,8 @@ const Timer = ({ timer, children }) => {
         )
 
         if (modalType === 'log') {
-            dispatch(logToTeamWork({options, timer}))
+            await dispatch(logToTeamWork({options, timer}))
+            await setClock(0)
         }
 
         setModalOpen(false)

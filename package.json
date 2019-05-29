@@ -2,7 +2,7 @@
     "name": "sibyl-timer",
     "author": "Benjamin Sterling",
     "description": "A timer app for TeamWork. Just add API key.",
-    "version": "0.3.1-beta.0",
+    "version": "0.3.2-beta.0",
     "private": true,
     "homepage": "./",
     "main": "public/electron.js",
