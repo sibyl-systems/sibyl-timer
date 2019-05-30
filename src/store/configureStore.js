@@ -13,14 +13,18 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+
 function configureStore(preloadedState) {
     const middlewares = [thunkMiddleware]
     const middlewareEnhancer = applyMiddleware(...middlewares)
 
     const enhancers = [
         middlewareEnhancer, 
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     ]
+    if(isDev) {
+        enhancers.concat(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    }
     const composedEnhancers = compose(...enhancers)
 
     const store = createStore(persistedReducer, preloadedState, composedEnhancers)

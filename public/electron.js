@@ -99,6 +99,12 @@ function createWindow() {
     if (!globalSummon) {
         console.info('Registration opening failed.')
     }
+    // const devtools = globalShortcut.register('Ctrl+Shift+i', () => {
+    //     mainWindow.openDevTools()
+    // })
+    // if (!devtools) {
+    //     console.info('Dev tools not registered :(.')
+    // }
 
     mainWindow = new BrowserWindow({
         icon: image,
