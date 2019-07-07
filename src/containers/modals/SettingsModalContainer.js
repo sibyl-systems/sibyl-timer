@@ -76,7 +76,12 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
             onRequestClose={handleCloseModal}
             style={{ overlay: { backgroundColor: 'hsla(0, 0%, 0%, 0.33)' } }}
         >
-            <ModalTitle>Settings</ModalTitle>
+            <ModalTitle>
+                Settings
+                <VersionTitle>
+                    v{process.env.REACT_APP_VERSION}
+                </VersionTitle>
+            </ModalTitle>
             <ModalContent>
                 <FormGroup>
                     <Label>API Key <FakeLink onClick={() => setHiddenInput(v => !v)}>Show</FakeLink></Label>
@@ -161,4 +166,9 @@ const FakeLink = Styled.span`
     &:hover {
         color: ${props => props.theme.primaryAccentColor};
     }
+`
+const VersionTitle = Styled.span`
+    margin-left: auto;
+    font-size: 14px;
+    color: ${props => props.theme.textColor};
 `

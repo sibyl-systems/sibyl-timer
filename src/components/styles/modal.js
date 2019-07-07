@@ -49,6 +49,8 @@ const ModalContainer = Styled(Modal)`
 
 `
 const ModalTitle = Styled.div`
+    display: flex;
+    align-items: center;
     padding: 20px;
     min-height: 50px;
     color: ${props => props.theme.textColor};
