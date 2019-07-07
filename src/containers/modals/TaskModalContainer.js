@@ -103,7 +103,7 @@ const TaskModalContainer = ({ modalOpen, closeTimerModal, project }) => {
 
                 <FormGroup>
                     <Label>Timer description</Label>
-                    <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} />
+                    <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} submit={handleSubmitModal} />
                 </FormGroup>
 
                 <TimeInputContainer>

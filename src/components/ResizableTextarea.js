@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-const ResizableTextarea = ({ value, setValue, onBlur, minRows = 1, maxRows = 15, className }) => {
+const ResizableTextarea = ({ value, setValue, onBlur, minRows = 1, maxRows = 15, className, submit }) => {
     const [rows, setRows] = useState(1)
     const textarea = useRef(null)
     const handleChange = event => {
@@ -30,6 +30,14 @@ const ResizableTextarea = ({ value, setValue, onBlur, minRows = 1, maxRows = 15,
         }
     }
 
+    const handleKeyPress = (e) => {
+        if(e.key === 'Enter' && e.shiftKey) {
+            if(typeof submit === 'function') {
+                submit()
+            }
+        }
+    }
+
     useEffect(() => {
         handleChange(textarea)
     }, [value])
@@ -43,6 +51,7 @@ const ResizableTextarea = ({ value, setValue, onBlur, minRows = 1, maxRows = 15,
             placeholder={'description...'}
             onChange={handleChange}
             onBlur={handleOnBlur}
+            onKeyPress={(e) => handleKeyPress(e)}
         />
     )
 }
