@@ -6,8 +6,6 @@ import TimerCardModalContainer from 'containers/modals/TimerCardModalContainer'
 
 import { editTimer, logToTeamWork } from 'store/actions'
 
-import createTimeEntry from 'api/createTimeEntry'
-
 import {
     startTimer,
     stopTimer,
@@ -26,6 +24,8 @@ const Timer = ({ timer, children }) => {
 
     const [modalOpen, setModalOpen] = useState(false)
     const [modalType, setModalType] = useState(null)
+
+    const [wasRunning, setWasRunning] = useState(null)
 
     useEffect(() => {
         window.addEventListener('beforeunload', (event) => {
@@ -134,6 +134,7 @@ const Timer = ({ timer, children }) => {
     }
 
     const openTimerModal = modalType => {
+        setWasRunning(timer.running)
         handleStopTimer()
         setModalOpen(true)
         setModalType(modalType) //edit, log, add
@@ -142,6 +143,10 @@ const Timer = ({ timer, children }) => {
     const closeTimerModal = () => {
         setModalOpen(false)
         setModalType(null) //edit, log, add
+        if(wasRunning) {
+            console.log('close modal');
+            handleStartTimer()
+        }
     }
     const submitTimerModal = async ({ timerId, options }) => {
         setClock(options.elapsedTime)
@@ -155,6 +160,7 @@ const Timer = ({ timer, children }) => {
         )
 
         if (modalType === 'log') {
+            console.log('log modal');
             await dispatch(logToTeamWork({options, timer}))
             await setClock(0)
         }
