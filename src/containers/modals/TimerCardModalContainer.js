@@ -87,12 +87,13 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
         const unassignedTask = { content: 'Unassigned task', id: uuidv4(), unassignedTask: true }
         const options = result['todo-items'].filter(current =>
             Object.keys(timers).reduce((acc, curr) => {
-                if (!acc && timers[curr].task && timers[curr].task.id !== current.id) {
+                if (
+                    (!acc && timers[curr].task && timers[curr].task.id !== current.id) ||
+                    (!acc && timer.task.id === current.id)
+                ) {
                     acc = true
                 }
-                if (!acc && timer.task.id === current.id) {
-                    acc = true
-                }
+                return acc
             }, true)
         )
         setTaskOptions([unassignedTask, ...options])
