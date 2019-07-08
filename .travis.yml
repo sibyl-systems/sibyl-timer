@@ -3,6 +3,8 @@ sudo: false
 language: node_js
 node_js: "9.11.1"
 
+releaseType: draft
+
 cache:
   directories:
     - node_modules
@@ -31,3 +33,12 @@ jobs:
       dist: trusty
       script:
         - npm run release
+
+deploy:
+  provider: releases
+  github_token: $GH_TOKEN
+  file: dist/*
+  skip_cleanup: true
+  draft: true
+  on:
+    tags: true
