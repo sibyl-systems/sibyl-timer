@@ -12,6 +12,7 @@
         "electron-dev": "concurrently \"set BROWSER=none&&npm start\" \"wait-on http://localhost:3000 && electron .\"",
         "preelectron-pack": "npm run build",
         "electron-pack": "electron-builder build",
+        "prerelease": "npm run build",
         "release": "electron-builder -p always"
     },
     "devDependencies": {
