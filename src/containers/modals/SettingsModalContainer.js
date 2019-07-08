@@ -14,9 +14,9 @@ import {
     ModalTitle,
     ModalContent,
     ButtonContainer,
-    ActionButton,
+    // ActionButton,
     selectStyles,
-    Loader,
+    // Loader,
     Label,
     FormGroup
 } from 'components/styles/modal'
@@ -31,7 +31,7 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
     const [hiddenInput, setHiddenInput] = useState(true)
 
 
-    const [loadingTags, setLoadingTags] = useState(false)
+    // // const [loadingTags, setLoadingTags] = useState(false)
     const [tagOptions, setTagOptions] = useState([])
     const [selectedTags, setSelectedTags] = useState(user.tags ? user.tags : [])
 
@@ -46,12 +46,12 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
 
 
     const handleLoadTags = async () => {
-        setLoadingTags(true)
+        // setLoadingTags(true)
         const result = await getTags()
         const options = result.tags
         setTagOptions(options)
         // setSelectedtag(project)
-        setLoadingTags(false)
+        // setLoadingTags(false)
     }
 
     const handleCloseModal = () => {
@@ -63,12 +63,12 @@ const SettingsModalContainer = ({ modalOpen, closeTimerModal }) => {
         dispatch(addDefaultTags(tags))
     }
 
-    const handleSubmitModal = () => {
-        // if (selectedProject) {
-            closeTimerModal()
-        // }
-        console.warn('no project selected.')
-    }
+    // const handleSubmitModal = () => {
+    //     // if (selectedProject) {
+    //         closeTimerModal()
+    //     // }
+    //     console.warn('no project selected.')
+    // }
 
     return (
         <ModalOuterContainer
