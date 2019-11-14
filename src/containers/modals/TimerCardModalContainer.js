@@ -202,7 +202,7 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
 
                 <FormGroup>
                     <Label>Timer description</Label>
-                    <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} />
+                    <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} submit={handleSubmitModal} />
                 </FormGroup>
 
                 <TimeInputContainer>

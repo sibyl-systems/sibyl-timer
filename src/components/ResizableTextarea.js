@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-const ResizableTextarea = ({ value, setValue, onBlur, minRows = 1, maxRows = 15, className, submit }) => {
+const ResizableTextarea = (props) => {
+    const { value, setValue, onBlur, minRows = 1, maxRows = 15, className, submit } = props
     const [rows, setRows] = useState(1)
     const textarea = useRef(null)
     const handleChange = event => {
