@@ -113,7 +113,10 @@ const TimerModalContainer = ({ children, modalOpen, modalType, timer, closeTimer
     }
 
     const handleTimeOnChange = e => {
-        if (e && e.target.name && (Number(e.target.value) || e.target.value === '' || e.target.value === 0)) {
+        if (
+            (e && e.target.name) 
+            && (Number(e.target.value) || Number(e.target.value) === 0 || e.target.value === '')
+        ) {
             setTime({
                 ...time,
                 [e.target.name]: e.target.value
