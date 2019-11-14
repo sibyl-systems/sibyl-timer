@@ -94,8 +94,6 @@ const TaskModalContainer = ({ modalOpen, closeTimerModal, project }) => {
     }
 
     const handleSubmitModal = () => {
-        console.log(time)
-        console.log(HoursAndMinutesToSeconds(time));
         const options = {
             // selectedTask: project,
             projectId: project.id,
@@ -126,6 +124,7 @@ const TaskModalContainer = ({ modalOpen, closeTimerModal, project }) => {
                 <FormGroup>
                     <Label>Select Task {loadingTasks ? <Loader title="Loading..." /> : null}</Label>
                     <Select
+                        autoFocus={true}
                         defaultValue={defaultValue}
                         styles={selectStyles}
                         getOptionLabel={option => option.content}
