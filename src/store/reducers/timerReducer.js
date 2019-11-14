@@ -34,6 +34,7 @@ export default function timerReducer(state = defaultState, action) {
                     ...defaultTimer,
                     id: action.payload.id,
                     description: action.payload.description,
+                    elapsedTime: action.payload.elapsedTime,
                     settings: {
                         ...action.payload.settings
                     },

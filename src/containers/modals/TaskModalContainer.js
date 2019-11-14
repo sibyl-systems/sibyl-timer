@@ -24,9 +24,42 @@ import {
 
 Modal.setAppElement('#root')
 
+function secondsToHMS(seconds) {
+    return {
+        hours: (seconds / 3600) | 0,
+        minutes: ((seconds % 3600) / 60) | 0,
+        seconds: seconds % 60 | 0
+    }
+}
+
+const HoursAndMinutesToSeconds = ({ hours, minutes }) => {
+    const hourSeconds = hours * 3600
+    const minuteSeconds = minutes * 60
+    return hourSeconds + minuteSeconds
+}
+
 const TaskModalContainer = ({ modalOpen, closeTimerModal, project }) => {
     const dispatch = useDispatch()
     const defaultValue = { content: "Unassigned task", id: uuidv4(), unassignedTask: true }
+
+
+    const { hours, minutes } = secondsToHMS(0)
+    const [time, setTime] = useState({
+        hours: hours | 0,
+        minutes: minutes | 0
+    })
+
+    const handleTimeOnChange = e => {
+        if (
+            (e && e.target.name) 
+            && (Number(e.target.value) || Number(e.target.value) === 0 || e.target.value === '')
+        ) {
+            setTime({
+                ...time,
+                [e.target.name]: e.target.value
+            })
+        }
+    }
 
     useEffect(() => {
         handleLoadTasks()
@@ -61,12 +94,14 @@ const TaskModalContainer = ({ modalOpen, closeTimerModal, project }) => {
     }
 
     const handleSubmitModal = () => {
-
+        console.log(time)
+        console.log(HoursAndMinutesToSeconds(time));
         const options = {
             // selectedTask: project,
             projectId: project.id,
             selectedTask: selectedTask,
             description: description,
+            elapsedTime: HoursAndMinutesToSeconds(time),
             settings: {
                 isBillable: isBillable,
                 keepTimer: keepTimer
@@ -105,6 +140,18 @@ const TaskModalContainer = ({ modalOpen, closeTimerModal, project }) => {
                     <Label>Timer description</Label>
                     <DescriptionTextarea isEmpty={!description} value={description} setValue={setDescription} submit={handleSubmitModal} />
                 </FormGroup>
+
+
+                <TimeInputContainer>
+                    <TimeInputGroup>
+                        <Label>Hours</Label>
+                        <TimeInput type="text" value={time.hours} onChange={handleTimeOnChange} name="hours" />
+                    </TimeInputGroup>
+                    <TimeInputGroup>
+                        <Label>Minutes</Label>
+                        <TimeInput type="text" value={time.minutes} onChange={handleTimeOnChange} name="minutes" />
+                    </TimeInputGroup>
+                </TimeInputContainer>
 
                 <TimeInputContainer>
                     <CheckboxInput htmlFor={`is-billable`}>
@@ -234,4 +281,38 @@ const CheckboxInput = Styled.label`
             }
         }
     }
+`
+
+const TimeInputGroup = Styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    ${props =>
+        props.horizontal &&
+        `
+        align-items: center;
+        flex-direction: row;
+        ${Label} {
+            margin-bottom: 0;
+        }
+        ${CheckboxInput} {
+            margin-right: 12px;
+        }
+    `}
+`
+const TimeInput = Styled.input`
+    width: 70px;
+    background-color: ${props => props.theme.backgroundColor};
+    border: none;
+    box-shadow: none;
+    line-height: 18px;
+    height: 18px;
+    border: 1px solid ${props => props.theme.primaryAccentColor};
+    color: ${props => props.theme.textColor};
+    height: 35px;
+    padding: 4px 12px;
+    text-align: center;
 `
