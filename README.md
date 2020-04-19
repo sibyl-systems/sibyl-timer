@@ -1,57 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center"><img src="https://i.imgur.com/X7dSE68.png"></p>
 
-Thanks create react app!
+## Usage
 
-## Available Scripts
+### Create an App
 
-See all available scripts in `package.json`
+```zsh
+# with `nextron`
+$ nextron init my-app --example with-javascript
 
-## Known bugs/issues
+# with npx
+$ npx create-nextron-app my-app --example with-javascript
 
-- None right now, submit issues!
+# with yarn
+$ yarn create nextron-app my-app --example with-javascript
 
-## MVP
+# with pnpx
+$ pnpx create-nextron-app my-app --example with-javascript
+```
 
-#### Timers
+### Install Dependencies
 
-- ~Start~
-- ~Stop~
-- ~Log~
-- ~Name / Description~
+```zsh
+$ cd my-app
 
-#### Global keys
+# using yarn or npm
+$ yarn (or `npm install`)
 
-- ~Open application~ (alt+super+s)
-- Allow open hotkey to be configurable
+# using pnpm
+$ pnpm install --shamefully-hoist
+```
 
-#### Logging
+### Use it
 
-- ~Log to project~
-- ~Log to task~
-    - ~Task select from project~
+```zsh
+# development mode
+$ yarn dev (or `npm run dev` or `pnpm run dev`)
 
-## Short-term Roadmap
-
-- ~Save api key~
-- ~Save timers~
-- Configure summon hotkey (currently super+alt+s)
-- Add notifications for when timers have been logged.
-- ~View task on teamwork button~
-- Better UI when waiting for logging timer to be completed.
-
-- Better design
-    - Seperate screen when timer is running
-    - Animations
-
-## Roadmap (ideas for the future)
-
-- Allow export of local data
-- Allow import of data
-- Allow logout and delete local data
-- Auto pause from inactivity
-- Mark task as complete checkbox
-- Regular reminders to stop timer after working hours?
-- Option to remove time from a timer left running
-- No timer running reminder
-- Add tags to timers
-- Save timers to somewhere in teamwork + sync
+# production build
+$ yarn build (or `npm run build` or `pnpm run build`)
+```

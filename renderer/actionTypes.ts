@@ -1,0 +1,13 @@
+export const ON_DRAG_END = 'ON_DRAG_END'
+export const ADD_PROJECT = 'ADD_PROJECT'
+export const REMOVE_PROJECT = 'REMOVE_PROJECT'
+export const REORDER_PROJECT = 'REORDER_PROJECT'
+
+export const REORDER_TIMER = 'REORDER_TIMER'
+export const REORDER_TIMER_TO_COLUMN = 'REORDER_TIMER_TO_COLUMN'
+
+export const ADD_TIMER = 'ADD_TIMER'
+export const REMOVE_TIMER = 'REMOVE_TIMER'
+export const START_TIMER = 'START_TIMER'
+export const STOP_TIMER = 'STOP_TIMER'
+export const SAVE_TIMER = 'SAVE_TIMER'
