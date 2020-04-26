@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Timers } from '../types'
+import { Timers, Timer } from '../types'
 
 const slice = createSlice({
     name: 'timer',
@@ -22,6 +22,12 @@ const slice = createSlice({
             prepare: ({ id,elapsedTime }: { id: string, elapsedTime: number }) => ({
                 payload: { currentTime: new Date().getTime(), id, elapsedTime},
             }),
+        },
+        add: (state, { payload }: PayloadAction<Timer>) => {
+            state[payload.id] = payload
+        },
+        remove: (state, { payload }: PayloadAction<{ id: string }>) => {
+            delete state[payload.id]
         },
     },
 })

@@ -1,6 +1,10 @@
 import slice from './projectSlice'
+import timerSlice from './timerSlice'
+
 const reducer = slice.reducer
 const actions = slice.actions
+const timerActions = timerSlice.actions
+
 const testProject1 = {
     id: 'some-project',
     title: 'Some Project',
@@ -104,5 +108,28 @@ describe('project slice', () => {
             'project-1': { timerIds: ['4', '1', '2', '3'] },
             'project-2': { timerIds: ['5', '6'] },
         })
+    })
+
+    it('should handle add timer', () => {
+        expect(
+            reducer(
+                { 'project-1': { timerIds: [] } },
+                {
+                    type: timerActions.add,
+                    payload: { id: 'timer-1', projectId: 'project-1' },
+                }
+            )
+        ).toEqual({ 'project-1': { timerIds: ['timer-1'] } })
+    })
+    it('should handle remove timer', () => {
+        expect(
+            reducer(
+                { 'project-1': { timerIds: ['timer-1'] } },
+                {
+                    type: timerActions.remove,
+                    payload: { id: 'timer-1', projectId: 'project-1' },
+                }
+            )
+        ).toEqual({ 'project-1': { timerIds: [] } })
     })
 })

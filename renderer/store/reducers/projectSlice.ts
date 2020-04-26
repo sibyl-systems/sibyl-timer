@@ -1,12 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Projects, Project, DragEndPayload } from '../types'
+import { Projects, Project, DragEndPayload, Timer } from '../types'
+import timerSlice from './timerSlice'
+
+interface TimerWithProjectId extends Timer {
+    projectId: string
+}
 
 const slice = createSlice({
     name: 'project',
     initialState: {} as Projects,
     reducers: {
         add: (state, { payload }: PayloadAction<Project>) => {
-            console.log('adding', payload)
             state[payload.id] = payload
         },
         remove: (state, { payload }: PayloadAction<{ id: string }>) => {
@@ -21,6 +25,14 @@ const slice = createSlice({
             state[payload.finish].timerIds.splice(payload.result.destination.index, 0, payload.result.draggableId)
         },
     },
+    extraReducers: {
+        [timerSlice.actions.add.type]: (state, { payload }: PayloadAction<TimerWithProjectId>) => {
+            state[payload.projectId].timerIds.push(payload.id)
+        },
+        [timerSlice.actions.remove.type]: (state, { payload }: PayloadAction<{ id: string, projectId: string }>) => {
+            state[payload.projectId].timerIds = state[payload.projectId].timerIds.filter(p => p !== payload.id)
+        },
+    }
 })
 
 export default slice
