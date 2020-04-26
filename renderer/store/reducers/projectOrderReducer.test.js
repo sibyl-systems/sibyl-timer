@@ -1,45 +1,18 @@
-import reducer, { initialState } from './projectOrderSlice'
-import { REORDER_PROJECT, ADD_PROJECT, REMOVE_PROJECT } from '../../actionTypes'
+import projectSlice from './projectSlice'
+import slice from './projectOrderSlice'
+const reducer = slice.reducer
+const actions = slice.actions
+const projectActions = projectSlice.actions
 
-describe('project reducer', () => {
+describe('project order slice', () => {
     it('should return the initial state', () => {
-        expect(reducer(undefined, {})).toEqual(initialState)
+        expect(reducer(undefined, {})).toEqual([])
     })
 
-    it('should handle ADD_PROJECT', () => {
-        expect(
-            reducer(undefined, {
-                type: ADD_PROJECT,
-                payload: { id: 'some-project' },
-            })
-        ).toEqual(['some-project'])
-
-        expect(
-            reducer(['some-project'], {
-                type: ADD_PROJECT,
-                payload: { id: 'another-project' },
-            })
-        ).toEqual(['some-project', 'another-project'])
-    })
-    it('should handle REMOVE_PROJECT', () => {
-        expect(
-            reducer(['some-project', 'another-project'], {
-                type: REMOVE_PROJECT,
-                payload: { id: 'some-project' },
-            })
-        ).toEqual(['another-project'])
-
-        expect(
-            reducer(['another-project'], {
-                type: REMOVE_PROJECT,
-                payload: { id: 'another-project' },
-            })
-        ).toEqual([])
-    })
-    it('should handle REORDER_PROJECT', () => {
+    it('should handle actions.reorder', () => {
         expect(
             reducer(['project-1', 'project-2', 'project-3'], {
-                type: REORDER_PROJECT,
+                type: actions.reorder,
                 payload: {
                     source: { index: 0 },
                     destination: { index: 1 },
@@ -48,18 +21,34 @@ describe('project reducer', () => {
             })
         ).toEqual(['project-2', 'project-1', 'project-3'])
     })
-})
+    it('should handle projectActions.add', () => {
+        expect(
+            reducer([], {
+                type: projectActions.add,
+                payload: { id: 'project-1' },
+            })
+        ).toEqual(['project-1'])
 
-// combine: null
-// destination:
-// droppableId: "BOARD"
-// index: 1
-// __proto__: Object
-// draggableId: "project-1"
-// mode: "FLUID"
-// reason: "DROP"
-// source:
-// droppableId: "BOARD"
-// index: 0
-// __proto__: Object
-// type: "PROJECT"
+        expect(
+            reducer(['project-1', 'project-2', 'project-3'], {
+                type: projectActions.add,
+                payload: { id: 'project-4' },
+            })
+        ).toEqual(['project-1', 'project-2', 'project-3', 'project-4'])
+    })
+    it('should handle projectActions.remove', () => {
+        expect(
+            reducer(['project-1'], {
+                type: projectActions.remove,
+                payload: { id: 'project-1' },
+            })
+        ).toEqual([])
+
+        expect(
+            reducer(['project-1', 'project-2', 'project-3', 'project-4'], {
+                type: projectActions.remove,
+                payload: { id: 'project-4' },
+            })
+        ).toEqual(['project-1', 'project-2', 'project-3'])
+    })
+})

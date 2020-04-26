@@ -1,16 +1,17 @@
-import reducer, { initialState } from './timerSlice'
-import { START_TIMER, STOP_TIMER } from '../../actionTypes'
+import slice from './timerSlice'
+const reducer = slice.reducer
+const actions = slice.actions
 
-describe('project reducer', () => {
+describe('timer slice', () => {
     it('should return the initial state', () => {
-        expect(reducer(undefined, {})).toEqual(initialState)
+        expect(reducer(undefined, {})).toEqual({})
     })
 
-    it('should handle START_TIMER', () => {
+    it('should handle start', () => {
         expect(
             reducer(
                 { 'timer-1': { running: false } },
-                { type: START_TIMER, payload: { id: 'timer-1' } }
+                { type: actions.start, payload: { id: 'timer-1' } }
             )
         ).toEqual({ 'timer-1': { running: true } })
 
@@ -20,18 +21,18 @@ describe('project reducer', () => {
                     'timer-1': { running: false },
                     'timer-2': { running: true },
                 },
-                { type: START_TIMER, payload: { id: 'timer-1' } }
+                { type: actions.start, payload: { id: 'timer-1' } }
             )
         ).toEqual({
             'timer-1': { running: true },
             'timer-2': { running: false },
         })
     })
-    it('should handle STOP_TIMER', () => {
+    it('should handle stop', () => {
         expect(
             reducer(
                 { 'timer-1': { running: true } },
-                { type: STOP_TIMER, payload: { id: 'timer-1' } }
+                { type: actions.stop, payload: { id: 'timer-1' } }
             )
         ).toEqual({ 'timer-1': { running: false } })
 
@@ -41,7 +42,7 @@ describe('project reducer', () => {
                     'timer-1': { running: false },
                     'timer-2': { running: true },
                 },
-                { type: STOP_TIMER, payload: { id: 'timer-1' } }
+                { type: actions.stop, payload: { id: 'timer-2' } }
             )
         ).toEqual({
             'timer-1': { running: false },

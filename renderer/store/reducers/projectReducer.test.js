@@ -1,21 +1,12 @@
-import reducer, { initialState } from './projectSlice'
-import {
-    ADD_PROJECT,
-    REMOVE_PROJECT,
-    ADD_TIMER,
-    REMOVE_TIMER,
-} from '../../actionTypes'
-
+import slice from './projectSlice'
+const reducer = slice.reducer
+const actions = slice.actions
 const testProject1 = {
     id: 'some-project',
     title: 'Some Project',
     timerIds: [],
 }
-const testProject1withTimer = {
-    id: 'some-project',
-    title: 'Some Project',
-    timerIds: ['timer-1'],
-}
+
 const testProject2 = {
     id: 'another-project',
     title: 'Another Project',
@@ -23,59 +14,37 @@ const testProject2 = {
 }
 
 const addProjectToInitialState = reducer(undefined, {
-    type: ADD_PROJECT,
+    type: actions.add,
     payload: testProject1,
 })
 const addProjectToExistingState = reducer(
     { [testProject1.id]: testProject1 },
     {
-        type: ADD_PROJECT,
+        type: actions.add,
         payload: testProject2,
     }
 )
 const removeProjectFromExistingState = reducer(
     { [testProject1.id]: testProject1 },
     {
-        type: REMOVE_PROJECT,
+        type: actions.remove,
         payload: testProject1,
     }
 )
 const removeProjectFromExistingState2 = reducer(
     { [testProject1.id]: testProject1, [testProject2.id]: testProject2 },
     {
-        type: REMOVE_PROJECT,
+        type: actions.remove,
         payload: testProject1,
     }
 )
 
-const timerPayload = {
-    id: 'some-project',
-    timer: {
-        id: 'timer-1',
-    },
-}
-
-const addTimer = reducer(
-    { [testProject1.id]: testProject1 },
-    {
-        type: ADD_TIMER,
-        payload: timerPayload,
-    }
-)
-const removeTimer = reducer(
-    { [testProject1withTimer.id]: testProject1withTimer },
-    {
-        type: REMOVE_TIMER,
-        payload: timerPayload,
-    }
-)
-
-describe('project reducer', () => {
+describe('project slice', () => {
     it('should return the initial state', () => {
-        expect(reducer(undefined, {})).toEqual(initialState)
+        expect(reducer(undefined, {})).toEqual({})
     })
 
-    it('should handle ADD_PROJECT', () => {
+    it('should handle add project', () => {
         expect(addProjectToInitialState).toEqual({
             [testProject1.id]: testProject1,
         })
@@ -85,20 +54,55 @@ describe('project reducer', () => {
             [testProject2.id]: testProject2,
         })
     })
-    it('should handle REMOVE_PROJECT', () => {
+    it('should handle remove project', () => {
         expect(removeProjectFromExistingState).toEqual({})
         expect(removeProjectFromExistingState2).toEqual({
-            [testProject2.id]: testProject2
+            [testProject2.id]: testProject2,
         })
     })
-    it('should handle ADD_TIMER', () => {
-        expect(addTimer).toEqual({
-            [testProject1withTimer.id]: testProject1withTimer,
+    it('should handle reorder timer', () => {
+        expect(
+            reducer(
+                { 'project-1': { timerIds: ['1', '2', '3'] } },
+                {
+                    type: actions.reorderTimer,
+                    payload: {
+                        result: {
+                            source: { index: 1 },
+                            destination: { index: 0 },
+                            draggableId: '2',
+                        },
+                        start: 'project-1',
+                    },
+                }
+            )
+        ).toEqual({
+            'project-1': { timerIds: ['2', '1', '3'] },
         })
     })
-    it('should handle REMOVE_TIMER', () => {
-        expect(removeTimer).toEqual({
-            [testProject1.id]: testProject1,
+    it('should handle relocate timer', () => {
+        expect(
+            reducer(
+                {
+                    'project-1': { timerIds: ['1', '2', '3'] },
+                    'project-2': { timerIds: ['4', '5', '6'] },
+                },
+                {
+                    type: actions.relocateTimer,
+                    payload: {
+                        result: {
+                            source: { index: 0 },
+                            destination: { index: 0 },
+                            draggableId: '4',
+                        },
+                        start: 'project-2',
+                        finish: 'project-1',
+                    },
+                }
+            )
+        ).toEqual({
+            'project-1': { timerIds: ['4', '1', '2', '3'] },
+            'project-2': { timerIds: ['5', '6'] },
         })
     })
 })

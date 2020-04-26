@@ -6,12 +6,7 @@ const slice = createSlice({
     name: 'projectOrder',
     initialState: [] as ProjectOrder,
     reducers: {
-        reorder: (
-            state,
-            {
-                payload,
-            }: PayloadAction<DragEndPayload>
-        ) => {
+        reorder: ( state, { payload }: PayloadAction<DragEndPayload> ) => {
             state.splice(payload.source.index, 1)
             state.splice(payload.destination.index, 0, payload.draggableId)
         },
