@@ -58,14 +58,17 @@ describe('timer slice', () => {
                     type: actions.add,
                     payload: {
                         id: 'timer-1',
-                        description: 'test',
-                        running: false,
-                        startedTime: 0,
-                        elapsedTime: 0,
-                        settings: {
-                            isBillable: false,
-                            keepTimer: false,
-                            markAsComplete: false,
+                        timer: {
+                            id: 'timer-1',
+                            description: 'test',
+                            running: false,
+                            startedTime: 0,
+                            elapsedTime: 0,
+                            settings: {
+                                isBillable: false,
+                                keepTimer: false,
+                                markAsComplete: false,
+                            },
                         },
                     },
                 }
@@ -105,5 +108,42 @@ describe('timer slice', () => {
                 { type: actions.remove, payload: { id: 'timer-1' } }
             )
         ).toEqual({})
+    })
+    it('should handle update', () => {
+        expect(
+            reducer(
+                {
+                    'timer-1': {
+                        id: 'timer-1',
+                        description: 'test',
+                        running: false,
+                        startedTime: 0,
+                        elapsedTime: 0,
+                        settings: {
+                            isBillable: false,
+                            keepTimer: false,
+                            markAsComplete: false,
+                        },
+                    },
+                },
+                {
+                    type: actions.update,
+                    payload: { id: 'timer-1', update: { description: 'Updated description' } },
+                }
+            )
+        ).toEqual({
+            'timer-1': {
+                id: 'timer-1',
+                description: 'Updated description',
+                running: false,
+                startedTime: 0,
+                elapsedTime: 0,
+                settings: {
+                    isBillable: false,
+                    keepTimer: false,
+                    markAsComplete: false,
+                },
+            },
+        })
     })
 })

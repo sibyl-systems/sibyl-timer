@@ -10,6 +10,7 @@ export type Timer = {
     startedTime: number | null
     elapsedTime: number
     settings: TimerSettings
+    taskId?: number
 }
 export type Timers = {
     [key: string]: Timer
@@ -36,4 +37,20 @@ export type ReduxState = {
     timers: Timers,
     projects: Projects,
     projectOrder: ProjectOrder,
+}
+
+export type Task = {
+    id: number
+    description: string
+    canComplete: boolean
+    'project-id': number
+    'project-name': string
+    'todo-list-id': number
+    'todo-list-name': string
+    'creator-firstname': string
+    'creator-lastname': string
+    'due-date': string
+    'estimated-minutes': number
+    'priority': string
+    'parentTaskId': string
 }
