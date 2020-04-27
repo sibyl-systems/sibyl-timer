@@ -146,4 +146,27 @@ describe('timer slice', () => {
             },
         })
     })
+    it('should handle save', () => {
+        const currentTime = new Date().getTime()
+        expect(
+            reducer(
+                {
+                    'timer-1': {
+                        id: 'timer-1',
+                        elapsedTime: 0,
+                    }
+                },
+                {
+                    type: actions.save,
+                    payload: { id: 'timer-1', currentTime, elapsedTime: 60},
+                }
+            )
+        ).toEqual({
+                'timer-1': {
+                    id: 'timer-1',
+                    elapsedTime: 60,
+                    startedTime: currentTime
+                }
+            })
+    })
 })

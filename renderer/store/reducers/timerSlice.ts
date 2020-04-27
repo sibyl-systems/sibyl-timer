@@ -24,12 +24,12 @@ const slice = createSlice({
             }
         },
         save: {
-            reducer: (state, { payload }: PayloadAction<{ id: string, currentTime: number, elapsedTime: number }>) => {
-                state[payload.id].elapsedTime = payload.elapsedTime
-                state[payload.id].startedTime = state[payload.id].startedTime ? state[payload.id].startedTime : payload.currentTime
+            reducer: (state, { payload: {elapsedTime, id, currentTime} }: PayloadAction<{ id: string, elapsedTime: number, currentTime: number }>) => {
+                state[id].startedTime = state[id].startedTime ? state[id].startedTime : currentTime
+                state[id].elapsedTime = elapsedTime
             },
-            prepare: ({ id,elapsedTime }: { id: string, elapsedTime: number }) => ({
-                payload: { currentTime: new Date().getTime(), id, elapsedTime},
+            prepare: ({ id, elapsedTime }: { id: string, elapsedTime: number }) => ({
+                payload: { id, elapsedTime, currentTime: new Date().getTime() },
             }),
         },
         add: {
