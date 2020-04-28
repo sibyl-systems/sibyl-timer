@@ -22,6 +22,12 @@ const Select = ({ options, selected }) => {
         },
     })
 
+    console.log(options)
+
+    if(!options.length) {
+        return <div>No options found</div>
+    }
+
     return (
         <>
             <label {...getLabelProps()}>Choose an element:</label>

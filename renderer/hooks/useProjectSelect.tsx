@@ -1,7 +1,6 @@
 import * as React from 'react'
 
-const useProjectSelect = ({selected}) => {
-    const options = [{}]
+const useProjectSelect = ({options, selected}) => {
     return [options, selected]
 }
 

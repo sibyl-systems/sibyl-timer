@@ -1,15 +1,20 @@
 import * as React from 'react'
-import electron from 'electron'
+import Router from 'next/router'
 import Head from 'next/head'
-import Link from 'next/link'
+import { login } from '../store/reducers/userSlice'
+import store from '../store'
 
 const Home = () => {
-    const [apiKey, setApiKey] = React.useState('')
+    const [apiKey, setApiKey] = React.useState<string>('')
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setApiKey(e.currentTarget.value)
     }
     const handleSubmitApiKey = () => {
-        console.log(apiKey)
+        store.dispatch(login({apiKey})).then(res => {
+            if(res.type === 'login/fulfilled') {
+                Router.push('/dashboard')
+            }
+        })
     }
     return (
         <>
@@ -20,9 +25,6 @@ const Home = () => {
                 <label>Login with your TeamWork API Key</label>
                 <input value={apiKey} onChange={handleChange} type='text' />
                 <button onClick={handleSubmitApiKey}>Login</button>
-                <Link href='/dashboard'>
-                    <a>Go to Dashboard</a>
-                </Link>
             </div>
         </>
     )

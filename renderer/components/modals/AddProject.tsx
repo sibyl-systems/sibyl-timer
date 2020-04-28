@@ -6,7 +6,7 @@ import store, { addProjectActionCreator } from '../../store'
 import { Project } from '../../store/types'
 
 const AddProject = ({ isOpen, toggleModal }: { isOpen: boolean, toggleModal: () => void }) => {
-    const [options, selected] = useProjectSelect({ selected: null })
+    const [options, selected] = useProjectSelect({ options: [], selected: null })
     const handleAddProject = () => {
         const projectData: Project = {
             id: 'some-project',
